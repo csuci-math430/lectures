@@ -1,0 +1,14 @@
+---
+title: "Lab 1a: Familiarizing yourself with a Quarto document"
+format: html
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+asthma <- read_csv("http://csuci-math430.github.io/lectures/week-01/data/asthma-hospitalization-rates-by-county-2015_2022.csv")
+```
+
