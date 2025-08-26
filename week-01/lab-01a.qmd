@@ -1,5 +1,6 @@
 ---
 title: "Lab 1a: Familiarizing yourself with a Quarto document"
+author: "Dr. Medina"
 format: html
 ---
 
@@ -7,8 +8,87 @@ format: html
 library(tidyverse)
 ```
 
+In this lab we will be exploring California unemployment rates.
+This data is available on the [CA Open Data Portal](https://data.ca.gov/dataset/unemployment-rate-by-age-groups).
+
+We will begin by reading in this data and saving it into an **object** called `unemployment`.
 
 ```{r}
-asthma <- read_csv("http://csuci-math430.github.io/lectures/week-01/data/asthma-hospitalization-rates-by-county-2015_2022.csv")
+unemployment <- read_csv("http://csuci-math430.github.io/lectures/week-01/data/unemployment_rate_by_age_groups.csv")
 ```
 
+We can view what is in the `employment` object by printing it.
+
+```{r}
+unemployment
+```
+
+You can skip over the following code chunk, I needed to do some data cleaning and wrangling to get it in a good format for plotting.
+
+```{r}
+unemployment_new <- unemployment |>
+  mutate(new_date = as_date(Date, format = "%m/%d/%Y")) |> 
+  pivot_longer(
+    cols = starts_with("Age "),
+    names_to = "age_group",
+    names_prefix = "Age ",
+    values_to = "unemployment_rate"
+  )
+```
+
+
+## Unemployment over time
+
+```{r}
+unemployment_new |> 
+  filter(age_group == "25-34") |> 
+  ggplot(aes(x = new_date, y = unemployment_rate)) +
+  geom_point() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(
+    x = "Date",
+    y = "Unemployment rate \n for individuals ages 25-34"
+  )
+```
+
+If you were to describe these trends to someone what would you say?
+
+*You can type your response here*
+
+Do you notice anything interesting?
+
+
+Given this data, what would you predict the average unemployment rate of 2026 to be for people aged 25-34? Why?
+
+
+Given this data, what would you predict the average unemployment rate of 2026 to be for people aged 55-64? Why?
+
+
+## Unemployment trends for each age group
+
+```{r}
+ggplot(
+  unemployment_new, 
+  aes(x = new_date, y = unemployment_rate, color = age_group, linetype = age_group)
+) +
+  geom_line() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(
+    x = "Date",
+    y = "Unemployment rate",
+    color = "Age group",
+    linetype = "Age group"
+  )
+```
+
+Which age group(s) had the highest unemployment rate in general?
+
+
+Which age group(s) had the lowest unemployment rate in general?
+
+
+Would you say there is a meaningful difference in unemployment rates between 55-64 year olds and 20-24 year olds? Why?
+
+Would you say there is a meaningful difference in unemployment rates between 55-64 year olds and 35-34 year olds? Why?
