@@ -34,3 +34,8 @@ My name is Dr. (or Professor) Catalina Medina
 
 All of our class information can be found on [**CI Learn**](https://cilearn.csuci.edu/)
 
+## Lab
+
+Let's kick off this class by looking at data and thinking about modeling!
+
+In CI Learn under this week's module there is a **lab-01a.qmd** file (this is the lab for week 1 lecture a). Please download it and open it in RStudio. 
