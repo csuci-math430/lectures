@@ -2,6 +2,10 @@
 title: "Lab 1a: Familiarizing yourself with a Quarto document"
 author: "Dr. Medina"
 format: html
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
 ---
 
 ```{r}
