@@ -338,10 +338,14 @@ nrow(bad_drivers)
 
 ## Data documentation
 
+If a dataset is part of an R package you can look at its help documentation.
 ```{r}
 #| eval: false
 ?bad_drivers
 ```
+
+In general we use a __data dictionary__ for information on a data set. 
+The data dictionary at minimum should contain information describing each column in the data set.
 
 
 # Functions for viewing data frames
