@@ -1,7 +1,7 @@
 ---
 title: "Math 430: Lecture 01a"
 subtitle: "Welcome to Statistical Models!"
-author: Dr. Catalina Medina
+author: "Professor Catalina Medina"
 format: 
   revealjs:
     theme: [sky, ../slide-style.scss]
@@ -15,11 +15,11 @@ My name is Dr. (or Professor) Catalina Medina
 
 ::: {layout="[[1,1], [1]]"}
 
-![](lecture-images/sonoma-county.jpg){fig-alt="Image of some grape vinyard with dry grass and hills."}
+![](img/sonoma-county.jpg){fig-alt="Image of some grape vinyard with dry grass and hills."}
 
-![](lecture-images/reno.jpg){fig-alt="Image of a city with some tall building surrounded by hills covered in snow."}
+![](img/reno.jpg){fig-alt="Image of a city with some tall building surrounded by hills covered in snow."}
 
-![](lecture-images/orange-county.jpg){fig-alt="Image of a coastline with beaches and houses."}
+![](img/orange-county.jpg){fig-alt="Image of a coastline with beaches and houses."}
 :::
 
 ## Introductions: you all
