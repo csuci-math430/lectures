@@ -1,9 +1,11 @@
 ---
-title: "Lecture 01a"
-subtitle: "Welcome to Math 430: Statistical Models!"
+title: "Math 430: Lecture 01a"
+subtitle: "Welcome to Statistical Models!"
+author: Dr. Catalina Medina
 format: 
   revealjs:
-    theme: sky
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
 ---
 
 ## Introductions: myself
