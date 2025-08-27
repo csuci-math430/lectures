@@ -1,5 +1,6 @@
 ---
-title: "Introduction to toolkit"
+title: "Math 430: Lecture 1b"
+subtitle: "Introduction to toolkit"
 author: "Professor Catalina Medina"
 execute:
   echo: true
@@ -90,6 +91,8 @@ apple_data <- data.frame(
   apple_colors = c("green", "yellow", "red"), 
   apple_count = c(3, 17, 8)
 )
+
+apple_data
 ```
 
 ## Vocabulary
@@ -264,124 +267,110 @@ What do R packages have? All sorts of things but mainly
 
 - datasets
 
+In order to use a packages you have to:
+
+1. install it (once per device)
+```{r}
+#| eval: false
+install.packages("tidyverse")
+```
+
+2. load it (in each Quarto document)
+```{r}
+#| eval: false
+library(tidyverse)
+```
+
 ## R packages
 
-Try running the following code:
+Try running the following code and look at the error:
 
 ```{r error = TRUE}
 beep()
 ```
 
-Why are we seeing this error? 
+The function `beep()` is from the `beepr` package, so we have to (1) make sure it is installed and then (2) load it
 
-
-## Using `install.packages()`
-
-In your **Console**, install the beepr package
-
-```{r eval = FALSE}
-install.packages("beepr")
-```
-
-We do this in the Console because we only need to do it once.
-
-
-## Using Packages pane
-
-```{r echo = FALSE, out.width="40%", fig.align='center'}
-knitr::include_graphics("img/packages-pane.png")
-```
-
-Packages Pane > Install 
-
-
-## Letting RStudio Install
-
-```{r echo = FALSE, out.width="80%", fig.align='center'}
-knitr::include_graphics("img/rstudio-install.png")
-```
-
-If you save your file and using a package RStudio will tell you that you have not installed the package.
-
-
-
-
-:::{.font75}
-
-Using packages
-
-:::
-
-
-
-## Using beep() from beepr
-
-
-Option 1
 ```{r warning = FALSE, eval = FALSE}
 library(beepr)
 beep()
 ```
 
-More common usage. 
 
-Useful if you are going to use multiple functions from the same package.
+# Getting to know data
 
-E.g. we have used many functions (ggplot, aes, geom_...) from the ggplot2 package. In such cases, usual practice is to put the library name in the first R chunk in the .qmd file.
+[Dear Mona, Which State Has the Worst Drivers?](https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/)
 
-
-
-## Using beep() from beepr
-
-Option 2
-
-```{r eval = FALSE}
-beepr::beep()
-```
-Useful when you are going to use a function once or few times. 
-
-Also useful if there are any conflicts. For instance if there is some other package in your environment that has a beep() function that prints the word beep, you would want to distinguish the beep function from the beepr package and the beep function from the other imaginary package. 
-
-##
-
-```{r echo=FALSE, fig.align='center', out.width="80%"}
-knitr::include_graphics("img/beep-help.png")
-```
-
-
-## Open Source
-
-- Any one around the world can create R packages. 
-
-
-
-- Good part: We are able to do pretty much anything R because someone from around the world has developed the package and shared it. 
-
-
-- Bad part: The language can be inconsistent. 
-
-
-- Good news: We have tidyverse. 
-
-
-
-## Tidyverse
-
-
->The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. 
-
-[tidyverse.org](https://tidyverse.org)
-
-
-## Tidyverse
-
-In short, tidyverse is a family of packages. From practical stand point, you can install many tidyverse packages at once (and you did this). 
-
-
-##
-
-We can also load multiple tidyverse packages all at the same time.
-
-```{r message = TRUE}
+```{r}
+library(fivethirtyeight)
 library(tidyverse)
+data("bad_drivers")
 ```
+
+When you are given some code like this one in your lecture notes or assignments, you should run it first before beginning to code. As we progress in the course, you'll have a deeper understanding of what the starter codes do.
+
+## Data frames  
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/data-matrix.png')
+knitr::include_graphics('img/data-matrix-tail.png')
+```
+
+## Data frame
+
+```{r}
+ncol(bad_drivers)
+
+nrow(bad_drivers)
+```
+
+- The data frame has `r ncol(bad_drivers)` __variables__ (state, num_drivers, perc_speeding, perc_not_distracted, perc_no_previous, insurance_premiums, losses). 
+
+- The data frame has `r nrow(bad_drivers)` __cases__ or __observations__. Each case represents a US state (or District of Columbia). 
+
+## Data documentation
+
+```{r}
+#| eval: false
+?bad_drivers
+```
+
+
+# Functions for viewing data frames
+
+## View top of data frame
+
+```{r}
+head(bad_drivers)
+```
+
+## View bottom of data frame
+
+```{r}
+tail(bad_drivers)
+```
+
+## View structure of data frame
+
+```{r}
+glimpse(bad_drivers)
+```
+
+# Functions to import and export data
+
+Import
+```{r}
+unemployment <- read_csv("http://csuci-math430.github.io/lectures/week-01/data/unemployment_rate_by_age_groups.csv")
+```
+
+Export
+```{r}
+#| eval: false
+write_csv(unemployment, file = "unemployment-data.csv")
+```
+
+. . . 
+
+::: callout-tip
+A lot of headaches can be prevented from using `read_csv()` NOT `read.csv()`!
+:::
