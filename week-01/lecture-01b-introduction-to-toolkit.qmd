@@ -275,7 +275,7 @@ What do R packages have? All sorts of things but mainly
 
 - datasets
 
-In order to use a packages you have to:
+In order to use a package you have to:
 
 1. install it (once per device)
 ```{r}
