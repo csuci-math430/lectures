@@ -384,5 +384,5 @@ write_csv(unemployment, file = "unemployment-data.csv")
 . . . 
 
 ::: callout-tip
-A lot of headaches can be prevented from using `read_csv()` NOT `read.csv()`!
+A lot of headaches can be prevented from using `read_csv()` instead of `read.csv()`!
 :::
