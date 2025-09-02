@@ -81,7 +81,7 @@ Consider that we design a survey with the following questions to study the resea
 ::: {.callout-tip icon=false}
 ## Example: Do CSUCI students who exercise regularly have higher GPA?
 
-- Stand in front of the Broom library
+- Stand in front of the Broome library
 - Give the survey to 100 CSUCI students
 :::
 
