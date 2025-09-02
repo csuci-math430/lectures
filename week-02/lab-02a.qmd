@@ -1,0 +1,44 @@
+---
+title: "Math 430: Lab 2a"
+subtitle: "Research questions and study designs"
+author: "Dr. Catalina Medina"
+format: html
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+---
+
+Consider this initial RQ (based on Friedmann and Thomas ([1985](https://doi.org/10.1300/J002v08n03_14))), that clearly needs refining: 'Are people with pets healthier?' Suppose you are designing a study to answer this question.
+
+## Question 1
+
+Define a population you would be interested in answering this question for.
+
+## Question 2
+
+What could be the response variable?
+
+## Question 3 
+
+What is the explanatory variable?
+
+## Question 4
+
+What is a possible confounder to the relationship between the explanatory and response variable?
+
+## Question 5
+
+Briefly describe an experimental study to answer the RQ.
+
+## Question 6
+
+Briefly describe an observational study to answer the RQ
+
+## Question 7
+
+Do you think you would have generalizability of your study results to the target population? Why?
+
+## Question 8
+
+In which study proposal would you have the possibility of concluding causality?

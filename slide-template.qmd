@@ -1,0 +1,12 @@
+---
+title: "Math 430: Lecture 1b"
+subtitle: "Topic"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+

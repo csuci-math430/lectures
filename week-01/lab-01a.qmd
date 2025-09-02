@@ -1,5 +1,6 @@
 ---
-title: "Lab 1a: Familiarizing yourself with a Quarto document"
+title: "Math 430: Lab 1a"
+subtitle: "Familiarizing yourself with a Quarto document"
 author: "Dr. Medina"
 format: html
 knitr:
