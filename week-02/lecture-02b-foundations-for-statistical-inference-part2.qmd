@@ -1,0 +1,214 @@
+---
+title: "Math 430: Lecture 2b"
+subtitle: "Foundations for Statistical Inference Continued"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+## When is the data collected?
+
+In **cross-sectional** study design the data is collected at one time point
+
+::: {.callout-tip icon=false}
+## Example: GPA of CSUCI students that do and don't exercise regularly
+:::
+
+In **longitudinal** study design the data is collected on the same subjects at multiple time points
+
+::: {.callout-tip icon=false}
+## Example: A study comparing weight-loss diets with a primary outcome of change in body weight after two years.
+:::
+
+. . .
+
+*We will focus on modeling cross-sectional studies in our class*
+
+## Who is the data collected on?
+
+The *unit of observation* is the entity or individual on which data is collected and studied.
+
+::: {.callout-tip icon=false}
+## Example: Do CSUCI students who exercise regularly have higher GPA?
+
+The units of observation are the students. 
+
+Our data should contain one row per student and each column would represent a variable (i.e. one column each for regular exercise, GPA).
+:::
+
+
+## Controls in experiments
+
+In experiments the researchers assign the treatment groups, the levels of the explanatory variable.
+
+Often we include a **control** which serves as a benchmark for comparison.
+
+::: {.callout-tip icon=false}
+## Example: Treating septic shock 
+
+In a study to treat septic shock, Hwang et al. ([2020](https://doi.org/10.1007/s00134-020-06191-3)) used two study groups of equal size: one group received an intravenous infusion of vitamin C and thiamine and the other group received intravenous saline.
+
+Explanatory variable: Injection received  
+
+- Treatment of interest: infusion of vitamin c and thiamine
+- Control: saline used as a **placebo** (Fake replacement meant to simulate the experience of receiving treatment)
+
+:::
+
+## Standard of care
+
+::: {.callout-tip icon=false}
+## Example: Reducing heart attack rate
+
+Suppose we want to learn if a new drug, drug A, can lower heart attack rate.
+
+What should be
+
+- Our treatment group?
+- Our control group?
+
+:::
+
+## Blinds
+
+If we think a subject knowing what treatment they got will affect their outcome we can do a **blinded study**, meaning the subjects do not know what treatment they received.
+
+::: {.callout-tip icon=false}
+## Example: Treating septic shock 
+
+Subject are not told what injection they received.
+
+:::
+
+::: {.callout-tip icon=false}
+## Example: Do pre-workout supplements improve athletic performance?
+
+Subjects are not told if the supplement they receive is pre-workout or a placebo.
+
+It could just be the idea of pre-workout that helps improve performance.
+:::
+
+## Blinds 
+
+If we think people conducting the research knowing what treatment the subject got will affect the outcome we can do a **double-blinded study**.
+
+Subjects and people conducting the research do not know who received what treatment
+
+
+::: {.callout-tip icon=false}
+## Example: Experimental Alzheimer's drug
+
+Alzheimer's is currently irreversible. Maybe a doctor will unintentionally put in more effort at check ups for people they know received the drug.
+
+Careful planning is needed to still record who did and did not receive the experimental drug.
+
+:::
+
+## Ethics in research
+
+All research must be ethical, and must meet ethical guidelines, to minimize risk of harm to the environment, property and to participants, and to preserve the well-being, dignity, rights and safety of participants (including animals).
+
+Most research studies require an ethics committee to formally grant ethics approval before research begins.
+Institutional Review Boards (IRB) are in place to review and approve/disapprove studies.
+
+## CSUCI IRB policy
+
+[CSUCI IRB](https://www.csuci.edu/rsp/committees/irb/) states
+
+> A Classroom project that will be used for teaching and learning the research tools in the classroom or for pedagogy and will not be published, or presented beyond the classroom does not require IRB review and approval.
+
+
+## Ethical considerations: Data
+
+::: {.callout-tip icon=false}
+## Example: Confidentiality
+
+- Data should be kept confidential.
+- If data is allowed to be shared, personal identifiers should be removed.
+
+:::
+
+::: {.callout-tip icon=false}
+## Example: Storage of data
+
+- Data should be stored securely, kept for the required amount of time, then (if appropriate) securely disposed.
+
+:::
+
+## Ethical considerations: Participants
+
+::: {.callout-tip icon=false}
+## Example: Consent
+
+- When appropriate, people should consent to being in the study, and hence should be told what the study involves. 
+- People should also be able to withdraw from the study without penalty.
+
+:::
+
+::: {.callout-tip icon=false}
+## Example: Economic risks
+
+- Financial loss to participants should be avoided. 
+- Reimbursements of reasonable costs for participating may be appropriate.
+
+:::
+
+## Ethical considerations: Risks
+
+::: {.callout-tip icon=false}
+## Example: Harm or discomfort
+
+- Physical/psychological/social harm or discomfort (to researchers, participants or bystanders) should be avoided or minimized.
+
+:::
+
+
+## Ethical considerations: Reporting
+
+::: {.callout-tip icon=false}
+##  Example: Methods
+
+- Must report methods and any assumptions
+- Should use literature supported methods, when appropriate
+
+:::
+
+::: {.callout-tip icon=false}
+##  Example: Analysis
+
+- Must use appropriate methods.
+- Should use reproducible methods .
+
+:::
+
+
+## Ethical considerations: Other's work
+
+::: {.callout-tip icon=false}
+##  Example: Acknowledgements
+
+- All those who contributed to the research should be acknowledged, including those who prepare figures, take photographs, or have helped collect data.
+
+:::
+
+::: {.callout-tip icon=false}
+##  Example: Pagiarism
+
+- The work of others should be appropriately acknowledged and not claimed to be original.
+
+:::
+
+
+## Reproducible research
+
+**Reproducible research** enables others to repeat the study and analysis to confirm findings
+
+Methods, data (when appropriate), analysis and relevant computer code must be made available when possible
+
+> There are serious medical consequences to errors attributable to the effects of spreadsheet programs and software operated through a graphical user interface [...] that could have been avoided through a reproducible research paradigm...
+
+Simons and Holmes ([2019](https://doi.org/10.1373/jalm.2018.028373)), p. 471
