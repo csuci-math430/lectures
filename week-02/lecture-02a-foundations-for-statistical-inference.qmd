@@ -226,6 +226,8 @@ In __experiments__, researchers assign cases to treatments/interventions.
 
 In __randomized experiments__, researchers randomly assign cases  to treatments/interventions. In order to establish causal link between variables, we need randomized experiments. 
 
+Randomization helps control for confounding, but is not always ethical.
+
 ##
 
 ::: {.callout-tip icon=false}
