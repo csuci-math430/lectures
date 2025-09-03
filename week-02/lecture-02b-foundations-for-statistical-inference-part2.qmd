@@ -10,6 +10,8 @@ format:
     slide-number: true
 ---
 
+# Additional study considerations
+
 ## When is the data collected?
 
 In **cross-sectional** study design the data is collected at one time point
@@ -107,6 +109,9 @@ Alzheimer's is currently irreversible. Maybe a doctor will unintentionally put i
 Careful planning is needed to still record who did and did not receive the experimental drug.
 
 :::
+
+
+# Ethics in research
 
 ## Ethics in research
 
@@ -212,3 +217,72 @@ Methods, data (when appropriate), analysis and relevant computer code must be ma
 > There are serious medical consequences to errors attributable to the effects of spreadsheet programs and software operated through a graphical user interface [...] that could have been avoided through a reproducible research paradigm...
 
 Simons and Holmes ([2019](https://doi.org/10.1373/jalm.2018.028373)), p. 471
+
+
+# Variable types
+
+## Numerical / Quantitative variables
+
+**Numerical (or quantitative)** variables are mathematically numerical: the numbers have numerical meaning, and represent quantities or amounts. Numerical variables generally arise from counting or measuring.
+
+## Types of numerical variables
+
+**Discrete numerical** variables has a countable number of possible values between any two given values
+
+::: {.callout-tip icon=false}
+##  Example: Number of computers in a classroom
+:::
+
+**Continuous numerical** variables have an infinite number of possible values between any two given values
+
+::: {.callout-tip icon=false}
+##  Example: A person's height
+:::
+
+Sometimes, discrete quantitative data with a very large number of possible values may be treated as continuous.
+
+## Categorical / Qualitative variables
+
+**Categorical (or qualitative)** variables are not mathematically numerical data: they comprise mutually exclusive categories or labels.
+
+## Types of categorical variables
+
+**Nominal categorical** variables are categorical variables where the levels do not have a natural order.
+
+::: {.callout-tip icon=false}
+##  Example: Blood types: Type A, Type B, Type AB, Type O
+:::
+
+**Ordinal categorical** variables are categorical variables where the levels do have a natural order.
+
+::: {.callout-tip icon=false}
+##  Example: Likert scale response: Strongly agree, agree, neutral, disagree, strongly disagree
+:::
+
+::: {.callout-tip icon=false}
+##  Example: Age groups: 0-18, 19-55, 56+
+:::
+
+
+## Types of variables
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/diagram.png")
+```
+
+## (Some) Variable Types in R
+
+Categorical types:
+
+- `logical`: TRUE (1), FALSE (0)  
+- `character`: takes string values (e.g. a person's name, address)  
+- `factor`: categorical variables with different levels
+
+. . .
+
+Numerical types:
+
+- `integer`: integer (for discrete)  
+- `double`: floating decimal (for continuous)
+- `numeric`: integer or double 

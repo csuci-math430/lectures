@@ -338,6 +338,11 @@ Professor Catalina Medina
 </div>
 
 </section>
+<section>
+<section id="additional-study-considerations" class="title-slide slide level1 center">
+<h1>Additional study considerations</h1>
+
+</section>
 <section id="when-is-the-data-collected" class="slide level2">
 <h2>When is the data collected?</h2>
 <p>In <strong>cross-sectional</strong> study design the data is collected at one time point</p>
@@ -438,7 +443,8 @@ Professor Catalina Medina
 <p><strong>Example: Do pre-workout supplements improve athletic performance?</strong></p>
 </div>
 <div class="callout-content">
-<p>Subjects are not told if the supplement they receive is pre-workout or a placebo</p>
+<p>Subjects are not told if the supplement they receive is pre-workout or a placebo.</p>
+<p>It could just be the idea of pre-workout that helps improve performance.</p>
 </div>
 </div>
 </div>
@@ -454,12 +460,17 @@ Professor Catalina Medina
 </div>
 <div class="callout-content">
 <p>Alzheimer’s is currently irreversible. Maybe a doctor will unintentionally put in more effort at check ups for people they know received the drug.</p>
-<p>Careful planning is needed to still record who did and did not recieve the experimental drug.</p>
+<p>Careful planning is needed to still record who did and did not receive the experimental drug.</p>
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="ethics-in-research" class="title-slide slide level1 center">
+<h1>Ethics in research</h1>
+
 </section>
-<section id="ethics-in-research" class="slide level2">
+<section id="ethics-in-research-1" class="slide level2">
 <h2>Ethics in research</h2>
 <p>All research must be ethical, and must meet ethical guidelines, to minimize risk of harm to the environment, property and to participants, and to preserve the well-being, dignity, rights and safety of participants (including animals).</p>
 <p>Most research studies require an ethics committee to formally grant ethics approval before research begins. Institutional Review Boards (IRB) are in place to review and approve/disapprove studies.</p>
@@ -607,12 +618,110 @@ Professor Catalina Medina
 <p>There are serious medical consequences to errors attributable to the effects of spreadsheet programs and software operated through a graphical user interface […] that could have been avoided through a reproducible research paradigm…</p>
 </blockquote>
 <p>Simons and Holmes (<a href="https://doi.org/10.1373/jalm.2018.028373">2019</a>), p.&nbsp;471</p>
+</section></section>
+<section>
+<section id="variable-types" class="title-slide slide level1 center">
+<h1>Variable types</h1>
+
+</section>
+<section id="numerical-quantitative-variables" class="slide level2">
+<h2>Numerical / Quantitative variables</h2>
+<p><strong>Numerical (or quantitative)</strong> variables are mathematically numerical: the numbers have numerical meaning, and represent quantities or amounts. Numerical variables generally arise from counting or measuring.</p>
+</section>
+<section id="types-of-numerical-variables" class="slide level2">
+<h2>Types of numerical variables</h2>
+<p><strong>Discrete numerical</strong> variables has a countable number of possible values between any two given values</p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Example: Number of computers in a classroom</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+<p><strong>Continuous numerical</strong> variables have an infinite number of possible values between any two given values</p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Example: A person’s height</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+<p>Sometimes, discrete quantitative data with a very large number of possible values may be treated as continuous.</p>
+</section>
+<section id="categorical-qualitative-variables" class="slide level2">
+<h2>Categorical / Qualitative variables</h2>
+<p><strong>Categorical (or qualitative)</strong> variables are not mathematically numerical data: they comprise mutually exclusive categories or labels.</p>
+</section>
+<section id="types-of-categorical-variables" class="slide level2">
+<h2>Types of categorical variables</h2>
+<p><strong>Nominal categorical</strong> variables are categorical variables where the levels do not have a natural order.</p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Example: Blood types: Type A, Type B, Type AB, Type O</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+<p><strong>Ordinal categorical</strong> variables are categorical variables where the levels do have a natural order.</p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Example: Likert scale response: Strongly agree, agree, neutral, disagree, strongly disagree</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Example: Age groups: 0-18, 19-55, 56+</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
+</section>
+<section id="types-of-variables" class="slide level2">
+<h2>Types of variables</h2>
+
+<img data-src="img/diagram.png" width="219" class="r-stretch"></section>
+<section id="some-variable-types-in-r" class="slide level2">
+<h2>(Some) Variable Types in R</h2>
+<p>Categorical types:</p>
+<ul>
+<li><code>logical</code>: TRUE (1), FALSE (0)<br>
+</li>
+<li><code>character</code>: takes string values (e.g.&nbsp;a person’s name, address)<br>
+</li>
+<li><code>factor</code>: categorical variables with different levels</li>
+</ul>
+<div class="fragment">
+<p>Numerical types:</p>
+<ul>
+<li><code>integer</code>: integer (for discrete)<br>
+</li>
+<li><code>double</code>: floating decimal (for continuous)</li>
+<li><code>numeric</code>: integer or double</li>
+</ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
 </div>
-</section>
+</div>
+</section></section>
     </div>
   </div>
 
@@ -823,6 +932,82 @@ Professor Catalina Medina
         ]
       });
     </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
