@@ -275,14 +275,19 @@ knitr::include_graphics("img/diagram.png")
 
 Categorical types:
 
-- `logical`: TRUE (1), FALSE (0)  
-- `character`: takes string values (e.g. a person's name, address)  
+- `character`: takes string values (e.g. a person's name, address) 
 - `factor`: categorical variables with different levels
+- `logical`: TRUE (1), FALSE (0)  
 
 . . .
 
 Numerical types:
 
+- `numeric`: integer or double
 - `integer`: integer (for discrete)  
 - `double`: floating decimal (for continuous)
-- `numeric`: integer or double 
+ 
+ 
+# Scientific research article 
+
+[Microbiome of clothing items worn for a single day in a non-healthcare setting](https://doi.org/10.3390/microbiolres14030065)
