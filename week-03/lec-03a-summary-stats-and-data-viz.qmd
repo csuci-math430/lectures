@@ -67,12 +67,17 @@ glimpse(babies)
 
 # Summary stats for categorical variables
 
-Counts and proportions
+## Counts and proportions
 
 ```{r}
 library(janitor)
 tabyl(babies, smoke)
 ```
+
+. . .
+
+`NA` means missing data. We have 10 missing data points for the `smoke` variable
+
 # Summary stats for numeric variable
 
 ## Mean
@@ -158,7 +163,7 @@ summarize(babies, mean(bwt), sd(bwt), mean(age, na.rm = TRUE))
 
 ```{r}
 group_by(babies, smoke) |> 
-summarize(mean(bwt))
+  summarize(mean(bwt))
 ```
 
 The pipe symbol "|>" essentially carries what was on that line into the next function.
@@ -186,6 +191,9 @@ ggplot(babies, aes(x = smoke)) +
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies)
 ```
 
@@ -193,6 +201,9 @@ ggplot(babies)
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies, aes(x = smoke)) 
 ```
 
@@ -200,6 +211,9 @@ ggplot(babies, aes(x = smoke))
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies, aes(x = smoke)) +
   geom_bar()
 ```
@@ -208,6 +222,9 @@ ggplot(babies, aes(x = smoke)) +
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 
 filter(babies, !is.na(smoke)) |> 
 ggplot(aes(x = smoke)) +
@@ -219,6 +236,8 @@ ggplot(aes(x = smoke)) +
 ```{r}
 #| echo: false
 #| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies, aes(x = bwt)) +
   geom_histogram()
 ```
@@ -227,6 +246,9 @@ ggplot(babies, aes(x = bwt)) +
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies)
 ```
 
@@ -234,6 +256,9 @@ ggplot(babies)
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies, aes(x = bwt))
 ```
 
@@ -241,6 +266,9 @@ ggplot(babies, aes(x = bwt))
 
 ```{r}
 #| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies, aes(x = bwt)) +
   geom_histogram()
 ```
@@ -249,8 +277,16 @@ ggplot(babies, aes(x = bwt)) +
 ## Binwidth
 
 ```{r}
+#| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(babies, aes(x = bwt)) +
-  geom_histogram(binwidth = 3, color = "green")
+  geom_histogram(
+    binwidth = 5, 
+    color = "darkgreen", 
+    fill = "lightgray"
+  )
 ```
 
 ##
@@ -370,6 +406,8 @@ ggplot(
   )
 ```
 
+We can use the `labs()` function to specify labels
+
 ## Dodged Bar Plot
 
 ```{r}
@@ -455,6 +493,8 @@ ggplot(babies, aes(y = bwt)) +
 ```{r}
 #| output-location: column
 #| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
 ggplot(
   babies,
   aes(x = gestation, y = bwt)
@@ -462,24 +502,53 @@ ggplot(
   geom_point()
 ```
 
-Length of gestation can **possibly** eXplain a baby's birth weight. 
-Gestation is the eXplanatory variable and is shown on the x-axis.
-Birth weight is the response variable and is shown on the y-axis.
+## Scatter plots
+
+```{r}
+#| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
+ggplot(
+  babies,
+  aes(x = gestation, y = bwt)
+)  +
+  geom_point() +
+  labs(
+    x = "Gestation (days)",
+    y = "Birth weight (ounces)"
+  )
+```
+
+Length of gestation can **possibly** explain a baby's birth weight. 
+
+Explanatory variable and is shown on the x-axis.
+
+Response variable and is shown on the y-axis.
 
 ---
 
 ## Linear Relationship
 
-```{r echo = FALSE, fig.height=4, fig.align='center', warning=FALSE, message=FALSE}
+```{r}
+#| output-location: column
+#| fig-align: center
+#| fig-height: 4
+#| fig-width: 6
+
 ggplot(
   babies,
-  aes(x = gestation, y = bwt))  +
+  aes(x = gestation, y = bwt)
+)  +
   geom_point() +
   labs(
     x = "Gestation (days)",
     y = "Birth weight (ounces)"
   ) +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(
+    method = "lm", 
+    se = FALSE
+  )
 ```
 
 Next we will start statistical modeling during which we will numerically define the relationship between gestation and birth weight. 
@@ -542,43 +611,52 @@ ggplot(penguins, aes(x = body_mass_g, y = bill_length_mm, shape = species, color
   geom_point(size = 3)
 ```
 
-In case someone has a visual impairment we can use both
+We can even use both!
 
-## Plots by data scenario
+# Summary: Plots by data scenario
+
+## 
 
 ::::{.columns}
 
 :::{.column width="50%"}
-**Single categorical variable**
+
+**Single numeric**
+
+- histogram (shape)
+- box plot (summary stats)
+
+**Single categorical**
 
 - bar plots
 
-**Single numeric variable**
-
-- histogram
-- boxplot
-:::
-
-:::{.column width="50%"}
-**Two categorical variables**
-
-- standardized bar plot
-- dodged bar plot
-
-**Two numeric variables**
+**Two numeric**
 
 - scatter plot
 
 :::
 
-::::
+:::{.column width="50%"}
+**Two categorical**
+
+- standardized bar plot (proportions)
+- dodged bar plot (counts)
 
 **Two numeric one categorical**
 
 - scatter plot with color/shape
 
+:::
 
-## Themes
+::::
+
+**One numeric one categorical**
+
+- side-by-side box plot / histogram
+
+# Themes
+
+## 
 
 ::: {.panel-tabset}
 ## `theme_gray()`

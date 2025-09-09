@@ -439,9 +439,13 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 <p><code>weight</code> mother’s weight in pounds</p>
 <p><code>smoke</code> binary indicator for whether the mother smokes</p>
 </section>
+<section>
 <section id="summary-stats-for-categorical-variables" class="title-slide slide level1 center">
 <h1>Summary stats for categorical variables</h1>
-<p>Counts and proportions</p>
+
+</section>
+<section id="counts-and-proportions" class="slide level2">
+<h2>Counts and proportions</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(janitor)</span>
 <span id="cb4-2"><a href=""></a><span class="fu">tabyl</span>(babies, smoke)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -452,8 +456,10 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
     NA  10 0.008090615            NA</code></pre>
 </div>
 </div>
-</section>
-
+<div class="fragment">
+<p><code>NA</code> means missing data. We have 10 missing data points for the <code>smoke</code> variable</p>
+</div>
+</section></section>
 <section>
 <section id="summary-stats-for-numeric-variable" class="title-slide slide level1 center">
 <h1>Summary stats for numeric variable</h1>
@@ -584,7 +590,7 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 <h2>We can even look at summary statistics for different groups</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">group_by</span>(babies, smoke) <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href=""></a><span class="fu">summarize</span>(<span class="fu">mean</span>(bwt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">mean</span>(bwt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   smoke `mean(bwt)`
@@ -611,14 +617,14 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 <img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-20-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="bar-plot-1" class="slide level2">
 <h2>Bar plot</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="fu">ggplot</span>(babies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -627,14 +633,14 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </section>
 <section id="bar-plot-2" class="slide level2">
 <h2>Bar plot</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">ggplot</span>(babies, <span class="fu">aes</span>(<span class="at">x =</span> smoke)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -643,15 +649,15 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </section>
 <section id="bar-plot-3" class="slide level2">
 <h2>Bar plot</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">ggplot</span>(babies, <span class="fu">aes</span>(<span class="at">x =</span> smoke)) <span class="sc">+</span></span>
 <span id="cb36-2"><a href=""></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -660,16 +666,16 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </section>
 <section id="bar-plot-4" class="slide level2">
 <h2>Bar plot</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">filter</span>(babies, <span class="sc">!</span><span class="fu">is.na</span>(smoke)) <span class="sc">|&gt;</span> </span>
 <span id="cb37-2"><a href=""></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoke)) <span class="sc">+</span></span>
 <span id="cb37-3"><a href=""></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -679,17 +685,17 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 <section id="histogram" class="slide level2">
 <h2>Histogram</h2>
 
-<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center r-stretch" width="576"></section>
 <section id="histogram-1" class="slide level2">
 <h2>Histogram</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">ggplot</span>(babies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-26-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -698,14 +704,14 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </section>
 <section id="histogram-2" class="slide level2">
 <h2>Histogram</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="fu">ggplot</span>(babies, <span class="fu">aes</span>(<span class="at">x =</span> bwt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -714,15 +720,15 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </section>
 <section id="histogram-3" class="slide level2">
 <h2>Histogram</h2>
-<div class="cell columns column-output-location">
+<div class="cell columns column-output-location" data-layout-align="center">
 <div class="column">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">ggplot</span>(babies, <span class="fu">aes</span>(<span class="at">x =</span> bwt)) <span class="sc">+</span></span>
 <span id="cb40-2"><a href=""></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-28-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -731,12 +737,25 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </section>
 <section id="binwidth" class="slide level2">
 <h2>Binwidth</h2>
-<div class="cell">
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">ggplot</span>(babies, <span class="fu">aes</span>(<span class="at">x =</span> bwt)) <span class="sc">+</span></span>
-<span id="cb41-2"><a href=""></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"green"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+<span id="cb41-2"><a href=""></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb41-3"><a href=""></a>    <span class="at">binwidth =</span> <span class="dv">5</span>, </span>
+<span id="cb41-4"><a href=""></a>    <span class="at">color =</span> <span class="st">"darkgreen"</span>, </span>
+<span id="cb41-5"><a href=""></a>    <span class="at">fill =</span> <span class="st">"lightgray"</span></span>
+<span id="cb41-6"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-29-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+</figure>
 </div>
-<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</div>
+</section>
 <section id="section-2" class="slide level2">
 <h2></h2>
 <div class="columns">
@@ -826,6 +845,7 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 </div>
 </div>
 </div>
+<p>We can use the <code>labs()</code> function to specify labels</p>
 </section>
 <section id="dodged-bar-plot" class="slide level2">
 <h2>Dodged Bar Plot</h2>
@@ -921,18 +941,68 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-40-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-40-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<p>Length of gestation can <strong>possibly</strong> eXplain a baby’s birth weight. Gestation is the eXplanatory variable and is shown on the x-axis. Birth weight is the response variable and is shown on the y-axis.</p>
+</section>
+<section id="scatter-plots-1" class="slide level2">
+<h2>Scatter plots</h2>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb47-2"><a href=""></a>  babies,</span>
+<span id="cb47-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> gestation, <span class="at">y =</span> bwt)</span>
+<span id="cb47-4"><a href=""></a>)  <span class="sc">+</span></span>
+<span id="cb47-5"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb47-6"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb47-7"><a href=""></a>    <span class="at">x =</span> <span class="st">"Gestation (days)"</span>,</span>
+<span id="cb47-8"><a href=""></a>    <span class="at">y =</span> <span class="st">"Birth weight (ounces)"</span></span>
+<span id="cb47-9"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-41-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Length of gestation can <strong>possibly</strong> explain a baby’s birth weight.</p>
+<p>Explanatory variable and is shown on the x-axis.</p>
+<p>Response variable and is shown on the y-axis.</p>
 </section>
 <section id="linear-relationship" class="slide level2">
 <h2>Linear Relationship</h2>
-
-<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-41-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>Next we will start statistical modeling during which we will numerically define the relationship between gestation and birth weight. For now we can say that this relationship looks positive and moderate.</p>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb48-2"><a href=""></a>  babies,</span>
+<span id="cb48-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> gestation, <span class="at">y =</span> bwt)</span>
+<span id="cb48-4"><a href=""></a>)  <span class="sc">+</span></span>
+<span id="cb48-5"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb48-6"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb48-7"><a href=""></a>    <span class="at">x =</span> <span class="st">"Gestation (days)"</span>,</span>
+<span id="cb48-8"><a href=""></a>    <span class="at">y =</span> <span class="st">"Birth weight (ounces)"</span></span>
+<span id="cb48-9"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb48-10"><a href=""></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb48-11"><a href=""></a>    <span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb48-12"><a href=""></a>    <span class="at">se =</span> <span class="cn">FALSE</span></span>
+<span id="cb48-13"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-42-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Next we will start statistical modeling during which we will numerically define the relationship between gestation and birth weight. For now we can say that this relationship looks positive and moderate.</p>
 </section>
 <section id="meet-palmer-penguins1" class="slide level2">
 <h2>Meet Palmer Penguins<sup>1</sup></h2>
@@ -953,7 +1023,7 @@ $ smoke     &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, FALSE, FA
 <section id="data-1" class="slide level2">
 <h2>Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -971,125 +1041,80 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <section id="visualizing-three-variables" class="slide level2">
 <h2>Visualizing Three Variables</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> bill_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
-<span id="cb49-2"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> bill_length_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb51-2"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-45-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>We can use color to consider a third variable</p>
+<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-46-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>We can use color to consider a third variable</p>
 </section>
 <section id="visualizing-three-variables-1" class="slide level2">
 <h2>Visualizing Three Variables</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> bill_length_mm, <span class="at">shape =</span> species)) <span class="sc">+</span></span>
-<span id="cb50-2"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> bill_length_mm, <span class="at">shape =</span> species)) <span class="sc">+</span></span>
+<span id="cb52-2"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-46-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>We can even use shapes</p>
+<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-47-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>We can even use shapes</p>
 </section>
 <section id="visualizing-three-variables-2" class="slide level2">
 <h2>Visualizing Three Variables</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> bill_length_mm, <span class="at">shape =</span> species, <span class="at">color =</span> species)) <span class="sc">+</span></span>
-<span id="cb51-2"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, <span class="at">y =</span> bill_length_mm, <span class="at">shape =</span> species, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb53-2"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-47-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>In case someone has a visual impairment we can use both</p>
+<img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-48-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>We can even use both!</p>
+</section></section>
+<section>
+<section id="summary-plots-by-data-scenario" class="title-slide slide level1 center">
+<h1>Summary: Plots by data scenario</h1>
+
 </section>
-<section id="plots-by-data-scenario" class="slide level2">
-<h2>Plots by data scenario</h2>
+<section id="section-4" class="slide level2">
+<h2></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Single categorical variable</strong></p>
+<p><strong>Single numeric</strong></p>
+<ul>
+<li>histogram (shape)</li>
+<li>box plot (summary stats)</li>
+</ul>
+<p><strong>Single categorical</strong></p>
 <ul>
 <li>bar plots</li>
 </ul>
-<p><strong>Single numeric variable</strong></p>
-<ul>
-<li>histogram</li>
-<li>boxplot</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Two categorical variables</strong></p>
-<ul>
-<li>standardized bar plot</li>
-<li>dodged bar plot</li>
-</ul>
-<p><strong>Two numeric variables</strong></p>
+<p><strong>Two numeric</strong></p>
 <ul>
 <li>scatter plot</li>
 </ul>
-</div>
-</div>
+</div><div class="column" style="width:50%;">
+<p><strong>Two categorical</strong></p>
+<ul>
+<li>standardized bar plot (proportions)</li>
+<li>dodged bar plot (counts)</li>
+</ul>
 <p><strong>Two numeric one categorical</strong></p>
 <ul>
 <li>scatter plot with color/shape</li>
 </ul>
+</div>
+</div>
+<p><strong>One numeric one categorical</strong></p>
+<ul>
+<li>side-by-side box plot / histogram</li>
+</ul>
+</section></section>
+<section>
+<section id="themes" class="title-slide slide level1 center">
+<h1>Themes</h1>
+
 </section>
-<section id="themes" class="slide level2">
-<h2>Themes</h2>
+<section id="section-5" class="slide level2">
+<h2></h2>
 <div class="panel-tabset">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>theme_gray()</code></a></li><li><a href="#tabset-1-2"><code>theme_bw()</code></a></li><li><a href="#tabset-1-3"><code>theme_dark()</code></a></li><li><a href="#tabset-1-4"><code>theme_classic()</code></a></li><li><a href="#tabset-1-5"><code>theme_minimal()</code></a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb52" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb52-2"><a href=""></a>  penguins,</span>
-<span id="cb52-3"><a href=""></a>  <span class="fu">aes</span>(</span>
-<span id="cb52-4"><a href=""></a>    <span class="at">x =</span> bill_depth_mm,</span>
-<span id="cb52-5"><a href=""></a>    <span class="at">y =</span> bill_length_mm,</span>
-<span id="cb52-6"><a href=""></a>    <span class="at">color =</span> species</span>
-<span id="cb52-7"><a href=""></a>  )</span>
-<span id="cb52-8"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb52-9"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb52-10"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb52-11"><a href=""></a>    <span class="at">x =</span> <span class="st">"Bill Depth (mm)"</span>, </span>
-<span id="cb52-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
-<span id="cb52-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
-<span id="cb52-14"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb52-15"><a href=""></a>  <span class="fu">theme_gray</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-48-1.png" width="576"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>Theme gray is the default theme in ggplot.</p>
-</div>
-<div id="tabset-1-2">
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb53" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb53-2"><a href=""></a>  penguins,</span>
-<span id="cb53-3"><a href=""></a>  <span class="fu">aes</span>(</span>
-<span id="cb53-4"><a href=""></a>    <span class="at">x =</span> bill_depth_mm,</span>
-<span id="cb53-5"><a href=""></a>    <span class="at">y =</span> bill_length_mm,</span>
-<span id="cb53-6"><a href=""></a>    <span class="at">color =</span> species</span>
-<span id="cb53-7"><a href=""></a>  )</span>
-<span id="cb53-8"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb53-9"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb53-10"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb53-11"><a href=""></a>    <span class="at">x =</span> <span class="st">"Bill Depth (mm)"</span>, </span>
-<span id="cb53-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
-<span id="cb53-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
-<span id="cb53-14"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb53-15"><a href=""></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-49-1.png" width="576"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-3">
 <div class="cell columns column-output-location">
 <div class="column">
 <div class="sourceCode cell-code" id="cb54" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">ggplot</span>(</span>
@@ -1106,19 +1131,20 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <span id="cb54-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
 <span id="cb54-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
 <span id="cb54-14"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb54-15"><a href=""></a>  <span class="fu">theme_dark</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb54-15"><a href=""></a>  <span class="fu">theme_gray</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-50-1.png" width="576"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-49-1.png" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>Theme gray is the default theme in ggplot.</p>
 </div>
-<div id="tabset-1-4">
+<div id="tabset-1-2">
 <div class="cell columns column-output-location">
 <div class="column">
 <div class="sourceCode cell-code" id="cb55" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="fu">ggplot</span>(</span>
@@ -1135,19 +1161,19 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <span id="cb55-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
 <span id="cb55-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
 <span id="cb55-14"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb55-15"><a href=""></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb55-15"><a href=""></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-51-1.png" width="576"></p>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-50-1.png" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-1-5">
+<div id="tabset-1-3">
 <div class="cell columns column-output-location">
 <div class="column">
 <div class="sourceCode cell-code" id="cb56" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">ggplot</span>(</span>
@@ -1164,12 +1190,70 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <span id="cb56-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
 <span id="cb56-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
 <span id="cb56-14"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb56-15"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb56-15"><a href=""></a>  <span class="fu">theme_dark</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-51-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4">
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb57" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb57-2"><a href=""></a>  penguins,</span>
+<span id="cb57-3"><a href=""></a>  <span class="fu">aes</span>(</span>
+<span id="cb57-4"><a href=""></a>    <span class="at">x =</span> bill_depth_mm,</span>
+<span id="cb57-5"><a href=""></a>    <span class="at">y =</span> bill_length_mm,</span>
+<span id="cb57-6"><a href=""></a>    <span class="at">color =</span> species</span>
+<span id="cb57-7"><a href=""></a>  )</span>
+<span id="cb57-8"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb57-9"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb57-10"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb57-11"><a href=""></a>    <span class="at">x =</span> <span class="st">"Bill Depth (mm)"</span>, </span>
+<span id="cb57-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
+<span id="cb57-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
+<span id="cb57-14"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb57-15"><a href=""></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
 <div>
 <figure>
 <p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-52-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-5">
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb58" data-code-line-numbers="15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb58-2"><a href=""></a>  penguins,</span>
+<span id="cb58-3"><a href=""></a>  <span class="fu">aes</span>(</span>
+<span id="cb58-4"><a href=""></a>    <span class="at">x =</span> bill_depth_mm,</span>
+<span id="cb58-5"><a href=""></a>    <span class="at">y =</span> bill_length_mm,</span>
+<span id="cb58-6"><a href=""></a>    <span class="at">color =</span> species</span>
+<span id="cb58-7"><a href=""></a>  )</span>
+<span id="cb58-8"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb58-9"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb58-10"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb58-11"><a href=""></a>    <span class="at">x =</span> <span class="st">"Bill Depth (mm)"</span>, </span>
+<span id="cb58-12"><a href=""></a>    <span class="at">y =</span> <span class="st">"Bill Length (mm)"</span>, </span>
+<span id="cb58-13"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palmer Penguins"</span></span>
+<span id="cb58-14"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb58-15"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-03a-summary-stats-and-data-viz_files/figure-revealjs/unnamed-chunk-53-1.png" width="576"></p>
 </figure>
 </div>
 </div>
