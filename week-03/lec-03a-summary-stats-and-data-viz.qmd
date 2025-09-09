@@ -1,6 +1,6 @@
 ---
 title: "Math 430: Lecture 3a"
-subtitle: "Data visualizations and summary statistics"
+subtitle: "Summary Statistics and Data Visualizations"
 author: "Professor Catalina Medina"
 execute:
   echo: true
@@ -350,6 +350,8 @@ ggplot(
 ) + 
   geom_bar(position = "fill")
 ```
+
+Notice standardized bar plots are actually plotting proportions
 
 ## Standardized Bar Plots
 
