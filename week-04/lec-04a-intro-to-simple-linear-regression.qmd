@@ -70,7 +70,7 @@ glimpse(elephants)
 ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(x = "Height (m)", y = "Mass (kg)")
+  labs(x = "Height (cm)", y = "Mass (kg)")
 ```
 
 ## Predict an elephant's mass from its height
@@ -86,7 +86,7 @@ ggplot(elephants, aes(x = Height, y = Mass)) +
 ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(x = "Height (m)", y = "Mass (kg)")
+  labs(x = "Height (cm)", y = "Mass (kg)")
 ```
 :::
 
@@ -156,7 +156,7 @@ ggplot(elephants, aes(x = Height, y = Mass)) +
     y = y_actual,
     yend = y_pred
   ), color = "red") +
-  labs(x = "Height (m)", y = "Mass (kg)")
+  labs(x = "Height (cm)", y = "Mass (kg)")
 ```
 
 ## Minimizing the residual sum of squares
@@ -279,7 +279,7 @@ $\hat{Mass_i} =$ `r b0_hat` +  `r b1_hat` $Height_i$
 ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  labs(x = "Height (m)", y = "Mass (kg)")
+  labs(x = "Height (cm)", y = "Mass (kg)")
 ```
 :::
 :::{.column width="50%"}
@@ -291,7 +291,7 @@ ggplot(elephants, aes(x = Height, y = Mass)) +
 ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_abline(slope = b1_hat, intercept = b0_hat, color = "blue") +
-  labs(x = "Height (m)", y = "Mass (kg)") +
+  labs(x = "Height (cm)", y = "Mass (kg)") +
   xlim(0, 300) +
   ylim(0, 4500)
 ```
@@ -338,7 +338,7 @@ ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_smooth(method = "lm", se = FALSE) +
   geom_hline(yintercept = y_hat, color = "red", linetype = "dashed") +
   geom_vline(xintercept = 250, color = "red", linetype = "dashed") +
-  labs(x = "Height (m)", y = "Mass (kg)")
+  labs(x = "Height (cm)", y = "Mass (kg)")
 ```
 
 :::
