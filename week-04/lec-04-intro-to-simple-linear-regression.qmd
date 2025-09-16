@@ -1,0 +1,290 @@
+---
+title: "Math 430: Lecture 4a"
+subtitle: "Simple Linear Regression"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+```
+
+
+## Why simple linear regression
+
+1. Some of you may not have been exposed to it before and it is a good starting point for more complicated models.
+
+2. It is very interpretable. If we can model out data with a model we can easily explain, why use a more complicated unexplainable model?
+
+## Example: Elephant Mass
+
+::::{.columns}
+
+:::{.column width="50%"}
+Weighing elephants is not an easy task, but an elephant's mass can help inform about appropriate diet and medicine for elephants in captivity.
+
+:::
+
+:::{.column width="50%"}
+[![Elphants as San Diego Zoo](img/san-diego-zoo-elephant.jpg)](https://sandiegozoowildlifealliance.org/story-hub/zoonooz/social-giants){height=50%}
+
+:::
+::::
+
+. . .
+
+[Lalande et. al. 2022](https://doi.org/10.1111/jeb.14008) figured height could be a useful proxy for elephants. 
+
+
+## Example: Elephant Mass by height
+
+The idea is to:
+
+1. Collect height and mass for a sample of elephants.
+2. Use that sample to fit a model, predicting mass from height.
+3. Predict the mass for elephants outside of our sample using their height in the model, with some  understanding of uncertainty.
+
+## 1. Collect sample
+
+```{r}
+elephants <- read_csv(
+  "http://csuci-math430.github.io/lectures/data/elephants.csv",
+  show_col_types = FALSE
+)
+
+glimpse(elephants)
+```
+
+## 2. Fit model (visually)
+
+```{r}
+#| fig-align: center
+#| fig-height: 3
+#| fig-width: 5
+ggplot(elephants, aes(x = Height, y = Mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Height (m)", y = "Mass (kg)")
+```
+
+## Predict an elephant's mass from its height
+
+::::{.columns}
+
+:::{.column width="50%"}
+```{r}
+#| fig-align: center
+#| fig-height: 3
+#| fig-width: 5
+#| echo: false
+ggplot(elephants, aes(x = Height, y = Mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Height (m)", y = "Mass (kg)")
+```
+:::
+
+:::{.column width="50%"}
+For a new elephant with an unknown mass, if its height is 250 meters
+
+- What would you predict its mass is? 
+- If you were wagering money on your prediction, how much would you wager?
+
+:::
+::::
+
+
+## Simple linear regression
+
+For numeric/quantitative response variables $Y$, we can model a linear relationship between $Y$ and an explanatory variable $X$
+
+$$Y \approx \beta_0 + \beta_1 X$$
+
+In our sample we know both $X$ and $Y$, but $\beta_0$ and $\beta_1$ are unknown *parameters/coefficients*.
+
+- $\beta_0$ is the intercept
+- $\beta_1$ is the slope
+
+## Fitting simple linear regression
+
+Our mathematical theoretical model for individual $i$ is 
+
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)$$
+
+. . .
+
+We will use our sample to get estimates for the parameters $\beta_0$ & $\beta_1$, to be able to predict $y_i$
+
+$$\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} x_i$$
+
+. . .
+
+**How should we determine $\hat{\beta_0}$ & $\hat{\beta_1}$**?
+
+
+## Minimizing the residual sum of squares
+
+We will use the estimators that minimize the residual sum of squares, aka the *least squares estimates*
+
+$$RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} \epsilon^2 = \sum_{i = 1}^{n}(y_i - (\beta_0 + \beta_1 x_i))^2.$$
+
+How do we find the least squares estimates?
+
+1. Take the derivative with respect to each variable.
+2. Set each derivative equal to zero.
+3. Solve for the estimators.
+
+## Least squares estimators
+
+*Proof in class.*
+
+Through some calculus we can show that the least squares estimators are
+
+::::{.columns}
+
+:::{.column width="70%"}
+$$\hat{\beta}_1 = \frac{\sum_{i = 1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}$$
+:::
+:::{.column width="30%"}
+$$\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}$$
+
+:::
+::::
+
+. . .
+
+*Do I expect you to be able to reproduce the proof?*
+
+No, but I do expect you to know the residual sum of squares formula and that $\hat{\beta_0}$ and $\hat{\beta_1}$ minimize it.
+
+
+## How do we compute $\hat{\beta}_0$ and $\hat{\beta}_1$ in practice?
+
+```{r}
+elephant_model <- lm(Mass ~ Height, data = elephants)
+summary(elephant_model)
+```
+
+## Extracting our fitted model
+
+```{r}
+elephant_model <- lm(Mass ~ Height, data = elephants)
+```
+
+Option 1: Tidyverse way
+
+```{r}
+b0_hat <- broom::tidy(elephant_model) |> 
+  filter(term == "(Intercept)") |> 
+  pull(estimate)
+b0_hat
+
+b1_hat <- broom::tidy(elephant_model) |> 
+  filter(term == "Height") |> 
+  pull(estimate)
+b1_hat
+```
+
+$\hat{\beta}_0$ = `r b0_hat`
+
+$\hat{\beta}_1$ = `r b1_hat`
+
+## Extracting our fitted model
+
+```{r}
+elephant_model <- lm(Mass ~ Height, data = elephants)
+```
+
+Option 2: Base R way
+
+```{r}
+#| eval: false
+b0_hat <- elephant_model$coefficients["(Intercept)"]
+b0_hat
+
+b1_hat <- elephant_model$coefficients["Height"]
+b1_hat
+```
+
+$\hat{\beta}_0$ = `r b0_hat`
+
+$\hat{\beta}_1$ = `r b1_hat`
+
+## Our fitted elephant model
+
+$\hat{y_i} = \hat{\beta}_0 +\hat{\beta}_1 x_i$
+
+$\hat{Mass_i} = \hat{\beta}_0 +\hat{\beta}_1 Height_i$
+
+$\hat{Mass_i} =$ `r b0_hat` +  `r b1_hat` $Height_i$
+
+::::{.columns}
+
+:::{.column width="50%"}
+```{r}
+#| fig-align: center
+#| fig-height: 3
+#| fig-width: 5
+#| echo: false
+ggplot(elephants, aes(x = Height, y = Mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Height (m)", y = "Mass (kg)")
+```
+:::
+:::{.column width="50%"}
+```{r}
+#| fig-align: center
+#| fig-height: 3
+#| fig-width: 5
+#| echo: false
+ggplot(elephants, aes(x = Height, y = Mass)) +
+  geom_point() +
+  geom_abline(slope = b1_hat, intercept = b0_hat, color = "blue") +
+  labs(x = "Height (m)", y = "Mass (kg)") +
+  xlim(0, 300) +
+  ylim(0, 4500)
+```
+:::
+::::
+
+## Expected mass of a 250 meter tall elephant
+
+$\hat{Mass_i} =$ `r b0_hat` +  `r b1_hat` $Height_i$
+
+::::{.columns}
+
+:::{.column width="50%"}
+```{r}
+predicted_mass <- b0_hat + b1_hat * 250
+predicted_mass
+```
+
+:::
+
+:::{.column width="50%"}
+```{r}
+#| fig-align: center
+#| fig-height: 3
+#| fig-width: 5
+#| echo: false
+ggplot(elephants, aes(x = Height, y = Mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_hline(yintercept = predicted_mass, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = 250, color = "red", linetype = "dashed") +
+  labs(x = "Height (m)", y = "Mass (kg)")
+```
+:::
+::::
+
+For an elephant 250 meters tall we expect the mass to be `r predicted_mass` kilograms.
+
+## Interpretation of estimates
+
