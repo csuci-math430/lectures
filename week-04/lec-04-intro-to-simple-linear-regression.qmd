@@ -128,13 +128,55 @@ $$\hat{y_i} = \hat{\beta_0} + \hat{\beta_1} x_i$$
 **How should we determine $\hat{\beta_0}$ & $\hat{\beta_1}$**?
 
 
+## Residuals
+
+Let $e_i = y_i −\hat{y}_i$ represents the ith *residual* 
+
+```{r}
+#| fig-align: center
+#| fig-height: 3
+#| fig-width: 5
+#| echo: false
+model_elephant <- lm(Mass ~ Height, data = elephants)
+
+x_val <- 256  
+y_actual <- 2023    
+y_pred <- 3398
+
+#elephants |> 
+#  modelr::add_predictions(model_elephant) |> 
+#  modelr::add_residuals(model_elephant) |> 
+#  arrange(Height) 
+ggplot(elephants, aes(x = Height, y = Mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_segment(aes(
+    x = x_val,
+    xend = x_val,
+    y = y_actual,
+    yend = y_pred
+  ), color = "red") +
+  labs(x = "Height (m)", y = "Mass (kg)")
+```
+
 ## Minimizing the residual sum of squares
 
 We will use the estimators that minimize the residual sum of squares, aka the *least squares estimates*
 
-$$RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} \epsilon^2 = \sum_{i = 1}^{n}(y_i - (\beta_0 + \beta_1 x_i))^2.$$
+$$RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} e_i^2 = \sum_{i = 1}^{n}(y_i - \hat{y_i})^2$$
+
+. . .
+
+Why do you think we are choosing this as our function to optimize?
+
+What could have been another option?
+
+## Minimizing the residual sum of squares
+$$RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} e_i^2 = \sum_{i = 1}^{n}(y_i - \hat{y_i})^2.$$
 
 How do we find the least squares estimates?
+
+. . .
 
 1. Take the derivative with respect to each variable.
 2. Set each derivative equal to zero.
@@ -216,11 +258,13 @@ $\hat{\beta}_0$ = `r b0_hat`
 
 $\hat{\beta}_1$ = `r b1_hat`
 
-## Our fitted elephant model
+##
+
+General predictive/fitted model: 
 
 $\hat{y_i} = \hat{\beta}_0 +\hat{\beta}_1 x_i$
 
-$\hat{Mass_i} = \hat{\beta}_0 +\hat{\beta}_1 Height_i$
+Our predictive/fitted model: 
 
 $\hat{Mass_i} =$ `r b0_hat` +  `r b1_hat` $Height_i$
 
@@ -254,7 +298,25 @@ ggplot(elephants, aes(x = Height, y = Mass)) +
 :::
 ::::
 
-## Expected mass of a 250 meter tall elephant
+
+## Expectation of $Y_i | X_i$
+
+Our mathematical theoretical model for individual $i$ is 
+
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)$$
+
+Therefore
+
+\begin{equation*}
+  \begin{split}
+    &E[Y_i | X_i = x_i]\\
+    & = E[\beta_0 + \beta_1 X_i + \epsilon_i | X_i = x_i]\\
+    & = E[\beta_0 | X_i = x_i] + E[\beta_1 X_i | X_i = x_i] + E[\epsilon_i | X_i = x_i]\\
+    & = \beta_0 + \beta_1 x_i
+  \end{split}
+\end{equation*}
+
+## Predicted / Expected mass
 
 $\hat{Mass_i} =$ `r b0_hat` +  `r b1_hat` $Height_i$
 
@@ -262,13 +324,10 @@ $\hat{Mass_i} =$ `r b0_hat` +  `r b1_hat` $Height_i$
 
 :::{.column width="50%"}
 ```{r}
-predicted_mass <- b0_hat + b1_hat * 250
-predicted_mass
+y_hat <- b0_hat + b1_hat * 250
+y_hat
 ```
 
-:::
-
-:::{.column width="50%"}
 ```{r}
 #| fig-align: center
 #| fig-height: 3
@@ -277,14 +336,66 @@ predicted_mass
 ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  geom_hline(yintercept = predicted_mass, color = "red", linetype = "dashed") +
+  geom_hline(yintercept = y_hat, color = "red", linetype = "dashed") +
   geom_vline(xintercept = 250, color = "red", linetype = "dashed") +
   labs(x = "Height (m)", y = "Mass (kg)")
 ```
+
+:::
+
+:::{.column width="50%"}
+
+For an elephant 250 meters tall we *expect* the mass to be `r round(y_hat, digits = 2)` kilograms.
+
+OR
+
+We *predict* a 250 meter tall elephant to have a mass of `r round(y_hat, digits = 2)` kilograms, *on average*. 
 :::
 ::::
 
-For an elephant 250 meters tall we expect the mass to be `r predicted_mass` kilograms.
+## Interpreting y-intercept $\beta_0$
 
-## Interpretation of estimates
+$$\beta_0 = E[Y_i | X_i = 0]$$
 
+. . .
+
+*Proof:*
+When $X_i = 0$ 
+
+$$E[Y_i | X_i = 0] = E[\beta_0 +\beta_1 X_i + \epsilon_i | X_i = 0] = \beta_0.$$
+
+. . .
+
+$\beta_0$ is the expected value of $Y_i$ when $X_i$ is zero.
+
+For an elephant 0 meters tall we *expect* the mass to be `r round(b0_hat, digits = 2)` kilograms.
+
+*The intercept does not always have practical meaning in context.*
+
+## Interpreting slope $\beta_1$
+
+$$\beta_1 = E[Y_i | X_i = x_i + 1] - E[Y_i | X_i = x_i]$$
+
+. . .
+
+*Proof*
+\begin{equation*}
+  \begin{split}
+    &E[Y_i | X_i = x_i + 1] - E[Y_i | X_i = x_i]\\
+    &=E[\beta_0 + \beta_1 X_i + \epsilon_i | X_i = x_i + 1]\\
+    &- E[\beta_0 + \beta_1 X_i + \epsilon_i | X_i = x_i] \\
+    &=\beta_0 + \beta_1 E[X_i | X_i = x_i + 1] - (\beta_0 + \beta_1 E[X_i | X_i = x_i]) \\
+    &= \beta_0 + \beta_1 (x_i + 1) - (\beta_0 + \beta_1 x_i)\\
+    &= \beta_0 + \beta_1 x_i + \beta_1 - \beta_0 - \beta_1 x_i\\
+    &= \beta_1
+  \end{split}
+\end{equation*}
+
+## Interpreting slope $\beta_1$
+
+$$\beta_1 = E[Y_i | X_i = x_i + 1] - E[Y_i | X_i = x_i]$$
+
+So $\beta_1$ is the expected difference in the response for a 1 unit difference in $X_i$.
+
+
+For two elephant that differ in height by one meter we *expect* the difference in mass to be `r round(b1_hat, digits = 2)` kilograms.

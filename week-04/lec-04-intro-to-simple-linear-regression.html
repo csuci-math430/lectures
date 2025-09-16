@@ -403,12 +403,6 @@ Professor Catalina Medina
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="why-simple-linear-regression" class="slide level2">
 <h2>Why simple linear regression</h2>
 <ol type="1">
@@ -446,12 +440,12 @@ Professor Catalina Medina
 <section id="collect-sample" class="slide level2">
 <h2>1. Collect sample</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>elephants <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
-<span id="cb2-2"><a href=""></a>  <span class="st">"http://csuci-math430.github.io/lectures/data/elephants.csv"</span>,</span>
-<span id="cb2-3"><a href=""></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb2-4"><a href=""></a>)</span>
-<span id="cb2-5"><a href=""></a></span>
-<span id="cb2-6"><a href=""></a><span class="fu">glimpse</span>(elephants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>elephants <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb1-2"><a href=""></a>  <span class="st">"http://csuci-math430.github.io/lectures/data/elephants.csv"</span>,</span>
+<span id="cb1-3"><a href=""></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-4"><a href=""></a>)</span>
+<span id="cb1-5"><a href=""></a></span>
+<span id="cb1-6"><a href=""></a><span class="fu">glimpse</span>(elephants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 1,470
 Columns: 5
@@ -466,10 +460,10 @@ $ Mass   &lt;dbl&gt; 3244, 3182, 3239, 3336, 3317, 3357, 3358, 3155, 3334, 3357,
 <section id="fit-model-visually" class="slide level2">
 <h2>2. Fit model (visually)</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">ggplot</span>(elephants, <span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Mass)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb4-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Height (m)"</span>, <span class="at">y =</span> <span class="st">"Mass (kg)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">ggplot</span>(elephants, <span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Mass)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Height (m)"</span>, <span class="at">y =</span> <span class="st">"Mass (kg)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="lec-04-intro-to-simple-linear-regression_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="480"></section>
@@ -517,16 +511,31 @@ $ Mass   &lt;dbl&gt; 3244, 3182, 3239, 3336, 3317, 3357, 3358, 3155, 3334, 3357,
 <p><strong>How should we determine <span class="math inline">\(\hat{\beta_0}\)</span> &amp; <span class="math inline">\(\hat{\beta_1}\)</span></strong>?</p>
 </div>
 </section>
+<section id="residuals" class="slide level2">
+<h2>Residuals</h2>
+<p>Let <span class="math inline">\(e_i = y_i −\hat{y}_i\)</span> represents the ith <em>residual</em></p>
+
+<img data-src="lec-04-intro-to-simple-linear-regression_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="480"></section>
 <section id="minimizing-the-residual-sum-of-squares" class="slide level2">
 <h2>Minimizing the residual sum of squares</h2>
 <p>We will use the estimators that minimize the residual sum of squares, aka the <em>least squares estimates</em></p>
-<p><span class="math display">\[RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} \epsilon^2 = \sum_{i = 1}^{n}(y_i - (\beta_0 + \beta_1 x_i))^2.\]</span></p>
+<p><span class="math display">\[RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} e_i^2 = \sum_{i = 1}^{n}(y_i - \hat{y_i})^2\]</span></p>
+<div class="fragment">
+<p>Why do you think we are choosing this as our function to optimize?</p>
+<p>What could have been another option?</p>
+</div>
+</section>
+<section id="minimizing-the-residual-sum-of-squares-1" class="slide level2">
+<h2>Minimizing the residual sum of squares</h2>
+<p><span class="math display">\[RSS(\beta_0, \beta_1) = \sum_{i = 1}^{n} e_i^2 = \sum_{i = 1}^{n}(y_i - \hat{y_i})^2.\]</span></p>
 <p>How do we find the least squares estimates?</p>
+<div class="fragment">
 <ol type="1">
 <li>Take the derivative with respect to each variable.</li>
 <li>Set each derivative equal to zero.</li>
 <li>Solve for the estimators.</li>
 </ol>
+</div>
 </section>
 <section id="least-squares-estimators" class="slide level2">
 <h2>Least squares estimators</h2>
@@ -547,8 +556,8 @@ $ Mass   &lt;dbl&gt; 3244, 3182, 3239, 3336, 3317, 3357, 3358, 3155, 3334, 3357,
 <section id="how-do-we-compute-hatbeta_0-and-hatbeta_1-in-practice" class="slide level2">
 <h2>How do we compute <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> in practice?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span>
-<span id="cb5-2"><a href=""></a><span class="fu">summary</span>(elephant_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span>
+<span id="cb4-2"><a href=""></a><span class="fu">summary</span>(elephant_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -574,21 +583,21 @@ F-statistic:  3090 on 1 and 1468 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="extracting-our-fitted-model" class="slide level2">
 <h2>Extracting our fitted model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Option 1: Tidyverse way</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>b0_hat <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(elephant_model) <span class="sc">|&gt;</span> </span>
-<span id="cb8-2"><a href=""></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"(Intercept)"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-3"><a href=""></a>  <span class="fu">pull</span>(estimate)</span>
-<span id="cb8-4"><a href=""></a>b0_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>b0_hat <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(elephant_model) <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href=""></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"(Intercept)"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href=""></a>  <span class="fu">pull</span>(estimate)</span>
+<span id="cb7-4"><a href=""></a>b0_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -3553.93</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>b1_hat <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(elephant_model) <span class="sc">|&gt;</span> </span>
-<span id="cb10-2"><a href=""></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"Height"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb10-3"><a href=""></a>  <span class="fu">pull</span>(estimate)</span>
-<span id="cb10-4"><a href=""></a>b1_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>b1_hat <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(elephant_model) <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href=""></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"Height"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href=""></a>  <span class="fu">pull</span>(estimate)</span>
+<span id="cb9-4"><a href=""></a>b1_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 27.15753</code></pre>
 </div>
@@ -599,43 +608,27 @@ F-statistic:  3090 on 1 and 1468 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="extracting-our-fitted-model-1" class="slide level2">
 <h2>Extracting our fitted model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Option 2: Base R way</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>b0_hat <span class="ot">&lt;-</span> elephant_model<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]</span>
-<span id="cb13-2"><a href=""></a>b0_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept) 
-   -3553.93 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>b1_hat <span class="ot">&lt;-</span> elephant_model<span class="sc">$</span>coefficients[<span class="st">"Height"</span>]</span>
-<span id="cb15-2"><a href=""></a>b1_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  Height 
-27.15753 </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>b0_hat <span class="ot">&lt;-</span> elephant_model<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb12-2"><a href=""></a>b0_hat</span>
+<span id="cb12-3"><a href=""></a></span>
+<span id="cb12-4"><a href=""></a>b1_hat <span class="ot">&lt;-</span> elephant_model<span class="sc">$</span>coefficients[<span class="st">"Height"</span>]</span>
+<span id="cb12-5"><a href=""></a>b1_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><span class="math inline">\(\hat{\beta}_0\)</span> = -3553.9302816</p>
 <p><span class="math inline">\(\hat{\beta}_1\)</span> = 27.1575293</p>
 </section>
-<section id="our-fitted-elephant-model" class="slide level2">
-<h2>Our fitted elephant model</h2>
+<section id="section" class="slide level2">
+<h2></h2>
+<p>General predictive/fitted model:</p>
 <p><span class="math inline">\(\hat{y_i} = \hat{\beta}_0 +\hat{\beta}_1 x_i\)</span></p>
-<p><span class="math inline">\(\hat{Mass_i} = \hat{\beta}_0 +\hat{\beta}_1 Height_i\)</span></p>
+<p>Our predictive/fitted model:</p>
 <p><span class="math inline">\(\hat{Mass_i} =\)</span> -3553.9302816 + 27.1575293 <span class="math inline">\(Height_i\)</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="lec-04-intro-to-simple-linear-regression_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -645,35 +638,96 @@ F-statistic:  3090 on 1 and 1468 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </div>
-</div>
-</div>
-</section>
-<section id="expected-mass-of-a-250-meter-tall-elephant" class="slide level2">
-<h2>Expected mass of a 250 meter tall elephant</h2>
-<p><span class="math inline">\(\hat{Mass_i} =\)</span> -3553.9302816 + 27.1575293 <span class="math inline">\(Height_i\)</span></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>predicted_mass <span class="ot">&lt;-</span> b0_hat <span class="sc">+</span> b1_hat <span class="sc">*</span> <span class="dv">250</span></span>
-<span id="cb17-2"><a href=""></a>predicted_mass</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept) 
-   3235.452 </code></pre>
-</div>
-</div>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="lec-04-intro-to-simple-linear-regression_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+<p><img data-src="lec-04-intro-to-simple-linear-regression_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>For an elephant 250 meters tall we expect the mass to be 3235.4520537 kilograms.</p>
+</section>
+<section id="expectation-of-y_i-x_i" class="slide level2">
+<h2>Expectation of <span class="math inline">\(Y_i | X_i\)</span></h2>
+<p>Our mathematical theoretical model for individual <span class="math inline">\(i\)</span> is</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)\]</span></p>
+<p>Therefore</p>
+<p><span class="math display">\[\begin{equation*}
+  \begin{split}
+    &amp;E[Y_i | X_i = x_i]\\
+    &amp; = E[\beta_0 + \beta_1 X_i + \epsilon_i | X_i = x_i]\\
+    &amp; = E[\beta_0 | X_i = x_i] + E[\beta_1 X_i | X_i = x_i] + E[\epsilon_i | X_i = x_i]\\
+    &amp; = \beta_0 + \beta_1 x_i
+  \end{split}
+\end{equation*}\]</span></p>
+</section>
+<section id="predicted-expected-mass" class="slide level2">
+<h2>Predicted / Expected mass</h2>
+<p><span class="math inline">\(\hat{Mass_i} =\)</span> -3553.9302816 + 27.1575293 <span class="math inline">\(Height_i\)</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>y_hat <span class="ot">&lt;-</span> b0_hat <span class="sc">+</span> b1_hat <span class="sc">*</span> <span class="dv">250</span></span>
+<span id="cb13-2"><a href=""></a>y_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3235.452</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lec-04-intro-to-simple-linear-regression_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>For an elephant 250 meters tall we <em>expect</em> the mass to be 3235.45 kilograms.</p>
+<p>OR</p>
+<p>We <em>predict</em> a 250 meter tall elephant to have a mass of 3235.45 kilograms, <em>on average</em>.</p>
+</div>
+</div>
+</section>
+<section id="interpreting-y-intercept-beta_0" class="slide level2">
+<h2>Interpreting y-intercept <span class="math inline">\(\beta_0\)</span></h2>
+<p><span class="math display">\[\beta_0 = E[Y_i | X_i = 0]\]</span></p>
+<div class="fragment">
+<p><em>Proof:</em> When <span class="math inline">\(X_i = 0\)</span></p>
+<p><span class="math display">\[E[Y_i | X_i = 0] = E[\beta_0 +\beta_1 X_i + \epsilon_i | X_i = 0] = \beta_0.\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\beta_0\)</span> is the expected value of <span class="math inline">\(Y_i\)</span> when <span class="math inline">\(X_i\)</span> is zero.</p>
+<p>For an elephant 0 meters tall we <em>expect</em> the mass to be -3553.93 kilograms.</p>
+<p><em>The intercept does not always have practical meaning in context.</em></p>
+</div>
+</section>
+<section id="interpreting-slope-beta_1" class="slide level2">
+<h2>Interpreting slope <span class="math inline">\(\beta_1\)</span></h2>
+<p><span class="math display">\[\beta_1 = E[Y_i | X_i = x_i + 1] - E[Y_i | X_i = x_i]\]</span></p>
+<div class="fragment">
+<p><em>Proof</em> <span class="math display">\[\begin{equation*}
+  \begin{split}
+    &amp;E[Y_i | X_i = x_i + 1] - E[Y_i | X_i = x_i]\\
+    &amp;=E[\beta_0 + \beta_1 X_i + \epsilon_i | X_i = x_i + 1]\\
+    &amp;- E[\beta_0 + \beta_1 X_i + \epsilon_i | X_i = x_i] \\
+    &amp;=\beta_0 + \beta_1 E[X_i | X_i = x_i + 1] - (\beta_0 + \beta_1 E[X_i | X_i = x_i]) \\
+    &amp;= \beta_0 + \beta_1 (x_i + 1) - (\beta_0 + \beta_1 x_i)\\
+    &amp;= \beta_0 + \beta_1 x_i + \beta_1 - \beta_0 - \beta_1 x_i\\
+    &amp;= \beta_1
+  \end{split}
+\end{equation*}\]</span></p>
+</div>
+</section>
+<section id="interpreting-slope-beta_1-1" class="slide level2">
+<h2>Interpreting slope <span class="math inline">\(\beta_1\)</span></h2>
+<p><span class="math display">\[\beta_1 = E[Y_i | X_i = x_i + 1] - E[Y_i | X_i = x_i]\]</span></p>
+<p>So <span class="math inline">\(\beta_1\)</span> is the expected difference in the response for a 1 unit difference in <span class="math inline">\(X_i\)</span>.</p>
+<p>For two elephant that differ in height by one meter we <em>expect</em> the difference in mass to be 27.16 kilograms.</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
