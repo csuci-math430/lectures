@@ -1,0 +1,202 @@
+---
+title: "Math 430: Lecture 4b"
+subtitle: "Simple Linear Regression for Inference"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+
+theme_set(theme_bw(base_size = 24))
+```
+
+
+# Understanding the variation in our estimates
+
+## Theoretical population regression line
+
+We said our theoretical model is 
+$$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i.$$
+
+It is theoretical because we are saying if we had all of the data for our population, a census instead of a sample, it would be the best linear approximation for the relationship between $X$ and $Y$.
+
+Realistically we will almost never have a census, so $\beta_0$ and $\beta_1$ are unknown in practice.
+
+## Simulation: population data
+
+```{r}
+#| echo: false
+
+set.seed(3775)
+
+pop_n <- 2500
+sigma <- 2
+beta_0 <- 2
+beta_1 <- 3
+
+sample_n <- 100
+
+pop_data <- data.frame(
+  x = runif(n = pop_n, min = -2, max = 2),
+  epsilon = rnorm(n = pop_n, mean = 0, sd = sigma)
+) |> 
+  mutate(y = beta_0 + beta_1 * x + epsilon)
+```
+
+I simulated data for a population of `r pop_n` individuals.
+
+1. randomly generate $x$'s (doesn't matter how).
+2. randomly generate $\epsilon$'s where $\epsilon_i \overset{iid}{\sim} N(0, 1.5^2)$.
+3. calculate $y$'s with $y_i = 3 + 2 x_i + \epsilon_i$.
+
+```{r}
+#| fig-align: center
+#| echo: false
+ggplot(pop_data, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## Simulation: simple random sample 1
+
+```{r}
+#| echo: false
+#| eval: false
+
+set.seed(2359)
+
+sample_data <- NULL
+estimate_df <- NULL
+
+for (i in 1:1000) {
+  sample_ids <- sample(pop_n, size = sample_n, replace = FALSE)
+
+  sample_data <- pop_data |> 
+    select(-epsilon) |> 
+    slice(sample_ids) |> 
+    mutate(sample_id = i) |> 
+    bind_rows(sample_data)
+
+  lm_model <- lm(y ~ x, data = sample_data)
+
+  estimate_df <- data.frame(
+    estimates = lm_model$coefficients,
+    type = c("beta 0 hat", "beta 1 hat"),
+    sample_id = i
+  )  |> 
+    bind_rows(estimate_df)
+}
+
+write_csv(sample_data, "../data/sim-sample-data.csv")
+write_csv(estimate_df, "../data/sim-estimate-df.csv")
+```
+
+```{r}
+#| echo: false
+
+sample_data <- read_csv("../data/sim-sample-data.csv", show_col_types = FALSE)
+estimate_df <- read_csv("../data/sim-estimate-df.csv", show_col_types = FALSE)
+```
+
+```{r}
+#| echo: false
+
+produce_sim_sample_plots <- function(sample_num) {
+  gridExtra::grid.arrange(
+    sample_data |> 
+      filter(sample_id == sample_num) |> 
+      ggplot(aes(x = x, y = y)) +
+      geom_point() +
+      geom_abline(intercept = beta_0, slope = beta_1, color = "blue", size = 1.5) +
+      geom_smooth(method = "lm", se = FALSE, color = "red"),
+    estimate_df |> 
+      filter(sample_id <= sample_num) |> 
+      ggplot(aes(x = estimates)) +
+      geom_histogram(binwidth = 0.025, color = "black", fill = "grey") +
+      geom_vline(
+        data = data.frame(
+          estimates = c(beta_0, beta_1),
+          type = c("beta 0 hat", "beta 1 hat")
+        ),
+        mapping = aes(xintercept = estimates),
+        color = "blue",
+        size = 2
+      ) +
+      facet_wrap(vars(type), scales = "free_x") +
+      ggh4x::facetted_pos_scales(x = list(
+        type == "beta 0 hat" ~ scale_x_continuous(limits = c(
+          filter(estimate_df, type == "beta 0 hat") |> pull(estimates) |> min(), 
+          filter(estimate_df, type == "beta 0 hat") |> pull(estimates) |> max()
+        )),
+        type == "beta 1 hat" ~ scale_x_continuous(limits = c(
+          filter(estimate_df, type == "beta 1 hat") |> pull(estimates) |> min(), 
+          filter(estimate_df, type == "beta 1 hat") |> pull(estimates) |> max()
+        ))
+      )), 
+    nrow = 2
+  )
+}
+```
+
+Next I randomly sampled `r sample_n` individuals and  calculate the least squares estimates $\hat{\beta}_0$ and $\hat{\beta}_1$
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(1)
+```
+
+## Simulation: simple random sample 2
+
+I can do that again with another random sample of `r sample_n`.
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(2)
+```
+
+## Simulation: simple random sample 3
+
+And again with a third random sample of `r sample_n`
+
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(3)
+```
+
+## Simulation: simple random sample 100
+
+And again 100 times!
+
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(100)
+```
+
+## Simulation: simple random sample 1000
+
+Even 1000 times!
+
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(1000)
+```
