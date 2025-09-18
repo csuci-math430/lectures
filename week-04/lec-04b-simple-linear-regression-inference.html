@@ -29,6 +29,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="lec-04b-simple-linear-regression-inference_files/libs/revealjs/dist/theme/quarto.css">
   <link href="lec-04b-simple-linear-regression-inference_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -416,6 +481,151 @@ Professor Catalina Medina
 <h2></h2>
 <p><em>In practice we typically only have one sample and the estimates from a single sample may be fairly different from the true parameters by chance.</em></p>
 <p>This is why we should use uncertainty estimates when using our estimators!</p>
+</section>
+<section id="standard-error-of-least-squares-estimates" class="slide level2">
+<h2>Standard error of least squares estimates</h2>
+<p><span class="math display">\[SE(\hat{\beta}_0) = \sqrt{\sigma^2 \left(\frac{1}{n} + \frac{\bar{x}^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}\right)}\]</span> <span class="math display">\[SE(\hat{\beta}_1) = \sqrt{\frac{\sigma^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}}\]</span></p>
+<div class="fragment">
+<p>Do you notice an issue with calculating <span class="math inline">\(SE(\hat{\beta}_0)\)</span> and <span class="math inline">\(SE(\hat{\beta}_1)\)</span>?</p>
+</div>
+</section>
+<section id="in-practice" class="slide level2">
+<h2>In practice</h2>
+<p>We use <em>Residual Standard Error</em> / <em>Mean Squared Error</em> (RSE) <span class="math inline">\(\hat{\sigma} = \sqrt{RSS / (n - 2)}\)</span>, since <span class="math inline">\(E[\hat{\sigma}] = \sigma\)</span></p>
+<div class="fragment">
+<p>Technically what we calculate are estimates of the uncertainty estimators: <span class="math inline">\(\hat{SE(\hat{\beta}_0)}\)</span> and <span class="math inline">\(\hat{SE(\hat{\beta}_1)}\)</span></p>
+</div>
+</section>
+<section id="se-and-rse-in-model-output" class="slide level2">
+<h2>SE and RSE in model output</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">summary</span>(elephant_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Mass ~ Height, data = elephants)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1375.40  -193.73   -32.32   153.63  1457.10 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -3553.9303   111.5451  -31.86   &lt;2e-16 ***
+Height         27.1575     0.4885   55.59   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 305.3 on 1468 degrees of freedom
+Multiple R-squared:  0.6779,    Adjusted R-squared:  0.6777 
+F-statistic:  3090 on 1 and 1468 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="confidence-intervals" class="title-slide slide level1 center">
+<h1>Confidence Intervals</h1>
+
+</section>
+<section id="confidence-interval-formula" class="slide level2">
+<h2>Confidence interval formula</h2>
+<p>We can use our point estimates <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> along with our standard error estimates <span class="math inline">\(SE(\hat{\beta}_0)\)</span> and <span class="math inline">\(SE(\hat{\beta}_1)\)</span> to provide confidence intervals</p>
+<p><span class="math display">\[\hat{\beta}_0 \pm t^* SE(\hat{\beta}_0)\]</span></p>
+<p><span class="math display">\[\hat{\beta}_1 \pm t^* SE(\hat{\beta}_1)\]</span></p>
+</section>
+<section id="what-is-t" class="slide level2">
+<h2>What is <span class="math inline">\(t^*\)</span> ?</h2>
+<p>Technically <span class="math inline">\(t^* = t_{(1 - CL) / 2, df = n - 2}\)</span>.</p>
+<p>For this class we won’t focus on the exact calculation of <span class="math inline">\(t^*\)</span>, we will just provide an understanding.</p>
+<p>It essentially uses the confidence level (CL) to adjust the width of our confidence interval.</p>
+<blockquote>
+<p>Higher confidence level results in wider confidence intervals</p>
+</blockquote>
+<p>The textbook points out <span class="math inline">\(t^* \approx 2\)</span> for 95% confidence intervals with large sample size <span class="math inline">\(n\)</span></p>
+</section>
+<section id="computing-confidence-intervals-in-practice" class="slide level2">
+<h2>Computing confidence intervals in practice</h2>
+<p>The <code>confint()</code> function will computer 95% confidence intervals by default</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>elephant_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Mass <span class="sc">~</span> Height, <span class="at">data =</span> elephants)</span>
+<span id="cb3-2"><a href=""></a><span class="fu">confint</span>(elephant_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  2.5 %      97.5 %
+(Intercept) -3772.73505 -3335.12552
+Height         26.19922    28.11584</code></pre>
+</div>
+</div>
+<p>If we want a different confidence level we have to specify that</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">confint</span>(elephant_model, <span class="at">level =</span> <span class="fl">0.80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   10 %       90 %
+(Intercept) -3696.94543 -3410.9151
+Height         26.53116    27.7839</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-confidence-intervals" class="slide level2">
+<h2>Interpreting confidence intervals</h2>
+<blockquote>
+<p>Confidence level <span class="math inline">\(\neq\)</span> probability</p>
+</blockquote>
+<p>The confidence interval is the long-term proportion of confidence intervals that will capture the true parameter (either <span class="math inline">\(\beta_0\)</span> or <span class="math inline">\(\beta_1\)</span>)</p>
+<p><em>For elephants 0 cm tall, the mass is expected to be between -3696 kg and -3410 kg, with 95% confidence.</em></p>
+<p><em>A 1 cm increase in height of elephants is associated with an higher mass of between 26.5 kg to 27.7 kg, with 95% confidence.</em></p>
+</section></section>
+<section>
+<section id="hypothesis-testing" class="title-slide slide level1 center">
+<h1>Hypothesis testing</h1>
+
+</section>
+<section id="hypotheses" class="slide level2">
+<h2>Hypotheses</h2>
+<p><span class="math inline">\(H_0\)</span>: There is no linear relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> <span class="math inline">\(H_1\)</span>: There is a linear relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span></p>
+<p>Or equivalently:</p>
+<p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1 = 0\)</span> <span class="math inline">\(H_1\)</span>: <span class="math inline">\(\beta_1 \neq 0\)</span></p>
+<p>For hypotheses tests we assume the null is true (<span class="math inline">\(H_0\)</span>), and see if we can find evidence against it (i.e., low p-value), in support of the alternative hypothesis (<span class="math inline">\(H_1\)</span>)</p>
+</section>
+<section id="test-statistic" class="slide level2">
+<h2>Test statistic</h2>
+<p><span class="math inline">\(t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)}\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">summary</span>(elephant_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Mass ~ Height, data = elephants)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1375.40  -193.73   -32.32   153.63  1457.10 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -3553.9303   111.5451  -31.86   &lt;2e-16 ***
+Height         27.1575     0.4885   55.59   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 305.3 on 1468 degrees of freedom
+Multiple R-squared:  0.6779,    Adjusted R-squared:  0.6777 
+F-statistic:  3090 on 1 and 1468 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="p-value" class="slide level2">
+<h2>p-value</h2>
+<p>The p-value is <em>&lt;2e-16</em>, which is essentially zero.</p>
+<blockquote>
+<p>The p-value is the probability of a test statistics as or more extreme as what we observed, if the null hypothesis were true.</p>
+</blockquote>
+<p>So it is extremely improbable to observe what we observed if there was no linear relationship between mass and height of elephants (p-value &lt;2e-16).</p>
+<p>This means we found evidence of a linear association!</p>
+</section>
+<section id="correspondence-between-hypothesis-tests-and-p-value" class="slide level2">
+<h2>Correspondence between hypothesis tests and p-value</h2>
+<p>If a confidence interval contains zero, the p-value will be less than 1 - Confidence Level</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
