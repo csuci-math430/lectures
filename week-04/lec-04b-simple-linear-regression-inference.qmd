@@ -37,15 +37,15 @@ Realistically we will almost never have a census, so $\beta_0$ and $\beta_1$ are
 set.seed(3775)
 
 pop_n <- 2500
-sigma <- 2
+sigma <- 3
 beta_0 <- 2
 beta_1 <- 3
 
-sample_n <- 100
+sample_n <- 50
 
 pop_data <- data.frame(
-  x = runif(n = pop_n, min = -2, max = 2),
-  epsilon = rnorm(n = pop_n, mean = 0, sd = sigma)
+  epsilon = rnorm(n = pop_n, mean = 0, sd = sigma),
+  x = runif(n = pop_n, min = -2, max = 2)
 ) |> 
   mutate(y = beta_0 + beta_1 * x + epsilon)
 ```
@@ -53,7 +53,7 @@ pop_data <- data.frame(
 I simulated data for a population of `r pop_n` individuals.
 
 1. randomly generate $x$'s (doesn't matter how).
-2. randomly generate $\epsilon$'s where $\epsilon_i \overset{iid}{\sim} N(0, 1.5^2)$.
+2. randomly generate $\epsilon$'s where $\epsilon_i \overset{iid}{\sim} N(0, 3^2)$.
 3. calculate $y$'s with $y_i = 3 + 2 x_i + \epsilon_i$.
 
 ```{r}
@@ -177,22 +177,67 @@ And again with a third random sample of `r sample_n`
 produce_sim_sample_plots(3)
 ```
 
-## Simulation: simple random sample 100
+## Simulation: simple random sample 4
 
-And again 100 times!
+And again with a fourth random sample of `r sample_n`
 
 
 ```{r}
 #| fig-align: center
 #| echo: false
 
-produce_sim_sample_plots(100)
+produce_sim_sample_plots(4)
+```
+
+## Simulation: simple random sample 5
+
+And again with a fifth random sample of `r sample_n`
+
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(5)
+```
+
+## Simulation: simple random sample 50
+
+And again 50 times!
+
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(50)
+```
+
+## Simulation: simple random sample 100
+
+100 times!
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(200)
+```
+
+## Simulation: simple random sample 500
+
+500 times!
+
+```{r}
+#| fig-align: center
+#| echo: false
+
+produce_sim_sample_plots(500)
 ```
 
 ## Simulation: simple random sample 1000
 
 Even 1000 times!
-
 
 ```{r}
 #| fig-align: center
@@ -200,3 +245,20 @@ Even 1000 times!
 
 produce_sim_sample_plots(1000)
 ```
+
+## Unbiased estimators
+
+What we just saw was the sampling distribution of $\hat{\beta}_0$ and $\hat{\beta}_1$.
+
+The least squares estimators $\hat{\beta}_0$ and $\hat{\beta}_1$ from many random samples will tend towards the true parameters $\beta_0$ and $\beta_1$.
+
+> $\hat{\beta}_0$ and $\hat{\beta}_1$ are unbiased estimators for $\beta_0$ and $\beta_1$!
+> $E[\hat{\beta}_0] = \beta_0$ and $E[\hat{\beta}_1] = \beta_1$
+  
+. . .
+
+## 
+
+*In practice we typically only have one sample and the estimates from a single sample may be fairly different from the true parameters by chance.*
+
+This is why we should use uncertainty estimates when using our estimators!
