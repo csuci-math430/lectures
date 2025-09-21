@@ -341,12 +341,12 @@ The confidence interval is the long-term proportion of confidence intervals that
 
 ## Hypotheses
 
-$H_0$: There is no linear relationship between $Y$ and $X$
-$H_1$: There is a linear relationship between $Y$ and $X$
+$H_0$: There is no linear relationship between $Y$ and $X$.  
+$H_1$: There is a linear relationship between $Y$ and $X$.
 
 Or equivalently:
 
-$H_0$: $\beta_1 = 0$
+$H_0$: $\beta_1 = 0$  
 $H_1$: $\beta_1 \neq 0$
 
 For hypotheses tests we assume the null is true ($H_0$), and see if we can find evidence against it (i.e., low p-value), in support of the alternative hypothesis ($H_1$)
