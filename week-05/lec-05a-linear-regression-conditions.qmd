@@ -12,6 +12,8 @@ format:
 
 ```{r}
 #| echo: false
+
+set.seed(23243)
 library(tidyverse)
 
 elephants <- read_csv(
@@ -78,9 +80,9 @@ $$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, 
 
 In order of importance:
 
-1. Linearity: Linear relationship between $X$ and $Y$.
-2. Homoskedasticity: Constant variance of $\epsilon_i$.
+1. Linearity: Linear relationship between $X$ and $Y$ ($E[\epsilon_i] = 0)$.
 3. Independence: Independence of $\epsilon_i$.
+2. Homoskedasticity: Constant variance of $\epsilon_i$.
 4. Normality: Normally distributed $\epsilon_i$.
 
 # Checking model conditions
@@ -112,17 +114,179 @@ autoplot(model_elephant)
 
 Recall residuals: $e_i = y_i - \hat{y}_i$
 
-## Linearity
+## Diagnosing linearity
 
-```{r}
+- Examine plot of residuals vs fitted (or predictor for simple linear regression)
+- There should be no discernible pattern the the residuals centered around 0
+
+:::{.pull-left}
+
+**Linear**
+```{r  echo = FALSE, message = FALSE}
+set.seed(84735)
+x <- seq(-2, 2, by = 0.01)
+y <- 4*x + 5 + rnorm(length(x), 0 , 1.5)
+
+data_good <- data.frame(x = x, y = y) |>   sample_n(50)
+
+data_good |> 
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+
+:::{.pull-right}
+
+**Non-linear**
+
+```{r  echo = FALSE, message = FALSE}
+set.seed(84735)
+x <- seq(-2, 2, by = 0.01)
+y <- 3*x^2 + x + 5 + rnorm(length(x), 0 , 2)
+
+data_bad <- data.frame(x = x, y = y) |> sample_n(50)
+
+data_bad |> 
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  stat_function(fun = function(x)3*x^2 + x + 5 )
+```
+
+:::
+
+## When linearity is violated
+
+Implications: 
+
+- poor fit
+- biased inference
+
+Remedy:
+
+- consider transformations of $X$ or other relationships
+
+## Diagnosing Independence
+
+- Consider how the data were collected (random sample? no repeat sampling?) and on whom the data were collected (would you expect independence?)
+- Dependence could be revealed by plotting residuals versus unmodeled variables (time, class, etc)
+
+## When independence is violated
+
+Implications:
+
+- Estimators $\hat{\beta}_0$ and $\hat{\beta}_1$ are still unbiased
+- The standard errors will underestimate the true standard errors
+- Increased type one error rates (false positive)
+
+Remedy:
+
+- Consider a different model that accounts for correlation (e.g. if you have longitudinal data then a linear mixed effects model may be appropriate)
+
+## Diagnosing homoskedasticity
+
+- Examine plot of residuals vs fitted and check there is not a "funnel-shape"
+- Specifically, for each fitted value does the spread of the residuals look similar?
+
+:::{.pull-left}
+
+**Constant variance**
+
+```{r echo = FALSE, message = FALSE}
+model_good <- lm(y ~ x, data = data_good)
+
+data_good <- 
+  data_good |>
+  sample_n(50) |> 
+  modelr::add_residuals(model_good) 
+
+data_good |> 
+  ggplot(aes(x = x, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0)
 
 ```
 
-## Homoskedasticity
+:::
 
-## Independence
+:::{.pull-right}
 
-## Normality
+**Non-constant variance**
 
-As long as we have a large enough sample (~ 30 observations) we are not too concerned because our estimators will be normal 
 
+```{r echo = FALSE, message = FALSE}
+model_bad <- lm(y ~ x, data = data_bad)
+
+data_bad <- 
+  data_bad |> 
+  modelr::add_residuals(model_bad) 
+
+data_bad |> 
+  ggplot(aes(x = x, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0)
+
+```
+
+:::
+
+## When homoskedasticity is violated
+
+Implications:
+
+- Estimators $\hat{\beta}_0$ and $\hat{\beta}_1$ are still unbiased
+- The standard errors are incorrect
+
+Remedies:
+
+- Consider transformations of $Y$
+- Consider Weighted least squares
+
+## Diagnosing normality
+
+- Assess visually with Q-Q plot
+- Outliers (point with extreme residual) can result in violation of normality
+
+:::{.pull-left}
+
+**Normal residuals**
+
+```{r echo = FALSE, message = FALSE}
+data.frame(y = rt(200, df = 5)) |> 
+  ggplot(aes(sample = y)) + 
+  stat_qq() + 
+  stat_qq_line() +
+  labs(title = "Good")
+```
+
+:::
+
+:::{.pull-right}
+
+**Non-normal residuals**
+
+
+```{r echo = FALSE, message = FALSE}
+data.frame(y = rnorm(200)) |> 
+  ggplot(aes(sample = y)) + 
+  stat_qq() + 
+  stat_qq_line()
+```
+
+:::
+
+
+## When normality is violated
+
+Implications:
+
+- With no outliers and a large enough sample (~ 30 observations) Central Limit Theorem corrects for lack of normality
+- Can have biased predictions for $Y$
+
+Remedies:
+
+- Consider transformations of $Y$

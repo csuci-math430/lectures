@@ -456,9 +456,9 @@ Professor Catalina Medina
 <p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)\]</span></p>
 <p>In order of importance:</p>
 <ol type="1">
-<li>Linearity: Linear relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</li>
-<li>Homoskedasticity: Constant variance of <span class="math inline">\(\epsilon_i\)</span>.</li>
+<li>Linearity: Linear relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> (<span class="math inline">\(E[\epsilon_i] = 0)\)</span>.</li>
 <li>Independence: Independence of <span class="math inline">\(\epsilon_i\)</span>.</li>
+<li>Homoskedasticity: Constant variance of <span class="math inline">\(\epsilon_i\)</span>.</li>
 <li>Normality: Normally distributed <span class="math inline">\(\epsilon_i\)</span>.</li>
 </ol>
 </section>
@@ -501,18 +501,155 @@ Professor Catalina Medina
 </figure>
 </div>
 </div>
-</div></section><section id="linearity" class="slide level2">
-<h2>Linearity</h2>
+</div></section><section id="diagnosing-linearity" class="slide level2">
+<h2>Diagnosing linearity</h2>
+<ul>
+<li>Examine plot of residuals vs fitted (or predictor for simple linear regression)</li>
+<li>There should be no discernible pattern the the residuals centered around 0</li>
+</ul>
+<div class="pull-left">
+<p><strong>Linear</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="pull-right">
+<p><strong>Non-linear</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="homoskedasticity" class="slide level2">
-<h2>Homoskedasticity</h2>
+<section id="when-linearity-is-violated" class="slide level2">
+<h2>When linearity is violated</h2>
+<p>Implications:</p>
+<ul>
+<li>poor fit</li>
+<li>biased inference</li>
+</ul>
+<p>Remedy:</p>
+<ul>
+<li>consider transformations of <span class="math inline">\(X\)</span> or other relationships</li>
+</ul>
 </section>
-<section id="independence" class="slide level2">
-<h2>Independence</h2>
+<section id="diagnosing-independence" class="slide level2">
+<h2>Diagnosing Independence</h2>
+<ul>
+<li>Consider how the data were collected (random sample? no repeat sampling?) and on whom the data were collected (would you expect independence?)</li>
+<li>Dependence could be revealed by plotting residuals versus unmodeled variables (time, class, etc)</li>
+</ul>
 </section>
-<section id="normality" class="slide level2">
-<h2>Normality</h2>
-<p>As long as we have a large enough sample (~ 30 observations) we are not too concerned because our estimators will be normal</p>
+<section id="when-independence-is-violated" class="slide level2">
+<h2>When independence is violated</h2>
+<p>Implications:</p>
+<ul>
+<li>Estimators <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are still unbiased</li>
+<li>The standard errors will underestimate the true standard errors</li>
+<li>Increased type one error rates (false positive)</li>
+</ul>
+<p>Remedy:</p>
+<ul>
+<li>Consider a different model that accounts for correlation (e.g.&nbsp;if you have longitudinal data then a linear mixed effects model may be appropriate)</li>
+</ul>
+</section>
+<section id="diagnosing-homoskedasticity" class="slide level2">
+<h2>Diagnosing homoskedasticity</h2>
+<ul>
+<li>Examine plot of residuals vs fitted and check there is not a “funnel-shape”</li>
+<li>Specifically, for each fitted value does the spread of the residuals look similar?</li>
+</ul>
+<div class="pull-left">
+<p><strong>Constant variance</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="pull-right">
+<p><strong>Non-constant variance</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="when-homoskedasticity-is-violated" class="slide level2">
+<h2>When homoskedasticity is violated</h2>
+<p>Implications:</p>
+<ul>
+<li>Estimators <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are still unbiased</li>
+<li>The standard errors are incorrect</li>
+</ul>
+<p>Remedies:</p>
+<ul>
+<li>Consider transformations of <span class="math inline">\(Y\)</span></li>
+<li>Consider Weighted least squares</li>
+</ul>
+</section>
+<section id="diagnosing-normality" class="slide level2">
+<h2>Diagnosing normality</h2>
+<ul>
+<li>Assess visually with Q-Q plot</li>
+<li>Outliers (point with extreme residual) can result in violation of normality</li>
+</ul>
+<div class="pull-left">
+<p><strong>Normal residuals</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="pull-right">
+<p><strong>Non-normal residuals</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="when-normality-is-violated" class="slide level2">
+<h2>When normality is violated</h2>
+<p>Implications:</p>
+<ul>
+<li>With no outliers and a large enough sample (~ 30 observations) Central Limit Theorem corrects for lack of normality</li>
+<li>Can have biased predictions for <span class="math inline">\(Y\)</span></li>
+</ul>
+<p>Remedies:</p>
+<ul>
+<li>Consider transformations of <span class="math inline">\(Y\)</span></li>
+</ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
