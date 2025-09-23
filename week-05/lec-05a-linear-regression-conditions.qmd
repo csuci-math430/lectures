@@ -1,0 +1,128 @@
+---
+title: "Math 430: Lecture 5a"
+subtitle: "Linear Regression Conditions"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+
+elephants <- read_csv(
+  "http://csuci-math430.github.io/lectures/data/elephants.csv",
+  show_col_types = FALSE
+) |> 
+  janitor::clean_names()
+```
+
+
+##
+
+We discussed how simple linear regression can be used to solve different goals
+
+**Prediction** 
+
+- We want the fitted line so we can use it on future data
+
+**Inference**
+
+- Learn the relationship between $Y$ and $X$ (confidence interval)
+- Test if there is a linear relationship between $Y$ and $X$ (hypothesis test)
+
+
+## 
+
+Recall our linear regression from last week
+```{r}
+ggplot(elephants, aes(x = height, y = mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Height (cm)", y = "Mass (kg)")
+```
+
+. . .
+
+*Was this model appropriate?*
+
+## Why would we care if the model is "appropriate"?
+
+::::{.columns}
+:::{.column width="50%"}
+```{r}
+#| echo: false
+ggplot(elephants, aes(x = height, y = mass)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Height (cm)", y = "Mass (kg)")
+```
+
+:::
+
+:::{.column width="50%"}
+
+- it may be chance that we got a good fit for our sample, but the model might be a bad fit for the population
+- our estimates relied on our conditions, so if those don't hold our estimates are meaningless
+
+:::
+::::
+
+## Conditions
+
+$$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)$$
+
+In order of importance:
+
+1. Linearity: Linear relationship between $X$ and $Y$.
+2. Homoskedasticity: Constant variance of $\epsilon_i$.
+3. Independence: Independence of $\epsilon_i$.
+4. Normality: Normally distributed $\epsilon_i$.
+
+# Checking model conditions
+
+## Visual checks versus statistical tests
+
+People have developed some statistical tests to asses some model conditions.
+
+- We want to avoid unnecessary tests because each test we perform introduces some error.
+
+. . .
+
+Alternatively, we will use visual assessments
+
+- There is some level of subjectivity
+- We will use experience and reproducibility to be responsible
+
+## Visual checks
+
+```{r}
+#| fig-align: center
+#| output-location: slide
+model_elephant <- lm(mass ~ height, data = elephants)
+
+library(ggfortify)
+
+autoplot(model_elephant)
+```
+
+Recall residuals: $e_i = y_i - \hat{y}_i$
+
+## Linearity
+
+```{r}
+
+```
+
+## Homoskedasticity
+
+## Independence
+
+## Normality
+
+As long as we have a large enough sample (~ 30 observations) we are not too concerned because our estimators will be normal 
+
