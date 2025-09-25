@@ -63,7 +63,7 @@ What would you say is a "good" RSE/RMSE value? What would be a "bad" one?
 
 $$R^2 = \frac{TSS - RSS}{TSS}$$
 
-where $TSS = \sum_{i = 1}^{n} (y_i - \bar{y}_i)^2$.
+where $TSS = \sum_{i = 1}^{n} (y_i - \bar{y})^2$.
 
 - $TSS$ measures amount of variability in $Y$
 - $RSS$ measures amount of variability in $Y$ unexplained by model
@@ -163,7 +163,7 @@ What about an uncertainty estimate?
 
 ## Confidence interval for average $Y_i$
 
-Let $\mu_Y = E[Y_i | X_i = x_h]$, the mean response when the explanatory variable value is $x_h$.
+Let $\mu_Y = E[Y_i | X_i = x_h]$, the mean response when the explanatory variable value is $x_h$. The confidence interval for $\mu_y$ is:
 
 $$\text{Point estimate} \pm t^* \times SE(\text{Point estiamte})$$
 
@@ -173,12 +173,12 @@ $$\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE\sqrt{ \left(\frac{1}{n} + \frac{
 
 . . .
 
-- $x_h$ must be within the range of the observed $x_i$ values to avoid extrapolation, but need not be an observed $x_i$ 
+- $x_h$ must be within the range of the observed $x_i$ values to avoid *extrapolation*, but need not be an observed $x_i$ 
 
 
 ## Prediction interval for a new response
 
-Let $\hat{y}_{new}$ be the new response when the explanatory variable value is $x_h$.
+Let $Y_{new}$ be the new response when the explanatory variable value is $x_h$. The confidence interval for $Y_{new}$ is: 
 
 $$\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE \sqrt{1 + \frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}}$$
 

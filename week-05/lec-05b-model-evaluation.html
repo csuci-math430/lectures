@@ -442,7 +442,7 @@ Professor Catalina Medina
 <section id="r2-statistic" class="slide level2">
 <h2><span class="math inline">\(R^2\)</span> statistic</h2>
 <p><span class="math display">\[R^2 = \frac{TSS - RSS}{TSS}\]</span></p>
-<p>where <span class="math inline">\(TSS = \sum_{i = 1}^{n} (y_i - \bar{y}_i)^2\)</span>.</p>
+<p>where <span class="math inline">\(TSS = \sum_{i = 1}^{n} (y_i - \bar{y})^2\)</span>.</p>
 <ul>
 <li><span class="math inline">\(TSS\)</span> measures amount of variability in <span class="math inline">\(Y\)</span></li>
 <li><span class="math inline">\(RSS\)</span> measures amount of variability in <span class="math inline">\(Y\)</span> unexplained by model</li>
@@ -519,20 +519,20 @@ Professor Catalina Medina
 </section>
 <section id="confidence-interval-for-average-y_i" class="slide level2">
 <h2>Confidence interval for average <span class="math inline">\(Y_i\)</span></h2>
-<p>Let <span class="math inline">\(\mu_Y = E[Y_i | X_i = x_h]\)</span>, the mean response when the explanatory variable value is <span class="math inline">\(x_h\)</span>.</p>
+<p>Let <span class="math inline">\(\mu_Y = E[Y_i | X_i = x_h]\)</span>, the mean response when the explanatory variable value is <span class="math inline">\(x_h\)</span>. The confidence interval for <span class="math inline">\(\mu_y\)</span> is:</p>
 <p><span class="math display">\[\text{Point estimate} \pm t^* \times SE(\text{Point estiamte})\]</span></p>
 <div class="fragment">
 <p><span class="math display">\[\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE\sqrt{ \left(\frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}\right)}\]</span></p>
 </div>
 <div class="fragment">
 <ul>
-<li><span class="math inline">\(x_h\)</span> must be within the range of the observed <span class="math inline">\(x_i\)</span> values to avoid extrapolation, but need not be an observed <span class="math inline">\(x_i\)</span></li>
+<li><span class="math inline">\(x_h\)</span> must be within the range of the observed <span class="math inline">\(x_i\)</span> values to avoid <em>extrapolation</em>, but need not be an observed <span class="math inline">\(x_i\)</span></li>
 </ul>
 </div>
 </section>
 <section id="prediction-interval-for-a-new-response" class="slide level2">
 <h2>Prediction interval for a new response</h2>
-<p>Let <span class="math inline">\(\hat{y}_{new}\)</span> be the new response when the explanatory variable value is <span class="math inline">\(x_h\)</span>.</p>
+<p>Let <span class="math inline">\(Y_{new}\)</span> be the new response when the explanatory variable value is <span class="math inline">\(x_h\)</span>. The confidence interval for <span class="math inline">\(Y_{new}\)</span> is:</p>
 <p><span class="math display">\[\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE \sqrt{1 + \frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}}\]</span></p>
 <ul>
 <li><span class="math inline">\(x_h\)</span> must be within the range of the observed <span class="math inline">\(x_i\)</span> values to avoid extrapolation, but need not be an observed <span class="math inline">\(x_i\)</span></li>
