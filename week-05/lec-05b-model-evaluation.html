@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="lec-05a-linear-regression-conditions_files/libs/clipboard/clipboard.min.js"></script>
-<script src="lec-05a-linear-regression-conditions_files/libs/quarto-html/tabby.min.js"></script>
-<script src="lec-05a-linear-regression-conditions_files/libs/quarto-html/popper.min.js"></script>
-<script src="lec-05a-linear-regression-conditions_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="lec-05a-linear-regression-conditions_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="lec-05a-linear-regression-conditions_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="lec-05a-linear-regression-conditions_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="lec-05a-linear-regression-conditions_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="lec-05b-model-evaluation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec-05b-model-evaluation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec-05b-model-evaluation_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec-05b-model-evaluation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec-05b-model-evaluation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec-05b-model-evaluation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec-05b-model-evaluation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="lec-05b-model-evaluation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Professor Catalina Medina">
-  <title>Math 430: Lecture 5a</title>
+  <title>Math 430: Lecture 5b</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="lec-05a-linear-regression-conditions_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="lec-05a-linear-regression-conditions_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="lec-05b-model-evaluation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec-05b-model-evaluation_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -95,11 +95,11 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lec-05a-linear-regression-conditions_files/libs/revealjs/dist/theme/quarto.css">
-  <link href="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="lec-05b-model-evaluation_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="lec-05b-model-evaluation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec-05b-model-evaluation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec-05b-model-evaluation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec-05b-model-evaluation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -391,8 +391,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Math 430: Lecture 5a</h1>
-  <p class="subtitle">Linear Regression Conditions</p>
+  <h1 class="title">Math 430: Lecture 5b</h1>
+  <p class="subtitle">Linear Regression Model Evaluations</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -403,276 +403,143 @@ Professor Catalina Medina
 </div>
 
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
-<p>We discussed how simple linear regression can be used to solve different goals</p>
-<p><strong>Prediction</strong></p>
-<ul>
-<li>We want the fitted line so we can use it on future data</li>
-</ul>
-<p><strong>Inference</strong></p>
-<ul>
-<li>Learn the relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> (confidence interval)</li>
-<li>Test if there is a linear relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> (hypothesis test)</li>
-</ul>
-</section>
-<section id="section-1" class="slide level2">
-<h2></h2>
-<p>Recall our linear regression from last week</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">ggplot</span>(elephants, <span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass)) <span class="sc">+</span></span>
-<span id="cb1-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb1-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb1-4"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Height (cm)"</span>, <span class="at">y =</span> <span class="st">"Mass (kg)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section class="slide level2">
 
-</div>
-<img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"><div class="fragment">
-<p><em>Was this model appropriate?</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="why-would-we-care-if-the-model-is-appropriate" class="slide level2">
-<h2>Why would we care if the model is “appropriate”?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
+<section id="how-do-we-decide-one-model-is-better-than-another" class="slide level2">
+<h2>How do we decide one model is better than another?</h2>
+<div class="fragment">
+<p>It depends on our purpose.</p>
+<p>There are three values commonly used:</p>
 <ul>
-<li>it may be chance that we got a good fit for our sample, but the model might be a bad fit for the population</li>
-<li>our estimates relied on our conditions, so if those don’t hold our estimates are meaningless</li>
+<li>Residual Standard Error (RSE)</li>
+<li>Root Mean Squared Deviation (RMSE)</li>
+<li><span class="math inline">\(R^2\)</span></li>
 </ul>
 </div>
-</div>
 </section>
-<section id="conditions" class="slide level2">
-<h2>Conditions</h2>
-<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)\]</span></p>
-<p>In order of importance:</p>
-<ol type="1">
-<li>Linearity: Linear relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> (<span class="math inline">\(E[\epsilon_i] = 0)\)</span>.</li>
-<li>Independence: Independence of <span class="math inline">\(\epsilon_i\)</span>.</li>
-<li>Homoskedasticity: Constant variance of <span class="math inline">\(\epsilon_i\)</span>.</li>
-<li>Normality: Normally distributed <span class="math inline">\(\epsilon_i\)</span>.</li>
-</ol>
-</section>
-<section>
-<section id="checking-model-conditions" class="title-slide slide level1 center">
-<h1>Checking model conditions</h1>
-
-</section>
-<section id="visual-checks-versus-statistical-tests" class="slide level2">
-<h2>Visual checks versus statistical tests</h2>
-<p>People have developed some statistical tests to asses some model conditions.</p>
+<section id="residual-standard-error-rse" class="slide level2">
+<h2>Residual Standard Error (RSE)</h2>
+<p><span class="math display">\[RSE = \hat{\sigma} = \sqrt{\frac{1}{n - 2} RSS} = \sqrt{\frac{1}{n - 2} \sum_{i = 1}^{n} (y_i - \hat{y}_i)^2}\]</span></p>
 <ul>
-<li>We want to avoid unnecessary tests because each test we perform introduces some error.</li>
+<li>Measures <em>lack of fit</em> of the model to the data</li>
+<li>Measured in units of <span class="math inline">\(y\)</span></li>
 </ul>
 <div class="fragment">
-<p>Alternatively, we will use visual assessments</p>
+<p><span class="math inline">\(n - 2\)</span> is required to make <span class="math inline">\(E[\hat{\sigma}] = \sigma\)</span>, but if often replaced by just <span class="math inline">\(n\)</span> when the sole goal is prediction accuracy instead of inference</p>
 <ul>
-<li>There is some level of subjectivity</li>
-<li>We will use experience and reproducibility to be responsible</li>
+<li>using <span class="math inline">\(n\)</span> instead of <span class="math inline">\(n - 2\)</span> is called <strong>Root Mean Squared Error</strong> (RMSE)</li>
 </ul>
 </div>
 </section>
-<section id="visual-checks" class="slide level2">
-<h2>Visual checks</h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>model_elephant <span class="ot">&lt;-</span> <span class="fu">lm</span>(mass <span class="sc">~</span> height, <span class="at">data =</span> elephants)</span>
-<span id="cb2-2"><a href=""></a></span>
-<span id="cb2-3"><a href=""></a><span class="fu">library</span>(ggfortify)</span>
-<span id="cb2-4"><a href=""></a></span>
-<span id="cb2-5"><a href=""></a><span class="fu">autoplot</span>(model_elephant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-
-<p>Recall residuals: <span class="math inline">\(e_i = y_i - \hat{y}_i\)</span></p>
-</section>
-<section id="visual-checks-output" class="slide level2 output-location-slide"><h2>Visual checks</h2><div class="cell output-location-slide" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
-</figure>
-</div>
-</div>
-</div></section><section id="diagnosing-linearity" class="slide level2">
-<h2>Diagnosing linearity</h2>
+<section id="section" class="slide level2">
+<h2></h2>
+<p>What would you say is a “good” RSE/RMSE value? What would be a “bad” one?</p>
+<div class="fragment">
 <ul>
-<li>Examine plot of residuals vs fitted (or predictor for simple linear regression)</li>
-<li>There should be no discernible pattern the the residuals centered around 0</li>
+<li>You can evaluate it relative to RSE/RMSE of another model (a model with different <span class="math inline">\(X\)</span> for the same <span class="math inline">\(Y\)</span>)</li>
+<li>RMSE is “roughly” the average error, so you can think in context if the average error is acceptable or unacceptable</li>
 </ul>
-<div class="pull-left">
-<p><strong>Linear</strong></p>
+</div>
+</section>
+<section id="r2-statistic" class="slide level2">
+<h2><span class="math inline">\(R^2\)</span> statistic</h2>
+<p><span class="math display">\[R^2 = \frac{TSS - RSS}{TSS}\]</span></p>
+<p>where <span class="math inline">\(TSS = \sum_{i = 1}^{n} (y_i - \bar{y}_i)^2\)</span>.</p>
+<ul>
+<li><span class="math inline">\(TSS\)</span> measures amount of variability in <span class="math inline">\(Y\)</span></li>
+<li><span class="math inline">\(RSS\)</span> measures amount of variability in <span class="math inline">\(Y\)</span> unexplained by model</li>
+<li><span class="math inline">\(R^2\)</span> measures percent of variability in <span class="math inline">\(Y\)</span> explained by model</li>
+<li><span class="math inline">\(TSS - RSS\)</span> measures amount of variability explained by the model</li>
+</ul>
+</section>
+<section id="r2-statistic-1" class="slide level2">
+<h2><span class="math inline">\(R^2\)</span> statistic</h2>
+<p><em>What</em> <span class="math inline">\(R^2\)</span> <em>be for perfectly linear data?</em></p>
+<p><em>What would</em> <span class="math inline">\(R^2\)</span> <em>be for completely unlinear data?</em></p>
+<div class="fragment">
+<p>In practice it is context specific for what constitutes a “reasonably good” <span class="math inline">\(R^2\)</span></p>
+<ul>
+<li>consider physics versus marketing</li>
+</ul>
+</div>
+</section>
+<section id="correlation-and-the-r2-statistic" class="slide level2">
+<h2>Correlation and the <span class="math inline">\(R^2\)</span> statistic</h2>
+<p><span class="math inline">\(Cor(X, Y) = \frac{\sum_{i = 1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i = 1}^{n} (x_i - \bar{x})^2 }\sqrt{\sum_{i = 1}^{n} (y_i - \bar{y})^2}}\)</span></p>
+<p>Correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is a measure of the linear relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span></p>
+<div class="fragment">
+<p>For simple linear regression <span class="math inline">\(R^2 = [Cor(X, Y)]^2\)</span></p>
+</div>
+</section>
+<section id="cautions-with-r2statistic" class="slide level2">
+<h2>Cautions with <span class="math inline">\(R^2\)</span>statistic</h2>
+<p>Low <span class="math inline">\(R^2\)</span> does not mean no/(or weak) relationship, simply not a linear relationship</p>
+<div class="columns">
+<div class="column" style="width:80%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+<p><img data-src="lec-05b-model-evaluation_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
+</div><div class="column" style="width:20%;">
+<p><span class="math inline">\(R^2\)</span> = 0.11</p>
 </div>
-<div class="pull-right">
-<p><strong>Non-linear</strong></p>
+</div>
+</section>
+<section id="cautions-with-r2statistic-1" class="slide level2">
+<h2>Cautions with <span class="math inline">\(R^2\)</span>statistic</h2>
+<p>High <span class="math inline">\(R^2\)</span> does not mean a regression line fits the data well. Another function may describe it better</p>
+<div class="columns">
+<div class="column" style="width:80%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+<p><img data-src="lec-05b-model-evaluation_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="when-linearity-is-violated" class="slide level2">
-<h2>When linearity is violated</h2>
-<p>Implications:</p>
-<ul>
-<li>poor fit</li>
-<li>biased inference</li>
-</ul>
-<p>Remedy:</p>
-<ul>
-<li>consider transformations of <span class="math inline">\(X\)</span> or other relationships</li>
-</ul>
-</section>
-<section id="diagnosing-independence" class="slide level2">
-<h2>Diagnosing Independence</h2>
-<ul>
-<li>Consider how the data were collected (random sample? no repeat sampling?) and on whom the data were collected (would you expect independence?)</li>
-<li>Dependence could be revealed by plotting residuals versus unmodeled variables (time, class, etc)</li>
-</ul>
-</section>
-<section id="when-independence-is-violated" class="slide level2">
-<h2>When independence is violated</h2>
-<p>Implications:</p>
-<ul>
-<li>Estimators <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are still unbiased</li>
-<li>The standard errors will underestimate the true standard errors</li>
-<li>Increased type one error rates (false positive)</li>
-</ul>
-<p>Remedy:</p>
-<ul>
-<li>Consider a different model that accounts for correlation (e.g.&nbsp;if you have longitudinal data then a linear mixed effects model may be appropriate)</li>
-</ul>
-</section>
-<section id="diagnosing-homoskedasticity" class="slide level2">
-<h2>Diagnosing homoskedasticity</h2>
-<ul>
-<li>Examine plot of residuals vs fitted and check there is not a “funnel-shape”</li>
-<li>Specifically, for each fitted value does the spread of the residuals look similar?</li>
-</ul>
-<div class="pull-left">
-<p><strong>Constant variance</strong></p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="pull-right">
-<p><strong>Non-constant variance</strong></p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
-</figure>
-</div>
-</div>
+</div><div class="column" style="width:20%;">
+<p><span class="math inline">\(R^2\)</span> = 0.74</p>
 </div>
 </div>
 </section>
-<section id="when-homoskedasticity-is-violated" class="slide level2">
-<h2>When homoskedasticity is violated</h2>
-<p>Implications:</p>
-<ul>
-<li>Estimators <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are still unbiased</li>
-<li>The standard errors are incorrect</li>
-</ul>
-<p>Remedies:</p>
-<ul>
-<li>Consider transformations of <span class="math inline">\(Y\)</span></li>
-<li>Consider Weighted least squares</li>
-</ul>
-</section>
-<section id="diagnosing-normality" class="slide level2">
-<h2>Diagnosing normality</h2>
-<ul>
-<li>Assess visually with Q-Q plot</li>
-<li>Outliers (point with extreme residual) can result in violation of normality</li>
-</ul>
-<div class="pull-left">
-<p><strong>Non-normal residuals</strong></p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="pull-right">
-<p><strong>Normal residuals</strong></p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="lec-05a-linear-regression-conditions_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="when-normality-is-violated" class="slide level2">
-<h2>When normality is violated</h2>
-<p>Implications:</p>
-<ul>
-<li>With no outliers and a large enough sample Central Limit Theorem corrects for lack of normality</li>
-<li>Can have biased predictions for <span class="math inline">\(Y\)</span></li>
-</ul>
-<p>Remedies:</p>
-<ul>
-<li>Consider transformations of <span class="math inline">\(Y\)</span></li>
-</ul>
+<section id="estimating-average-y_i" class="slide level2">
+<h2>Estimating average <span class="math inline">\(y_i\)</span></h2>
+<p>Let <span class="math inline">\(\mu_Y = E[Y_i | X_i = x_h]\)</span>, the mean response when the explanatory variable value is <span class="math inline">\(x_h\)</span>.</p>
+<p><span class="math display">\[\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE\sqrt{ \left(\frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}\right)}\]</span></p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="lec-05a-linear-regression-conditions_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec-05b-model-evaluation_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

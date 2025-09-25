@@ -219,17 +219,23 @@ data_good |>
 
 
 ```{r echo = FALSE, message = FALSE}
-model_bad <- lm(y ~ x, data = data_bad)
+bad_data <- data.frame(
+  x = seq(0, 10, length.out = 100)
+) |> 
+  mutate(y_perfect = 2 * x + 5) |> 
+  mutate(residuals = rnorm(100, mean = 0, sd = abs(x) / 2)) |> 
+  mutate(y = y_perfect + residuals)
 
-data_bad <- 
-  data_bad |> 
+model_bad <- lm(y ~ x, data = bad_data)
+
+bad_data <- 
+  bad_data |> 
   modelr::add_residuals(model_bad) 
 
-data_bad |> 
+bad_data |> 
   ggplot(aes(x = x, y = resid)) +
   geom_point() +
   geom_hline(yintercept = 0)
-
 ```
 
 :::
@@ -253,26 +259,38 @@ Remedies:
 
 :::{.pull-left}
 
-**Normal residuals**
+**Non-normal residuals**
 
 ```{r echo = FALSE, message = FALSE}
-data.frame(y = rt(200, df = 5)) |> 
-  ggplot(aes(sample = y)) + 
+bad_data <- data.frame(
+  x = seq(0, 10, length.out = 100)
+) |> 
+  mutate(y_perfect = 2 * x + 5) |> 
+  mutate(residuals = rgamma(100, shape = 2, rate = 3)) |> 
+  mutate(y = y_perfect + residuals)
+
+model_bad <- lm(y ~ x, data = bad_data)
+
+bad_data <- 
+  bad_data |> 
+  modelr::add_residuals(model_bad) 
+
+ggplot(bad_data, aes(sample = y)) + 
   stat_qq() + 
-  stat_qq_line() +
-  labs(title = "Good")
+  stat_qq_line()
 ```
 
 :::
 
 :::{.pull-right}
 
-**Non-normal residuals**
+**Normal residuals**
 
 
 ```{r echo = FALSE, message = FALSE}
-data.frame(y = rnorm(200)) |> 
-  ggplot(aes(sample = y)) + 
+normal_data <- data.frame(y = rnorm(100))
+
+ggplot(normal_data, aes(sample = y)) + 
   stat_qq() + 
   stat_qq_line()
 ```
@@ -280,11 +298,12 @@ data.frame(y = rnorm(200)) |>
 :::
 
 
+
 ## When normality is violated
 
 Implications:
 
-- With no outliers and a large enough sample (~ 30 observations) Central Limit Theorem corrects for lack of normality
+- With no outliers and a large enough sample Central Limit Theorem corrects for lack of normality
 - Can have biased predictions for $Y$
 
 Remedies:

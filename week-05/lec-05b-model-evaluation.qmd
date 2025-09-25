@@ -1,0 +1,154 @@
+---
+title: "Math 430: Lecture 5b"
+subtitle: "Linear Regression Model Evaluations"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+## How do we decide one model is better than another?
+
+. . .
+
+It depends on our purpose.
+
+
+There are three values commonly used:
+
+- Residual Standard Error (RSE)
+- Root Mean Squared Deviation (RMSE)
+- $R^2$
+
+
+## Residual Standard Error (RSE)
+
+$$RSE = \hat{\sigma} = \sqrt{\frac{1}{n - 2} RSS} = \sqrt{\frac{1}{n - 2} \sum_{i = 1}^{n} (y_i - \hat{y}_i)^2}$$
+
+- Measures *lack of fit* of the model to the data
+- Measured in units of $y$
+
+. . .
+
+$n - 2$ is required to make $E[\hat{\sigma}] = \sigma$, but if often replaced by just $n$ when the sole goal is prediction accuracy instead of inference
+
+- using $n$ instead of $n - 2$ is called **Root Mean Squared Error** (RMSE)
+
+
+##
+
+What would you say is a "good" RSE/RMSE value? What would be a "bad" one?
+
+. . .
+
+- You can evaluate it relative to RSE/RMSE of another model (a model with different $X$ for the same $Y$)
+- RMSE is "roughly" the average error, so you can think in context if the average error is acceptable or unacceptable
+
+## $R^2$ statistic
+
+$$R^2 = \frac{TSS - RSS}{TSS}$$
+
+where $TSS = \sum_{i = 1}^{n} (y_i - \bar{y}_i)^2$.
+
+- $TSS$ measures amount of variability in $Y$
+- $RSS$ measures amount of variability in $Y$ unexplained by model
+- $R^2$ measures percent of variability in $Y$ explained by model
+- $TSS - RSS$ measures amount of variability explained by the model
+
+## $R^2$ statistic
+
+*What* $R^2$ *be for perfectly linear data?*
+
+*What would* $R^2$ *be for completely unlinear data?*
+
+. . .
+
+In practice it is context specific for what constitutes a "reasonably good" $R^2$
+
+- consider physics versus marketing
+
+## Correlation and the $R^2$ statistic
+
+$Cor(X, Y) = \frac{\sum_{i = 1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i = 1}^{n} (x_i - \bar{x})^2 }\sqrt{\sum_{i = 1}^{n} (y_i - \bar{y})^2}}$
+
+Correlation between $X$ and $Y$ is a measure of the linear relationship between $X$ and $Y$
+
+. . .
+
+For simple linear regression $R^2 = [Cor(X, Y)]^2$
+
+## Cautions with $R^2$statistic
+
+Low $R^2$ does not mean no/(or weak) relationship, simply not a linear relationship
+
+::::{.columns}
+:::{.column width="80%"}
+```{r}
+#| echo: false
+
+set.seed(2343)
+bad_linear_data <- data.frame(
+  x = runif(100, -10, 10),
+  residual = rnorm(100, mean = 0, sd = 15)
+) |> 
+  mutate(y = 2*x + x^2 + 1 + residual)
+
+r_squared <- cor(bad_linear_data$x, bad_linear_data$y)^2
+r_squared <- round(r_squared, 2)
+
+ggplot(bad_linear_data, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+
+:::{.column width="20%"}
+$R^2$ = `r r_squared`
+:::
+::::
+
+## Cautions with $R^2$statistic
+
+High $R^2$ does not mean a regression line fits the data well. Another function may describe it better
+
+::::{.columns}
+:::{.column width="80%"}
+```{r}
+#| echo: false
+bad_linear_data <- data.frame(
+  x = runif(100, -10, 10),
+  residual = rnorm(100, mean = 0, sd = 300)
+) |> 
+  mutate(y = 2*x + 4 * x^3 + 1 + residual)
+
+r_squared <- cor(bad_linear_data$x, bad_linear_data$y)^2
+r_squared <- round(r_squared, 2)
+
+ggplot(bad_linear_data, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+
+:::{.column width="20%"}
+$R^2$ = `r r_squared`
+:::
+::::
+
+## Estimating average $y_i$
+
+Let $\mu_Y = E[Y_i | X_i = x_h]$, the mean response when the explanatory variable value is $x_h$.
+
+$$\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE\sqrt{ \left(\frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}\right)}$$
+
+
