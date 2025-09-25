@@ -11,7 +11,14 @@ format:
 ---
 
 ```{r}
+#| echo: false
+
 library(tidyverse)
+
+elephants <- read_csv(
+  "http://csuci-math430.github.io/lectures/data/elephants.csv",
+  show_col_types = FALSE
+)
 ```
 
 
@@ -145,10 +152,185 @@ $R^2$ = `r r_squared`
 :::
 ::::
 
-## Estimating average $y_i$
+
+# Estimating the response
+
+## 
+
+We know $\hat{y}_i$ is our model's point estimate for expectation of $Y_i$
+
+What about an uncertainty estimate?
+
+## Confidence interval for average $Y_i$
 
 Let $\mu_Y = E[Y_i | X_i = x_h]$, the mean response when the explanatory variable value is $x_h$.
 
+$$\text{Point estimate} \pm t^* \times SE(\text{Point estiamte})$$
+
+. . .
+
 $$\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE\sqrt{ \left(\frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}\right)}$$
 
+. . .
 
+- $x_h$ must be within the range of the observed $x_i$ values to avoid extrapolation, but need not be an observed $x_i$ 
+
+
+## Prediction interval for a new response
+
+Let $\hat{y}_{new}$ be the new response when the explanatory variable value is $x_h$.
+
+$$\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE \sqrt{1 + \frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}}$$
+
+- $x_h$ must be within the range of the observed $x_i$ values to avoid extrapolation, but need not be an observed $x_i$
+
+. . .
+
+- *How does this compare the the CI for average* $Y_i$*?*
+ 
+## Example: Hospital infection risk
+
+The hospital infection risk dataset consists of a sample of n = 58 hospitals in the east and north-central U.S. ([Hospital Infection Data Region 1 and 2 data](https://online.stat.psu.edu/onlinecourses/sites/stat501/files/data/hospitalinfct_reg1and2.txt)). 
+
+- The response variable is y = infection risk (percent of patients who get an infection).
+- The explanatory variable is x = average length of stay (in days).
+
+## Example: Hospital infection risk data
+
+```{r}
+hospital_infection <- read_tsv("https://online.stat.psu.edu/onlinecourses/sites/stat501/files/data/hospitalinfct_reg1and2.txt")
+
+glimpse(hospital_infection)
+```
+
+## Example: Hospital infection risk model
+
+Fitting the model
+```{r}
+hospital_model <- lm(InfctRsk ~ Stay, data = hospital_infection)
+summary(hospital_model)
+```
+
+## Example: CI for Average risk of infection for average stay of 10 days?
+
+```{r}
+new_hospital_data <- data.frame(Stay = 10)
+
+predict(
+  hospital_model, 
+  newdata = new_hospital_data, 
+  interval = "confidence",
+  level = 0.95
+)
+```
+
+```{r}
+#| echo: false
+
+y_ci <- predict(
+  hospital_model, 
+  newdata = new_hospital_data, 
+  interval = "confidence",
+  level = 0.95
+)
+```
+
+
+We estimate the average risk of infection associated with a hospital with an average stay of 10 days to be `r round(y_ci[1], digits = 2)`. We estimate it to be between `r round(y_ci[2], digits = 2)` and `r round(y_ci[3], digits = 2)` with 95% confidence.
+
+## Example: Prediction interval for risk of infection for average stay of 10 days?
+
+```{r}
+new_hospital_data <- data.frame(Stay = 10)
+
+predict(
+  hospital_model, 
+  newdata = new_hospital_data, 
+  interval = "prediction",
+  level = 0.95
+)
+```
+
+```{r}
+#| echo: false
+
+y_pi <- predict(
+  hospital_model, 
+  newdata = new_hospital_data, 
+  interval = "prediction",
+  level = 0.95
+)
+```
+
+
+We estimate the risk of infection associated with a new hospital with an average stay of 10 days to be `r round(y_pi[1], digits = 2)`. We estimate it to be between `r round(y_pi[2], digits = 2)` and `r round(y_pi[3], digits = 2)` with 95% confidence.
+
+## Confidence bands 
+
+We can easily plot confidence bounds for average response - confidence intervals for average response for many $x_i$'s
+
+```{r}
+ggplot(hospital_infection, aes(x = Stay, y = InfctRsk)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE)
+```
+
+## Confidence bands 
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggplot(hospital_infection, aes(x = Stay, y = InfctRsk)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_segment(
+    aes(
+      x = 10, 
+      xend = 10, 
+      y = y_ci[2],
+      yend = y_ci[3]
+    ),
+    color = "red",
+    linewidth = 1.25,
+    linetype = "dotted",
+    alpha = 0.75
+  )
+```
+
+The red line is our 95% confidence interval
+
+## Confidence bands 
+
+```{r}
+#| echo: false
+#| fig-align: center
+ggplot(hospital_infection, aes(x = Stay, y = InfctRsk)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  geom_segment(
+    aes(
+      x = 10, 
+      xend = 10, 
+      y = y_ci[2],
+      yend = y_ci[3]
+    ),
+    color = "red",
+    linewidth = 1.25,
+    linetype = "dotted",
+    alpha = 0.75
+  ) +
+  geom_segment(
+    aes(
+      x = 10, 
+      xend = 10, 
+      y = y_pi[2],
+      yend = y_pi[3]
+    ),
+    color = "purple",
+    linewidth = 1.25,
+    linetype = "dashed",
+    alpha = 0.75
+  )
+```
+
+The purple line is the 95% prediction interval for a new hospital

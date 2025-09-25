@@ -403,12 +403,6 @@ Professor Catalina Medina
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="how-do-we-decide-one-model-is-better-than-another" class="slide level2">
 <h2>How do we decide one model is better than another?</h2>
 <div class="fragment">
@@ -513,16 +507,163 @@ Professor Catalina Medina
 </div>
 </div>
 </section>
-<section id="estimating-average-y_i" class="slide level2">
-<h2>Estimating average <span class="math inline">\(y_i\)</span></h2>
+<section>
+<section id="estimating-the-response" class="title-slide slide level1 center">
+<h1>Estimating the response</h1>
+
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p>We know <span class="math inline">\(\hat{y}_i\)</span> is our model’s point estimate for expectation of <span class="math inline">\(Y_i\)</span></p>
+<p>What about an uncertainty estimate?</p>
+</section>
+<section id="confidence-interval-for-average-y_i" class="slide level2">
+<h2>Confidence interval for average <span class="math inline">\(Y_i\)</span></h2>
 <p>Let <span class="math inline">\(\mu_Y = E[Y_i | X_i = x_h]\)</span>, the mean response when the explanatory variable value is <span class="math inline">\(x_h\)</span>.</p>
+<p><span class="math display">\[\text{Point estimate} \pm t^* \times SE(\text{Point estiamte})\]</span></p>
+<div class="fragment">
 <p><span class="math display">\[\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE\sqrt{ \left(\frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}\right)}\]</span></p>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(x_h\)</span> must be within the range of the observed <span class="math inline">\(x_i\)</span> values to avoid extrapolation, but need not be an observed <span class="math inline">\(x_i\)</span></li>
+</ul>
+</div>
+</section>
+<section id="prediction-interval-for-a-new-response" class="slide level2">
+<h2>Prediction interval for a new response</h2>
+<p>Let <span class="math inline">\(\hat{y}_{new}\)</span> be the new response when the explanatory variable value is <span class="math inline">\(x_h\)</span>.</p>
+<p><span class="math display">\[\hat{y}_h \pm t_{(1 - \alpha / 2, n - 2)} RSE \sqrt{1 + \frac{1}{n} + \frac{(x_h - \bar{x})^2}{\sum_{i = 1}^{n} (x_i - \bar{x})^2}}\]</span></p>
+<ul>
+<li><span class="math inline">\(x_h\)</span> must be within the range of the observed <span class="math inline">\(x_i\)</span> values to avoid extrapolation, but need not be an observed <span class="math inline">\(x_i\)</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><em>How does this compare the the CI for average</em> <span class="math inline">\(Y_i\)</span><em>?</em></li>
+</ul>
+</div>
+</section>
+<section id="example-hospital-infection-risk" class="slide level2">
+<h2>Example: Hospital infection risk</h2>
+<p>The hospital infection risk dataset consists of a sample of n = 58 hospitals in the east and north-central U.S. (<a href="https://online.stat.psu.edu/onlinecourses/sites/stat501/files/data/hospitalinfct_reg1and2.txt">Hospital Infection Data Region 1 and 2 data</a>).</p>
+<ul>
+<li>The response variable is y = infection risk (percent of patients who get an infection).</li>
+<li>The explanatory variable is x = average length of stay (in days).</li>
+</ul>
+</section>
+<section id="example-hospital-infection-risk-data" class="slide level2">
+<h2>Example: Hospital infection risk data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>hospital_infection <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"https://online.stat.psu.edu/onlinecourses/sites/stat501/files/data/hospitalinfct_reg1and2.txt"</span>)</span>
+<span id="cb1-2"><a href=""></a></span>
+<span id="cb1-3"><a href=""></a><span class="fu">glimpse</span>(hospital_infection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 58
+Columns: 12
+$ ID         &lt;dbl&gt; 5, 10, 11, 13, 18, 23, 27, 28, 29, 31, 33, 34, 36, 51, 55, …
+$ Stay       &lt;dbl&gt; 11.20, 8.84, 11.07, 12.78, 11.62, 9.78, 9.31, 8.19, 11.65, …
+$ Age        &lt;dbl&gt; 56.5, 56.3, 53.2, 56.8, 53.9, 52.3, 47.2, 52.1, 54.5, 49.9,…
+$ InfctRsk   &lt;dbl&gt; 5.7, 6.3, 4.9, 7.7, 6.4, 5.0, 4.5, 3.2, 4.4, 5.0, 5.3, 6.1,…
+$ Culture    &lt;dbl&gt; 34.5, 29.6, 28.5, 46.0, 25.5, 17.6, 30.2, 10.8, 18.6, 19.7,…
+$ Xray       &lt;dbl&gt; 88.9, 82.6, 122.0, 116.9, 99.2, 95.9, 101.3, 59.2, 96.1, 10…
+$ Beds       &lt;dbl&gt; 180, 85, 768, 322, 133, 270, 170, 176, 248, 318, 196, 312, …
+$ MedSchool  &lt;dbl&gt; 2, 2, 1, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,…
+$ Region     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ Census     &lt;dbl&gt; 134, 59, 591, 252, 113, 240, 124, 156, 217, 270, 164, 258, …
+$ Nurses     &lt;dbl&gt; 151, 66, 656, 349, 101, 198, 173, 88, 189, 335, 165, 169, 1…
+$ Facilities &lt;dbl&gt; 40.0, 40.0, 80.0, 57.1, 37.1, 57.1, 37.1, 37.1, 37.1, 57.1,…</code></pre>
+</div>
+</div>
+</section>
+<section id="example-hospital-infection-risk-model" class="slide level2">
+<h2>Example: Hospital infection risk model</h2>
+<p>Fitting the model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>hospital_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(InfctRsk <span class="sc">~</span> Stay, <span class="at">data =</span> hospital_infection)</span>
+<span id="cb3-2"><a href=""></a><span class="fu">summary</span>(hospital_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = InfctRsk ~ Stay, data = hospital_infection)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.6145 -0.4660  0.1388  0.4970  2.4310 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -1.15982    0.95580  -1.213     0.23    
+Stay         0.56887    0.09416   6.041  1.3e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.024 on 56 degrees of freedom
+Multiple R-squared:  0.3946,    Adjusted R-squared:  0.3838 
+F-statistic:  36.5 on 1 and 56 DF,  p-value: 1.302e-07</code></pre>
+</div>
+</div>
+</section>
+<section id="example-ci-for-average-risk-of-infection-for-average-stay-of-10-days" class="slide level2">
+<h2>Example: CI for Average risk of infection for average stay of 10 days?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>new_hospital_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Stay =</span> <span class="dv">10</span>)</span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a><span class="fu">predict</span>(</span>
+<span id="cb5-4"><a href=""></a>  hospital_model, </span>
+<span id="cb5-5"><a href=""></a>  <span class="at">newdata =</span> new_hospital_data, </span>
+<span id="cb5-6"><a href=""></a>  <span class="at">interval =</span> <span class="st">"confidence"</span>,</span>
+<span id="cb5-7"><a href=""></a>  <span class="at">level =</span> <span class="fl">0.95</span></span>
+<span id="cb5-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 4.528846 4.259205 4.798486</code></pre>
+</div>
+</div>
+<p>We estimate the average risk of infection associated with a hospital with an average stay of 10 days to be 4.53. We estimate it to be between 4.26 and 4.8 with 95% confidence.</p>
+</section>
+<section id="example-prediction-interval-for-risk-of-infection-for-average-stay-of-10-days" class="slide level2">
+<h2>Example: Prediction interval for risk of infection for average stay of 10 days?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>new_hospital_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Stay =</span> <span class="dv">10</span>)</span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a><span class="fu">predict</span>(</span>
+<span id="cb7-4"><a href=""></a>  hospital_model, </span>
+<span id="cb7-5"><a href=""></a>  <span class="at">newdata =</span> new_hospital_data, </span>
+<span id="cb7-6"><a href=""></a>  <span class="at">interval =</span> <span class="st">"prediction"</span>,</span>
+<span id="cb7-7"><a href=""></a>  <span class="at">level =</span> <span class="fl">0.95</span></span>
+<span id="cb7-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit     lwr      upr
+1 4.528846 2.45891 6.598781</code></pre>
+</div>
+</div>
+<p>We estimate the risk of infection associated with a new hospital with an average stay of 10 days to be 4.53. We estimate it to be between 2.46 and 6.6 with 95% confidence.</p>
+</section>
+<section id="confidence-bands" class="slide level2">
+<h2>Confidence bands</h2>
+<p>We can easily plot confidence bounds for average response - confidence intervals for average response for many <span class="math inline">\(x_i\)</span>’s</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">ggplot</span>(hospital_infection, <span class="fu">aes</span>(<span class="at">x =</span> Stay, <span class="at">y =</span> InfctRsk)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lec-05b-model-evaluation_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="confidence-bands-1" class="slide level2">
+<h2>Confidence bands</h2>
+
+<img data-src="lec-05b-model-evaluation_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>The red line is our 95% confidence interval</p>
+</section>
+<section id="confidence-bands-2" class="slide level2">
+<h2>Confidence bands</h2>
+
+<img data-src="lec-05b-model-evaluation_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>The purple line is the 95% prediction interval for a new hospital</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 

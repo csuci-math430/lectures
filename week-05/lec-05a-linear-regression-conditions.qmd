@@ -19,8 +19,7 @@ library(tidyverse)
 elephants <- read_csv(
   "http://csuci-math430.github.io/lectures/data/elephants.csv",
   show_col_types = FALSE
-) |> 
-  janitor::clean_names()
+)
 ```
 
 
@@ -42,7 +41,7 @@ We discussed how simple linear regression can be used to solve different goals
 
 Recall our linear regression from last week
 ```{r}
-ggplot(elephants, aes(x = height, y = mass)) +
+ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Height (cm)", y = "Mass (kg)")
@@ -58,7 +57,7 @@ ggplot(elephants, aes(x = height, y = mass)) +
 :::{.column width="50%"}
 ```{r}
 #| echo: false
-ggplot(elephants, aes(x = height, y = mass)) +
+ggplot(elephants, aes(x = Height, y = Mass)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Height (cm)", y = "Mass (kg)")
@@ -105,7 +104,7 @@ Alternatively, we will use visual assessments
 ```{r}
 #| fig-align: center
 #| output-location: slide
-model_elephant <- lm(mass ~ height, data = elephants)
+model_elephant <- lm(Mass ~ Height, data = elephants)
 
 library(ggfortify)
 
