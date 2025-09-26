@@ -45,7 +45,7 @@ $$RSE = \hat{\sigma} = \sqrt{\frac{1}{n - 2} RSS} = \sqrt{\frac{1}{n - 2} \sum_{
 
 . . .
 
-$n - 2$ is required to make $E[\hat{\sigma}] = \sigma$, but if often replaced by just $n$ when the sole goal is prediction accuracy instead of inference
+$n - 2$ is required to make $E[\hat{\sigma}^2] = \sigma^2$, but if often replaced by just $n$ when the sole goal is prediction accuracy instead of inference
 
 - using $n$ instead of $n - 2$ is called **Root Mean Squared Error** (RMSE)
 
