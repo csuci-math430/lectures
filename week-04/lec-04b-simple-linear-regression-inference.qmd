@@ -279,7 +279,9 @@ Do you notice an issue with calculating $SE(\hat{\beta}_0)$ and $SE(\hat{\beta}_
 
 ## In practice
 
-We use *Residual Standard Error* / *Mean Squared Error* (RSE) $\hat{\sigma} = \sqrt{RSS / (n - 2)}$, since $E[\hat{\sigma}] = \sigma$
+We use *Residual Standard Error* / *Mean Squared Error* (RSE) 
+
+$$RSE = \hat{\sigma} = \sqrt{RSS / (n - 2)}$$, since $E[\hat{\sigma}] = \sigma$
 
 . . .
 
