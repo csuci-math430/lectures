@@ -177,3 +177,124 @@ ggplot(
 :::
 ::::
 
+## `CASchools` data
+
+We are going to regress average test score on student-to-teacher ratio, student-to-computer ratio, and percent qualifying for reduced-price lunch.
+
+\begin{equation*}
+  \begin{split}
+    &\text{Score}_i = \beta_0 \\
+    &+ \beta_1 \text{Student-Teacher Ratio}_i\\
+    &+ \beta_2 \text{Student-Computer Ratio}_i \\
+    &+ \beta_3 \text{% Reduced Price Lunch}_i\\
+    &+ \epsilon_i
+  \end{split}
+\end{equation*}
+
+
+## F-statistic (in practice)
+
+```{r}
+score_model1 <- lm(
+  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch, 
+  data = ca_schools
+)
+
+summary(score_model1)
+```
+
+## F-statistic (in practice)
+
+What if you want to extract the F-statistic or its p-value?
+
+```{r}
+library(broom)
+
+glance(score_model1)
+```
+
+. . .
+
+```{r}
+glance(score_model1) |> 
+  pull(statistic)
+
+glance(score_model1) |> 
+  pull(p.value)
+```
+
+*Notice we could also extract* $R^2$ *and* $RSE = \hat{\sigma}$*!*
+
+
+##  F-statistic (in practice)
+
+- $H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$
+- $H_A$: At least one $\beta_j$ is non-zero
+
+```{r}
+#| echo: false
+sci_not_tex <- function(x, digits = 1) {
+  # get scientific string
+  s <- formatC(x, format = "e", digits = digits)
+  parts <- strsplit(s, "e")[[1]]
+  coef <- parts[1]
+  exp <- as.integer(parts[2])
+  
+  # return LaTeX-style math string
+  paste0(coef, " × 10^{", exp, "}")
+}
+
+m1_p_value <- glance(score_model1) |> 
+  pull(p.value)
+```
+
+. . .
+
+**Statistics conclusion**: Our p-value is `r sci_not_tex(m1_p_value)`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+
+. . .
+
+**Conclusion in context**: We found very strong evidence (p-value = `r sci_not_tex(m1_p_value)`) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.
+
+## Partial F-test for nested models
+
+From the plots it was pretty clear lunch is linearly related to score. What if we only wanted to do a test to see if student-teacher ratio and or student-computer ratio is linearly related to score?
+
+. . .
+
+We can do a partial F-test for nested models!
+
+- $H_0: \beta_1 = \beta_2 = 0$
+- $H_A:$ At least one of $\beta_1$ or $\beta_2$ are nonzero.
+
+## F-test with subset of coefficients
+
+```{r}
+score_model1 <- lm(
+  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch, 
+  data = ca_schools
+)
+
+score_model2 <- lm(
+  ave_score ~ lunch, 
+  data = ca_schools
+)
+
+anova(score_model2, score_model1)
+```
+
+
+
+## F-test with subset of coefficients
+
+```{r}
+partial_f_test <- anova(score_model2, score_model1)
+partial_f_test_p_value <- partial_f_test$`Pr(>F)`[2]
+```
+
+
+**Statistics conclusion**: Our p-value is `r sci_not_tex(partial_f_test_p_value)`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+
+. . .
+
+**Conclusion in context**: We found very strong evidence (p-value = `r sci_not_tex(partial_f_test_p_value)`) that at least one of student-teacher ratio or student-computer ratio is linearly related to score, in addition to lunch.
