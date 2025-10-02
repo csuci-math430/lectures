@@ -233,28 +233,18 @@ glance(score_model1) |>
 
 ```{r}
 #| echo: false
-sci_not_tex <- function(x, digits = 1) {
-  # get scientific string
-  s <- formatC(x, format = "e", digits = digits)
-  parts <- strsplit(s, "e")[[1]]
-  coef <- parts[1]
-  exp <- as.integer(parts[2])
-  
-  # return LaTeX-style math string
-  paste0(coef, " × 10^{", exp, "}")
-}
 
-m1_p_value <- glance(score_model1) |> 
+m1_p_value <- glance(score_model1) |>
   pull(p.value)
 ```
 
 . . .
 
-**Statistics conclusion**: Our p-value is `r sci_not_tex(m1_p_value)`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+**Statistics conclusion**: Our p-value is `r m1_p_value`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
 
 . . .
 
-**Conclusion in context**: We found very strong evidence (p-value = `r sci_not_tex(m1_p_value)`) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.
+**Conclusion in context**: We found very strong evidence (p-value = `r m1_p_value`) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.
 
 ## Partial F-test for nested models
 
@@ -271,12 +261,12 @@ We can do a partial F-test for nested models!
 
 ```{r}
 score_model1 <- lm(
-  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch, 
+  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch,
   data = ca_schools
 )
 
 score_model2 <- lm(
-  ave_score ~ lunch, 
+  ave_score ~ lunch,
   data = ca_schools
 )
 
@@ -293,8 +283,8 @@ partial_f_test_p_value <- partial_f_test$`Pr(>F)`[2]
 ```
 
 
-**Statistics conclusion**: Our p-value is `r sci_not_tex(partial_f_test_p_value)`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+**Statistics conclusion**: Our p-value is `r partial_f_test_p_value`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
 
 . . .
 
-**Conclusion in context**: We found very strong evidence (p-value = `r sci_not_tex(partial_f_test_p_value)`) that at least one of student-teacher ratio or student-computer ratio is linearly related to score, in addition to lunch.
+**Conclusion in context**: We found very strong evidence (p-value = `r partial_f_test_p_value`) that at least one of student-teacher ratio or student-computer ratio is linearly related to score, in addition to lunch.
