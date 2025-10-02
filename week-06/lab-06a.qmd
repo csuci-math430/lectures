@@ -1,0 +1,26 @@
+---
+title: "Math 430: Lab 6a"
+subtitle: "Multiple linear regression"
+author: "Your name here"
+format: html
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+---
+
+```{r}
+library(tidyverse)
+library(ISLR2)
+```
+
+
+```{r}
+car_seats <- data("Carseats")
+
+glimpse(Carseats)
+```
+
+
+## 3.7 Exercise 10
+

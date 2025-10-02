@@ -11,6 +11,8 @@ format:
 ---
 
 ```{r}
+#| echo: false
+
 library(tidyverse)
 theme_set(theme_bw(base_size = 24))
 ```
@@ -359,9 +361,9 @@ $$\text{Adjusted }R^2 = 1 - \frac{RSS (n - 1)}{TSS (n - p - 1)}$$
 
 ##
 
-Same as with simple linear regression
+Same as with simple linear regression!
 
-- We can compute a prediction by plugging in values for all of our $X_j$'s
+- We can compute a prediction by plugging in values for all of our $X_j$'s into our fitted model
 - We can compute a prediction interval
 
 ##

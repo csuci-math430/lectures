@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="lec-06a-multiple-linear-regression-part2_files/libs/clipboard/clipboard.min.js"></script>
-<script src="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/tabby.min.js"></script>
-<script src="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/popper.min.js"></script>
-<script src="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="lec-06a-multiple-linear-regression-part2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="lec-06b-multiple-linear-regression-part2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="lec-06b-multiple-linear-regression-part2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Professor Catalina Medina">
@@ -15,8 +15,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -95,11 +95,11 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/dist/theme/quarto.css">
-  <link href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -403,13 +403,6 @@ Professor Catalina Medina
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">24</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="some-important-questions" class="slide level2">
 <h2>Some important questions</h2>
 <p>When we perform multiple linear regression, we usually are interested in answering a few important questions.</p>
@@ -484,18 +477,18 @@ Professor Catalina Medina
 <h2>F-statistic (in practice)</h2>
 <p>The dataset contains data on test performance, school characteristics and student demographic backgrounds for school districts in California in 1999.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href=""></a><span class="fu">library</span>(AER)</span>
-<span id="cb2-3"><a href=""></a></span>
-<span id="cb2-4"><a href=""></a><span class="fu">data</span>(<span class="st">"CASchools"</span>) <span class="co"># From AER library</span></span>
-<span id="cb2-5"><a href=""></a></span>
-<span id="cb2-6"><a href=""></a>ca_schools <span class="ot">&lt;-</span> CASchools <span class="sc">|&gt;</span> </span>
-<span id="cb2-7"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">student_teacher_ratio =</span> students <span class="sc">/</span> teachers) <span class="sc">|&gt;</span> </span>
-<span id="cb2-8"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">student_computer_ratio =</span> <span class="fu">case_when</span>(</span>
-<span id="cb2-9"><a href=""></a>    computer <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">~</span> students <span class="sc">/</span> computer,</span>
-<span id="cb2-10"><a href=""></a>    computer <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb2-11"><a href=""></a>  )) <span class="sc">|&gt;</span> </span>
-<span id="cb2-12"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">ave_score =</span> (read <span class="sc">+</span> math) <span class="sc">/</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(AER)</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="fu">data</span>(<span class="st">"CASchools"</span>) <span class="co"># From AER library</span></span>
+<span id="cb1-5"><a href=""></a></span>
+<span id="cb1-6"><a href=""></a>ca_schools <span class="ot">&lt;-</span> CASchools <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">student_teacher_ratio =</span> students <span class="sc">/</span> teachers) <span class="sc">|&gt;</span> </span>
+<span id="cb1-8"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">student_computer_ratio =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-9"><a href=""></a>    computer <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">~</span> students <span class="sc">/</span> computer,</span>
+<span id="cb1-10"><a href=""></a>    computer <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb1-11"><a href=""></a>  )) <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">ave_score =</span> (read <span class="sc">+</span> math) <span class="sc">/</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="caschools-data" class="slide level2">
@@ -506,7 +499,7 @@ Professor Catalina Medina
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-06a-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+<p><img data-src="lec-06b-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -516,7 +509,7 @@ Professor Catalina Medina
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-06a-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+<p><img data-src="lec-06b-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -529,7 +522,7 @@ Professor Catalina Medina
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-06a-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+<p><img data-src="lec-06b-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -539,7 +532,7 @@ Professor Catalina Medina
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="lec-06a-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+<p><img data-src="lec-06b-multiple-linear-regression-part2_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -563,12 +556,12 @@ Professor Catalina Medina
 <section id="f-statistic-in-practice-1" class="slide level2">
 <h2>F-statistic (in practice)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>score_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb3-2"><a href=""></a>  ave_score <span class="sc">~</span> student_teacher_ratio <span class="sc">+</span> student_computer_ratio <span class="sc">+</span> lunch, </span>
-<span id="cb3-3"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
-<span id="cb3-4"><a href=""></a>)</span>
-<span id="cb3-5"><a href=""></a></span>
-<span id="cb3-6"><a href=""></a><span class="fu">summary</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>score_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb2-2"><a href=""></a>  ave_score <span class="sc">~</span> student_teacher_ratio <span class="sc">+</span> student_computer_ratio <span class="sc">+</span> lunch, </span>
+<span id="cb2-3"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
+<span id="cb2-4"><a href=""></a>)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="fu">summary</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -598,9 +591,9 @@ F-statistic: 465.9 on 3 and 416 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>F-statistic (in practice)</h2>
 <p>What if you want to extract the F-statistic or its p-value?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">library</span>(broom)</span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a><span class="fu">glance</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(broom)</span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a><span class="fu">glance</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 12
   r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC
@@ -611,14 +604,14 @@ F-statistic: 465.9 on 3 and 416 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">glance</span>(score_model1) <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href=""></a>  <span class="fu">pull</span>(statistic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">glance</span>(score_model1) <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">pull</span>(statistic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   value 
 465.8531 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">glance</span>(score_model1) <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href=""></a>  <span class="fu">pull</span>(p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">glance</span>(score_model1) <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">pull</span>(p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        value 
 1.421696e-132 </code></pre>
@@ -654,17 +647,17 @@ F-statistic: 465.9 on 3 and 416 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="f-test-with-subset-of-coefficients" class="slide level2">
 <h2>F-test with subset of coefficients</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>score_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb11-2"><a href=""></a>  ave_score <span class="sc">~</span> student_teacher_ratio <span class="sc">+</span> student_computer_ratio <span class="sc">+</span> lunch, </span>
-<span id="cb11-3"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
-<span id="cb11-4"><a href=""></a>)</span>
-<span id="cb11-5"><a href=""></a></span>
-<span id="cb11-6"><a href=""></a>score_model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb11-7"><a href=""></a>  ave_score <span class="sc">~</span> lunch, </span>
-<span id="cb11-8"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
-<span id="cb11-9"><a href=""></a>)</span>
-<span id="cb11-10"><a href=""></a></span>
-<span id="cb11-11"><a href=""></a><span class="fu">anova</span>(score_model2, score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>score_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb10-2"><a href=""></a>  ave_score <span class="sc">~</span> student_teacher_ratio <span class="sc">+</span> student_computer_ratio <span class="sc">+</span> lunch, </span>
+<span id="cb10-3"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
+<span id="cb10-4"><a href=""></a>)</span>
+<span id="cb10-5"><a href=""></a></span>
+<span id="cb10-6"><a href=""></a>score_model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb10-7"><a href=""></a>  ave_score <span class="sc">~</span> lunch, </span>
+<span id="cb10-8"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
+<span id="cb10-9"><a href=""></a>)</span>
+<span id="cb10-10"><a href=""></a></span>
+<span id="cb10-11"><a href=""></a><span class="fu">anova</span>(score_model2, score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -682,8 +675,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="f-test-with-subset-of-coefficients-1" class="slide level2">
 <h2>F-test with subset of coefficients</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>partial_f_test <span class="ot">&lt;-</span> <span class="fu">anova</span>(score_model2, score_model1)</span>
-<span id="cb13-2"><a href=""></a>partial_f_test_p_value <span class="ot">&lt;-</span> partial_f_test<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;F)</span><span class="st">`</span>[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>partial_f_test <span class="ot">&lt;-</span> <span class="fu">anova</span>(score_model2, score_model1)</span>
+<span id="cb12-2"><a href=""></a>partial_f_test_p_value <span class="ot">&lt;-</span> partial_f_test<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;F)</span><span class="st">`</span>[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Statistics conclusion</strong>: Our p-value is 9.2 × 10^{-7}. Therefore there is very strong evidence against <span class="math inline">\(H_0\)</span> in support of <span class="math inline">\(H_A\)</span>.</p>
 <div class="fragment">
@@ -693,7 +686,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="why-f-test-instead-of-regular-t-test" class="slide level2">
 <h2>Why F-test instead of regular t-test??</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">tidy</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">tidy</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
   term                   estimate std.error statistic   p.value
@@ -703,7 +696,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 3 student_computer_ratio   -0.219    0.0839     -2.62 9.24e-  3
 4 lunch                    -0.593    0.0168    -35.2  7.65e-127</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">tidy</span>(score_model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">tidy</span>(score_model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term        estimate std.error statistic   p.value
@@ -776,9 +769,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="section-1" class="slide level2">
 <h2></h2>
-<p>Same as with simple linear regression</p>
+<p>Same as with simple linear regression!</p>
 <ul>
-<li>We can compute a prediction by plugging in values for all of our <span class="math inline">\(X_j\)</span>’s</li>
+<li>We can compute a prediction by plugging in values for all of our <span class="math inline">\(X_j\)</span>’s into our fitted model</li>
 <li>We can compute a prediction interval</li>
 </ul>
 </section>
@@ -786,13 +779,13 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h2></h2>
 <p>What do we predict the average test score will be for a school with a student-teacher ratio of 22, student-computer ratio of 10, and 50% qualifying for reduced-price lunch?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>my_new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb18-2"><a href=""></a>  <span class="at">student_teacher_ratio =</span> <span class="dv">22</span>,</span>
-<span id="cb18-3"><a href=""></a>  <span class="at">student_computer_ratio =</span> <span class="dv">10</span>,</span>
-<span id="cb18-4"><a href=""></a>  <span class="at">lunch =</span> <span class="dv">50</span></span>
-<span id="cb18-5"><a href=""></a>)</span>
-<span id="cb18-6"><a href=""></a></span>
-<span id="cb18-7"><a href=""></a><span class="fu">predict</span>(score_model1, <span class="at">newdata =</span> my_new_data, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>my_new_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb17-2"><a href=""></a>  <span class="at">student_teacher_ratio =</span> <span class="dv">22</span>,</span>
+<span id="cb17-3"><a href=""></a>  <span class="at">student_computer_ratio =</span> <span class="dv">10</span>,</span>
+<span id="cb17-4"><a href=""></a>  <span class="at">lunch =</span> <span class="dv">50</span></span>
+<span id="cb17-5"><a href=""></a>)</span>
+<span id="cb17-6"><a href=""></a></span>
+<span id="cb17-7"><a href=""></a><span class="fu">predict</span>(score_model1, <span class="at">newdata =</span> my_new_data, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 648.2898 630.2328 666.3468</code></pre>
@@ -800,7 +793,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>my_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(score_model1, <span class="at">newdata =</span> my_new_data, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>my_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(score_model1, <span class="at">newdata =</span> my_new_data, <span class="at">interval =</span> <span class="st">"prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We predict their average test score to be 648.29, between 630.23 and 666.35 with 95% confidence.</p>
 <div class="quarto-auto-generated-content">
@@ -814,19 +807,19 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="lec-06a-multiple-linear-regression-part2_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec-06b-multiple-linear-regression-part2_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
