@@ -552,9 +552,89 @@ Professor Catalina Medina
     &amp;+ \epsilon_i
   \end{split}
 \end{equation*}\]</span></p>
+</section>
+<section id="f-statistic-in-practice-1" class="slide level2">
+<h2>F-statistic (in practice)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>score_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb2-2"><a href=""></a>  ave_score <span class="sc">~</span> student_teacher_ratio <span class="sc">+</span> student_computer_ratio <span class="sc">+</span> lunch, </span>
+<span id="cb2-3"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
+<span id="cb2-4"><a href=""></a>)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="fu">summary</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = ave_score ~ student_teacher_ratio + student_computer_ratio + 
+    lunch, data = ca_schools)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-34.117  -5.323  -0.262   5.674  33.241 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)            703.03249    4.66790 150.610  &lt; 2e-16 ***
+student_teacher_ratio   -1.04075    0.24047  -4.328 1.89e-05 ***
+student_computer_ratio  -0.21938    0.08388  -2.615  0.00924 ** 
+lunch                   -0.59305    0.01684 -35.208  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.158 on 416 degrees of freedom
+Multiple R-squared:  0.7706,    Adjusted R-squared:  0.769 
+F-statistic: 465.9 on 3 and 416 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="f-statistic-in-practice-2" class="slide level2">
+<h2>F-statistic (in practice)</h2>
+<p>What if you want to extract the F-statistic or its p-value?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(broom)</span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a><span class="fu">glance</span>(score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 12
+  r.squared adj.r.squared sigma statistic   p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.771         0.769  9.16      466. 1.42e-132     3 -1524. 3058. 3078.
+# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">glance</span>(score_model1) <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">pull</span>(statistic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   value 
+465.8531 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">glance</span>(score_model1) <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">pull</span>(p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        value 
+1.421696e-132 </code></pre>
+</div>
+</div>
+<p><em>Notice we could also extract</em> <span class="math inline">\(R^2\)</span> <em>and</em> <span class="math inline">\(RSE = \hat{\sigma}\)</span>!</p>
+</div>
+</section>
+<section id="f-statistic-in-practice-3" class="slide level2">
+<h2>F-statistic (in practice)</h2>
+<ul>
+<li><span class="math inline">\(H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0\)</span></li>
+<li><span class="math inline">\(H_A\)</span>: At least one <span class="math inline">\(\beta_j\)</span> is non-zero</li>
+</ul>
+<div class="fragment">
+<p><strong>Statistics conclusion</strong>: Our p-value is 1.4216963^{-132}. Therefore there is very strong evidence against <span class="math inline">\(H_0\)</span> in support of <span class="math inline">\(H_A\)</span>.</p>
+</div>
+<div class="fragment">
+<p><strong>Conclusion in context</strong>: We found very strong evidence (p-value = 1.4216963^{-132}) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
+</div>
 </div>
 </div>
 </section></section>

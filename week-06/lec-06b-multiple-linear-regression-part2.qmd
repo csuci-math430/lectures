@@ -192,3 +192,60 @@ We are going to regress average test score on student-to-teacher ratio, student-
     &+ \epsilon_i
   \end{split}
 \end{equation*}
+
+
+## F-statistic (in practice)
+
+```{r}
+score_model1 <- lm(
+  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch, 
+  data = ca_schools
+)
+
+summary(score_model1)
+```
+
+## F-statistic (in practice)
+
+What if you want to extract the F-statistic or its p-value?
+
+```{r}
+library(broom)
+
+glance(score_model1)
+```
+
+. . .
+
+```{r}
+glance(score_model1) |> 
+  pull(statistic)
+
+glance(score_model1) |> 
+  pull(p.value)
+```
+
+*Notice we could also extract* $R^2$ *and* $RSE = \hat{\sigma}$!
+
+
+##  F-statistic (in practice)
+
+- $H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$
+- $H_A$: At least one $\beta_j$ is non-zero
+
+```{r}
+#| echo: false
+
+m1_p_value <- glance(score_model1) |>
+  pull(p.value)
+```
+
+. . .
+
+**Statistics conclusion**: Our p-value is `r m1_p_value`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+
+. . .
+
+**Conclusion in context**: We found very strong evidence (p-value = `r m1_p_value`) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.
+
+
