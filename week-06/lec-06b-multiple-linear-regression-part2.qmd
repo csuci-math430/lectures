@@ -176,3 +176,19 @@ ggplot(
 ```
 :::
 ::::
+
+
+
+## California Schools data
+
+We are going to regress average test score on student-to-teacher ratio, student-to-computer ratio, and percent qualifying for reduced-price lunch.
+
+\begin{equation*}
+  \begin{split}
+    &\text{Score}_i = \beta_0 \\
+    &+ \beta_1 \text{Student-Teacher Ratio}_i\\
+    &+ \beta_2 \text{Student-Computer Ratio}_i \\
+    &+ \beta_3 \text{\% Reduced Price Lunch}_i\\
+    &+ \epsilon_i
+  \end{split}
+\end{equation*}
