@@ -1,0 +1,392 @@
+---
+title: "Math 430: Lecture 6b"
+subtitle: "Multiple linear regression"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+theme_set(theme_bw(base_size = 24))
+```
+
+
+## Some important questions
+
+When we perform multiple linear regression, we usually are interested in answering a few important questions.
+
+1. Is at least one of the predictors $X_1, X_2,...,X_p$ useful in predicting the response?
+2. Do all the predictors help to explain $Y$ , or is only a subset of the predictors useful?
+3. How well does the model fit the data?
+4. Given a set of predictor values, what response value should we predict, and how accurate is our prediction?
+
+# Q1: Is There a Linear Relationship Between the Response and Predictors?
+
+## Q1 with simple linear regression
+
+$$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
+
+. . .
+
+Hypothesis test for $\beta_1$!
+
+. . .
+
+- $H_0: \beta_1 = 0$
+- $H_A: \beta_1 \neq 0$
+- Compute p-value. 
+
+. . .
+
+- *What is the definition of p-value?*
+
+. . .
+
+- Judge if you (1) found evidence against the null hypothesis (in support of the alternative) or (2) failed to find evidence against the null hypothesis (failed to find evidence to support the alternative)
+
+
+## Q1 with multiple linear regression
+
+$$Y_i = \beta_0 + \beta_1 X_{1i}  + \beta_2 X_{2i} + ... + \beta_p X_{p,i} + \epsilon_i$$
+
+. . .
+
+Hypothesis test for all $\beta_j$'s!
+
+. . .
+
+- $H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$
+- $H_A$: At least one $\beta_j$ is non-zero
+- Compute p-value. 
+- Judge if you (1) found evidence against the null hypothesis (in support of the alternative) or (2) failed to find evidence against the null hypothesis (failed to find evidence to support the alternative)
+
+
+## F-statistic
+
+- $H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$
+- $H_A$: At least one $\beta_j$ is non-zero
+
+Our test test statistic for the hypothesis test is: 
+$$F = \frac{(TSS - RSS) / p}{RSS / (n - p -1)}$$
+
+. . .
+
+- TSS = ...
+- RSS = ...
+- n = ...
+- p = ...
+
+
+## F-statistic (in practice)
+
+The dataset contains data on test performance, school characteristics and student demographic backgrounds for school districts in California in 1999.
+
+```{r}
+library(tidyverse)
+
+ca_schools <- read_csv(
+  "http://csuci-math430.github.io/lectures/data/CASchools.csv",
+  show_col_types = FALSE
+)
+
+ca_schools <- ca_schools |> 
+  mutate(student_teacher_ratio = students / teachers) |> 
+  mutate(student_computer_ratio = case_when(
+    computer != 0 ~ students / computer,
+    computer == 0 ~ 0
+  )) |> 
+  mutate(ave_score = (read + math) / 2)
+```
+
+
+## `CASchools` data
+
+::::{.columns}
+
+:::{.column width="50%"}
+```{r}
+#| echo: false
+ggplot(
+  ca_schools, 
+  aes(x = ave_score)
+) +
+  geom_histogram() +
+  labs(
+    x = "Average test score",
+    y = "Count"
+  )
+```
+
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+ggplot(
+  ca_schools, 
+  aes(x = student_teacher_ratio, y = ave_score)
+) +
+  geom_point() +
+  labs(
+    x = "Student-to-Teacher Ratio",
+    y = "Average test score"
+  )
+```
+:::
+
+::::
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+ggplot(
+  ca_schools, 
+  aes(x = student_computer_ratio, y = ave_score)
+) +
+  geom_point() +
+  labs(
+    x = "Student-to-Computer Ratio",
+    y = "Average test score"
+  )
+```
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+ggplot(
+  ca_schools, 
+  aes(x = lunch, y = ave_score)
+) +
+  geom_point() +
+  labs(
+    x = "% Qualifying for reduced-price lunch",
+    y = "Average test score"
+  )
+```
+:::
+::::
+
+## `CASchools` data
+
+We are going to regress average test score on student-to-teacher ratio, student-to-computer ratio, and percent qualifying for reduced-price lunch.
+
+\begin{equation*}
+  \begin{split}
+    &\text{Score}_i = \beta_0 \\
+    &+ \beta_1 \text{Student-Teacher Ratio}_i\\
+    &+ \beta_2 \text{Student-Computer Ratio}_i \\
+    &+ \beta_3 \text{% Reduced Price Lunch}_i\\
+    &+ \epsilon_i
+  \end{split}
+\end{equation*}
+
+
+## F-statistic (in practice)
+
+```{r}
+score_model1 <- lm(
+  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch, 
+  data = ca_schools
+)
+
+summary(score_model1)
+```
+
+## F-statistic (in practice)
+
+What if you want to extract the F-statistic or its p-value?
+
+```{r}
+library(broom)
+
+glance(score_model1)
+```
+
+. . .
+
+```{r}
+glance(score_model1) |> 
+  pull(statistic)
+
+glance(score_model1) |> 
+  pull(p.value)
+```
+
+*Notice we could also extract* $R^2$ *and* $RSE = \hat{\sigma}$*!*
+
+
+##  F-statistic (in practice)
+
+- $H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$
+- $H_A$: At least one $\beta_j$ is non-zero
+
+```{r}
+#| echo: false
+sci_not_tex <- function(x, digits = 1) {
+  # get scientific string
+  s <- formatC(x, format = "e", digits = digits)
+  parts <- strsplit(s, "e")[[1]]
+  coef <- parts[1]
+  exp <- as.integer(parts[2])
+  
+  # return LaTeX-style math string
+  paste0(coef, " × 10^{", exp, "}")
+}
+
+m1_p_value <- glance(score_model1) |> 
+  pull(p.value)
+```
+
+. . .
+
+**Statistics conclusion**: Our p-value is `r sci_not_tex(m1_p_value)`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+
+. . .
+
+**Conclusion in context**: We found very strong evidence (p-value = `r sci_not_tex(m1_p_value)`) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.
+
+## Partial F-test for nested models
+
+From the plots it was pretty clear lunch is linearly related to score. What if we only wanted to do a test to see if student-teacher ratio and or student-computer ratio is linearly related to score?
+
+. . .
+
+We can do a partial F-test for nested models!
+
+- $H_0: \beta_1 = \beta_2 = 0$
+- $H_A:$ At least one of $\beta_1$ or $\beta_2$ are nonzero.
+
+## F-test with subset of coefficients
+
+```{r}
+score_model1 <- lm(
+  ave_score ~ student_teacher_ratio + student_computer_ratio + lunch, 
+  data = ca_schools
+)
+
+score_model2 <- lm(
+  ave_score ~ lunch, 
+  data = ca_schools
+)
+
+anova(score_model2, score_model1)
+```
+
+
+
+## F-test with subset of coefficients
+
+```{r}
+partial_f_test <- anova(score_model2, score_model1)
+partial_f_test_p_value <- partial_f_test$`Pr(>F)`[2]
+```
+
+
+**Statistics conclusion**: Our p-value is `r sci_not_tex(partial_f_test_p_value)`. Therefore there is very strong evidence against $H_0$ in support of $H_A$.
+
+. . .
+
+**Conclusion in context**: We found very strong evidence (p-value = `r sci_not_tex(partial_f_test_p_value)`) that at least one of student-teacher ratio or student-computer ratio is linearly related to score, in addition to lunch.
+
+
+## Why F-test instead of regular t-test??
+
+```{r}
+tidy(score_model1)
+tidy(score_model2)
+```
+
+## 
+
+For instance, consider an example in which $p = 100$ and $H_0 : β1 = β2 =··· = βp = 0$ is true, so no variable is truly associated with the response. 
+
+- Imagine we collected a bunch of samples
+- With a boundary (significance level) of 0.05, we will see approximately 5% of p-values for each predictor below 0.05 by chance
+- Our significance level is actually the **type I error rate**, the probability of incorrectly rejecting a true null hypothesis ("false positive")
+- An F-statistic adjusts for $p$ 
+
+# Q2: Do all the predictors help to explain $Y$, or is only a subset of the predictors useful?
+
+## Statistical Inference
+
+If you are doing statistical inference you need to be conscious not to increase your type I error rate (e.g. Pharmaceutical setting testing if Drug A lowers cholesterol relative to Drug B).
+
+- Therefore you should consider ahead of time what predictors should be included based on the scientific peer-reviewed literature
+- You should not fit a bunch of models, see what "fits best", then do a hypothesis test ("p-hacking")
+- After you answer your question of interest you can then do exploratory analyses
+
+
+## Prediction
+
+Fit a bunch of models and see what "fits best"
+
+*We will cover this in week 12*
+
+
+# Q3 How well does the model fit the data?
+
+Metrics we already know
+
+- ___
+- ___
+
+## RSE for multiple linear regression
+
+$$RSE = \sqrt{\frac{RSS}{n - p -1}}$$
+
+- Reduces to $RSE = \sqrt{\frac{RSS}{n - 2}}$ for simple linear regression
+
+## $R^2$
+
+$$R^2 = \frac{TSS - RSS}{TSS} = 1 - \frac{RSS}{TSS}$$
+
+- $R^2$ will always increase as $p$ increases
+
+$$\text{Adjusted }R^2 = 1 - \frac{RSS (n - 1)}{TSS (n - p - 1)}$$
+
+- No longer has the same interpretation as $R^2$
+
+# Q4 Given a set of predictor values, what response value should we predict, and how accurate is our prediction?
+
+##
+
+Same as with simple linear regression!
+
+- We can compute a prediction by plugging in values for all of our $X_j$'s into our fitted model
+- We can compute a prediction interval
+
+##
+
+What do we predict the average test score will be for a school with a student-teacher ratio of 22, student-computer ratio of 10, and 50% qualifying for reduced-price lunch?
+
+```{r}
+my_new_data <- data.frame(
+  student_teacher_ratio = 22,
+  student_computer_ratio = 10,
+  lunch = 50
+)
+
+predict(score_model1, newdata = my_new_data, interval = "prediction")
+```
+
+. . .
+
+```{r}
+my_pred <- predict(score_model1, newdata = my_new_data, interval = "prediction")
+```
+
+
+We predict their average test score to be `r round(my_pred[1], digits = 2)`, between `r round(my_pred[2], digits = 2)` and `r round(my_pred[3], digits = 2)` with 95% confidence.
