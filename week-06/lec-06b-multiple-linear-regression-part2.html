@@ -617,7 +617,7 @@ F-statistic: 465.9 on 3 and 416 DF,  p-value: &lt; 2.2e-16</code></pre>
 1.421696e-132 </code></pre>
 </div>
 </div>
-<p><em>Notice we could also extract</em> <span class="math inline">\(R^2\)</span> <em>and</em> <span class="math inline">\(RSE = \hat{\sigma}\)</span><em>!</em></p>
+<p><em>Notice we could also extract</em> <span class="math inline">\(R^2\)</span> <em>and</em> <span class="math inline">\(RSE = \hat{\sigma}\)</span>!</p>
 </div>
 </section>
 <section id="f-statistic-in-practice-3" class="slide level2">
@@ -631,56 +631,6 @@ F-statistic: 465.9 on 3 and 416 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div class="fragment">
 <p><strong>Conclusion in context</strong>: We found very strong evidence (p-value = 1.4216963^{-132}) that at least one of student-teacher ratio, student-computer ratio, or % reduced lunch is linearly related to score.</p>
-</div>
-</section>
-<section id="partial-f-test-for-nested-models" class="slide level2">
-<h2>Partial F-test for nested models</h2>
-<p>From the plots it was pretty clear lunch is linearly related to score. What if we only wanted to do a test to see if student-teacher ratio and or student-computer ratio is linearly related to score?</p>
-<div class="fragment">
-<p>We can do a partial F-test for nested models!</p>
-<ul>
-<li><span class="math inline">\(H_0: \beta_1 = \beta_2 = 0\)</span></li>
-<li><span class="math inline">\(H_A:\)</span> At least one of <span class="math inline">\(\beta_1\)</span> or <span class="math inline">\(\beta_2\)</span> are nonzero.</li>
-</ul>
-</div>
-</section>
-<section id="f-test-with-subset-of-coefficients" class="slide level2">
-<h2>F-test with subset of coefficients</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>score_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb10-2"><a href=""></a>  ave_score <span class="sc">~</span> student_teacher_ratio <span class="sc">+</span> student_computer_ratio <span class="sc">+</span> lunch,</span>
-<span id="cb10-3"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
-<span id="cb10-4"><a href=""></a>)</span>
-<span id="cb10-5"><a href=""></a></span>
-<span id="cb10-6"><a href=""></a>score_model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb10-7"><a href=""></a>  ave_score <span class="sc">~</span> lunch,</span>
-<span id="cb10-8"><a href=""></a>  <span class="at">data =</span> ca_schools</span>
-<span id="cb10-9"><a href=""></a>)</span>
-<span id="cb10-10"><a href=""></a></span>
-<span id="cb10-11"><a href=""></a><span class="fu">anova</span>(score_model2, score_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Model 1: ave_score ~ lunch
-Model 2: ave_score ~ student_teacher_ratio + student_computer_ratio + 
-    lunch
-  Res.Df   RSS Df Sum of Sq      F    Pr(&gt;F)    
-1    418 37303                                  
-2    416 34891  2    2411.2 14.374 9.196e-07 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-</section>
-<section id="f-test-with-subset-of-coefficients-1" class="slide level2">
-<h2>F-test with subset of coefficients</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>partial_f_test <span class="ot">&lt;-</span> <span class="fu">anova</span>(score_model2, score_model1)</span>
-<span id="cb12-2"><a href=""></a>partial_f_test_p_value <span class="ot">&lt;-</span> partial_f_test<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;F)</span><span class="st">`</span>[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>Statistics conclusion</strong>: Our p-value is 9.1955202^{-7}. Therefore there is very strong evidence against <span class="math inline">\(H_0\)</span> in support of <span class="math inline">\(H_A\)</span>.</p>
-<div class="fragment">
-<p><strong>Conclusion in context</strong>: We found very strong evidence (p-value = 9.1955202^{-7}) that at least one of student-teacher ratio or student-computer ratio is linearly related to score, in addition to lunch.</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
