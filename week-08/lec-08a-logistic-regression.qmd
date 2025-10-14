@@ -1,0 +1,230 @@
+---
+title: "Math 430: Lecture 8a"
+subtitle: "Logistic regression"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(janitor)
+```
+
+## 
+
+Identify the response variable type:
+
+1. An online banking service must be able to determine whether or not a transaction being performed on the site is fraudulent, on the basis of the user’s IP address, past transaction history, and so forth.
+
+. . .
+
+## 
+
+Identify the response variable type:
+
+1. A marine biologist is trying to model the number of offspring sea otters have in an inlet in Monteray Bay, based on size of the mother and stability of environment.
+
+. . .
+
+2. An car insurance company is trying to predict if an applicat will have a car crash in the next 5 years, based on their income.
+
+##
+
+A **binary** variable is a categorical variable with only two levels
+
+. . .
+
+Can we model using linear regression?
+
+##
+
+Let's simulated data...
+
+```{r}
+#| echo: false
+set.seed(359)
+
+n <- 300
+
+sim_crash_data <- data.frame(
+  #has_child = rbinom(n = n, size = 1, prob = 0.4), 
+  income = sample(25000:100000 / 1000, size = n, replace = TRUE) # Uniformly randomly samples
+) |> 
+  mutate(xb = -19 + 0.4 * income) |> 
+  #mutate(xb2 = -19 - 2 * has_child + 0.4 * income) |> 
+  mutate(pi =  1 / (1 + exp(-xb))) #|> 
+  #mutate(has_child = ifelse(has_child == 1, yes = TRUE, no = FALSE))
+
+sim_crash_data$car_crash <- sim_crash_data$pi |> 
+  map_int(\(x) rbinom(n = 1, size = 1, prob = x))
+
+```
+
+
+```{r}
+#| echo: false
+#| out-width: "50%"
+ggplot(sim_crash_data, aes(x = income, y = car_crash)) +
+  geom_point() +
+  labs(
+    x = "Income (in $1000s)",
+    y = "Car crash"
+  )
+```
+
+##
+
+What does it mean to fit a line to this data?
+
+```{r}
+#| echo: false
+#| out-width: "50%"
+ggplot(sim_crash_data, aes(x = income, y = car_crash)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Income (in $1000s)",
+    y = "Car crash"
+  )
+```
+
+. . .
+
+We don't get an error, but ...
+
+
+## 
+
+Linear regression assumes 
+$$Y_i = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi} + \epsilon_i \text{ and } \epsilon_i\sim N(0, \sigma^2)$$
+
+so 
+
+$$E[Y_i | X_{1i}, ..., X_{pi}] = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$$
+
+. . .
+
+What is the expectation of a binary variable?
+
+
+##
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+#| fig-width: 8
+
+ggplot(sim_crash_data, aes(x = income, y = pi)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Income (in $1000s)",
+    y = "Probability of car crash"
+  )
+```
+
+
+## 
+
+What is our expecation for people with an income of $45,000?
+
+```{r}
+crash_model <- lm(car_crash ~ income, data = sim_crash_data)
+
+new_data <- data.frame(income = 45)
+
+predict(crash_model, newdata = new_data)
+```
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+#| fig-width: 8
+pred_45000 <- predict(crash_model, newdata = new_data)
+
+ggplot(sim_crash_data, aes(x = income, y = pi)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_point(
+    data = data.frame(income = new_data$income, pi = pred_45000),
+    color = "red",
+    size = 3
+  ) +
+  labs(
+    x = "Income (in $1000s)",
+    y = "Probability of car crash"
+  )
+```
+
+## 
+
+What is our expecation for people with an income of $90,000?
+
+```{r}
+crash_model <- lm(car_crash ~ income, data = sim_crash_data)
+
+new_data <- data.frame(income = 90)
+
+predict(crash_model, newdata = new_data)
+```
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+#| fig-width: 8
+pred_90000 <- predict(crash_model, newdata = new_data)
+
+ggplot(sim_crash_data, aes(x = income, y = pi)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_point(
+    data = data.frame(income = new_data$income, pi = pred_90000),
+    color = "red",
+    size = 3
+  ) +
+  labs(
+    x = "Income (in $1000s)",
+    y = "Probability of car crash"
+  )
+```
+
+Invalid probability! 
+
+##
+
+We can fit a linear model for a binary response, but:
+
+- the line is really fitting the $E[Y_i|X_i]$, the probability
+- the range of $E[Y_i|X_i] = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$ is $(-\infty, \infty)$
+- we may get invalid predictions
+
+. . .
+
+We can use a logistic model instead!
+
+##
+
+The logistic function ranges from 0 to 1
+
+$$logistic(Z) = \frac{e^Z}{1 + e^Z}$$
+
+```{r}
+data.frame(Z = seq(-10, 10, by = 0.01)) |> 
+  mutate(logistic_Z = exp(Z) / (1 + exp(Z))) |> 
+  ggplot(aes(x = Z, y = logistic_Z)) +
+  geom_point() +
+  labs(x = "Z", y = "Logistic(Z)")
+```
+
+
+## 
+
+![](img/regression-types.jpg){fig-align="center"}
+
