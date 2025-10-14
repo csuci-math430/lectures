@@ -642,6 +642,76 @@ Professor Catalina Medina
 <h2>Confusion Matrix</h2>
 
 <img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="confusion-matrix-sensitivity" class="slide level2">
+<h2>Confusion Matrix: Sensitivity</h2>
+<p>1.) Sensitivity (= Recall, True Positive Rate)</p>
+<ul>
+<li>TP + FN = # of actual ____________</li>
+<li>How well does the model classify/predict the positive value among the actual positive samples?</li>
+<li>How well does the model detect positive samples accurately?</li>
+<li>Example: Detecting spam emails
+<ul>
+<li>What percentage of spam emails does the model detect among the actual spam emails?</li>
+</ul></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-right" style="width:2in"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="confusion-matrix-specificity" class="slide level2">
+<h2>Confusion Matrix: Specificity</h2>
+<p>2.) Specificity (= Selectivity, True Negative Rate)</p>
+<ul>
+<li>TN + FP = # of actual _______________</li>
+<li>How well does the model classify/predict the negative value among the actual negative samples?</li>
+<li>How well does the model eliminate negative samples accurately?</li>
+<li>Example: Detecting spam emails
+<ul>
+<li>What percentage of non-spam emails does the model detect among the actual non-spam emails?</li>
+</ul></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-right" style="width:2in"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="confusion-matrix-trade-off" class="slide level2">
+<h2>Confusion Matrix: Trade-off</h2>
+<p>3.) Trade-off between sensitivity and specificity</p>
+<ul>
+<li>How to make our model detect all the actual positives?</li>
+</ul>
+<p>4.) Best model = high sensitivity &amp; high specificity <span class="math inline">\(\rightarrow\)</span> F1-score</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-right">
+<figure>
+<p><img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-right" style="width:2in"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="is-logisitic-regression-equivalent-to-linear-regression-with-log-transformed-response" class="slide level2">
+<h2>Is Logisitic Regression equivalent to Linear Regression with Log-Transformed Response?</h2>
+</section>
 <section id="section-8" class="slide level2">
 <h2></h2>
 

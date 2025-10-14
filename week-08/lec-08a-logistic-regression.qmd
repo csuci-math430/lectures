@@ -448,6 +448,77 @@ ggplot(bank_data, aes(y = PersonalLoan, x = Income)) +
 
 ![](confusion-matrix.png){width=80% fig-align="center"}
 
+## Confusion Matrix: Sensitivity
+
+1.) Sensitivity (= Recall, True Positive Rate)
+
+\vspace*{0.75cm}
+
+- TP + FN = # of actual ____________
+- How well does the model classify/predict the positive value among the actual positive samples?
+- How well does the model detect positive samples accurately?
+- Example: Detecting spam emails
+    - What percentage of spam emails does the model detect among the actual spam emails?
+    
+:::: {.columns}
+
+::: {.column width="50%"}
+:::
+
+::: {.column width="50%"}
+  ![](confusion-matrix.png){width=2in fig-align="right"}
+:::
+
+::::
+    
+## Confusion Matrix: Specificity 
+
+2.) Specificity (= Selectivity, True Negative Rate)
+
+\vspace*{0.75cm}
+
+- TN + FP = # of actual _______________
+- How well does the model classify/predict the negative value among the actual negative samples?
+- How well does the model eliminate negative samples accurately?
+- Example: Detecting spam emails
+    - What percentage of non-spam emails does the model detect among the actual non-spam emails?
+    
+:::: {.columns}
+
+::: {.column width="50%"}
+:::
+
+::: {.column width="50%"}
+  ![](confusion-matrix.png){width=2in fig-align="right"}
+:::
+
+::::
+
+## Confusion Matrix: Trade-off
+
+3.) Trade-off between sensitivity and specificity
+
+- How to make our model detect all the actual positives?
+
+\vspace*{1cm}
+
+4.) Best model = high sensitivity \& high specificity $\rightarrow$ F1-score
+
+\vspace*{1cm}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+:::
+
+::: {.column width="50%"}
+  ![](confusion-matrix.png){width=2in fig-align="right"}
+:::
+
+::::
+
+## Is Logisitic Regression equivalent to Linear Regression with Log-Transformed Response?
+
 ## 
 
 ![](img/regression-types.jpg){fig-align="center"}
