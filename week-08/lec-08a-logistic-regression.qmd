@@ -15,12 +15,6 @@ format:
 
 library(tidyverse)
 library(janitor)
-
-bank_data_og <- read.csv("UniversalBank.csv") 
-
-bank_data <- bank_data_og |> 
-  select(-ID, -ZIPCode) |> 
-  mutate(Education = as.factor(Education))
 ```
 
 ## Examples of Outcome Variables
@@ -244,7 +238,7 @@ $$E[Y_i | X_{1, i}, ..., X_{p, i}] = \pi_i = \frac{e^{\beta_0 + \beta_1 X_{1, i}
 
 ## Logistic Response Function Rewritten
 
-$$\pi = \frac{1}{e^{-(\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1})} + 1}$$
+$$\pi_i = \frac{e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}{1 + e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}$$
 
 <!-- \begin{equation} -->
 <!--   \begin{split} -->
@@ -334,7 +328,7 @@ Recall for linear regression: $E[Y|X] = \beta_0 + \beta_1 X$
 
 ## Parameter Interpretation: Solving for $\beta_1$
 
-$$\log(\frac{E[Y|X]}{1 - E[Y|X]}) = \beta_0 + \beta_1 X$$
+$$\log(\frac{E[Y_i|X_i]}{1 - E[Y_i|X_i]}) = \beta_0 + \beta_1 X_i$$
 
 <!-- \begin{equation*} -->
 <!--   \begin{split} -->
@@ -360,76 +354,60 @@ Odds Ratio
 
 $e^{\beta_1} = \frac{\pi_a}{1-\pi_a} / \frac{\pi_b}{1-\pi_b}$
 
-\vspace*{1.25cm}
+We typically interpret the odds ratio $e^{\beta_1}$ instead of log odds ratio $\beta_1$
+
+<br>
 
 If $e^{\beta_1}$ = 1
 
-\vspace*{1cm}
+<br>
 
 If $e^{\beta_1}$ < 1
 
-\vspace*{1cm}
+<br>
 
 If $e^{\beta_1}$ > 1
 
 
-## Parameter Estimation: Maximum Likelihood Estimate
+## Parameter Estimation: MLE
 
 We want the Maximum Likelihood Estimate (MLE) for the $\beta_j$'s... why?
 
-The MLE aims to find estimates $\hat{\theta} = \{\hat{\beta}_0, \hat{\beta}_1, ..., \hat{\beta}_{p-1}\}$ that maximize the likelihood function over the parameter space with a given data set.
+- The MLE aims to find estimates $\hat{\theta} = \{\hat{\beta}_0, \hat{\beta}_1, ..., \hat{\beta}_{p-1}\}$ that maximize the likelihood function over the parameter space with a given data set.
 
-\vspace*{0.75cm}
+- The likelihood function $L(\theta | y)$ measures the goodness of fit of a statistical model to a sample of data for given values of the unknown parameters $\theta$.
 
-The likelihood function measures the goodness of fit of a statistical model to a sample of data for given values of the unknown parameters $\theta$.
-$$L(\theta | y) = f_{\theta}(y) = Pr(y | \theta)$$
-
-\vspace*{0.75cm}
-
-We want to find $\hat{\theta}$ to maximize $L(\theta | y)$
-
-## Parametr Estimation: MLE for Logistic Regression
-
-$$Y_i | X = x_i \sim Bernoulli(\pi_i),$$
-Where
-$$\pi_i = \frac{e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}{1 + e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}.$$
-
-We want to maximize
-
-$L(\theta | y)$
+- The Maximum Likelihood Estimators have desirable asymptotic (large sample size) properties
 
 
-## Parameter Estimation: MLE for Linear Regression
+## Parameter Estimation: MLE for Logistic Regression
 
-Why didn't we do this for linear regression?
-...
+We want to find estimators $\hat{\beta_0}, \hat{\beta_1}, ..., \hat{\beta_p}$ that maximize $L(\theta | y)$
 
-We did! But Ordinary Least Square estimates for the $\beta_j$'s in linear regression happen to be the MLE
+- For simple linear regression we can directly solve for the maximum likelihood estimators and they happen to be identical to the least square estimators
+- For logistic regression we can't directly calculate the estimators, we have to use optimization algorithms. Luckily those are implemented for us!
 
-- OLS is easier to solve than MLE for linear regression, so we choose to introduce it with OLS instead of solving for the $\hat{\theta} = (\hat{\mu}_i, \hat{\sigma}^2)$ that maximize
-$$L(\theta | y_i) = \prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\{-\frac{(y_i - \mu_i)}{2\sigma^2}\},$$
-with $\mu_i = \beta_0 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}$
 
 ## Inference With Logistic Regression
 
 In linear regression we used a t-test to test for statistically significant features.
 
-Beware in logistic regression there are different tests that can be used
+Beware in logistic regression there are different tests that can be used (we will talk about these)
 
-Likelihood Ratio Test
-
-\vspace*{1.5cm}
-
-Wald Test
-
-\vspace*{2cm}
+- Likelihood Ratio Test
+- Wald Test
 
 Know which one your software is using!
 
 
 ## Classification / Prediction With Logisitic Regression
 
-The cutoff should be a domain knowledge-based decision
+How do we convert the predicted probabilities to values of $Y$ (e.g., 0 vs 1 or TRUE vs FALSE)?
+
+. . .
+
+The cutoff should be a domain knowledge-based decision.
+The natural cutoff with no context would be 0.5
 
 ```{r}
 #| fig-height: 4.25
@@ -437,87 +415,23 @@ The cutoff should be a domain knowledge-based decision
 #| fig-align: center
 #| output-location: slide
 
-ggplot(bank_data, aes(y = PersonalLoan, x = Income)) +
+ggplot(sim_crash_data, aes(y = car_crash, x = income)) +
     geom_point() +
-    geom_smooth(color = "blue", method = glm, se = FALSE, method.args = list(family = "binomial")) +
+    geom_smooth(
+      method = glm, 
+      se = FALSE, 
+      method.args = list(family = "binomial")
+    ) +
     theme_bw(base_size = 10) + 
-    labs(y = "Personal Loan", x = "Income (in $1000s)")
+    labs(y = "Probability of car crash", x = "Income (in $1000s)")
 ```
 
 ## Confusion Matrix
 
+There are many considerations for how "well" our logistic model is predicting
+
 ![](confusion-matrix.png){width=80% fig-align="center"}
-
-## Confusion Matrix: Sensitivity
-
-1.) Sensitivity (= Recall, True Positive Rate)
-
-\vspace*{0.75cm}
-
-- TP + FN = # of actual ____________
-- How well does the model classify/predict the positive value among the actual positive samples?
-- How well does the model detect positive samples accurately?
-- Example: Detecting spam emails
-    - What percentage of spam emails does the model detect among the actual spam emails?
-    
-:::: {.columns}
-
-::: {.column width="50%"}
-:::
-
-::: {.column width="50%"}
-  ![](confusion-matrix.png){width=2in fig-align="right"}
-:::
-
-::::
-    
-## Confusion Matrix: Specificity 
-
-2.) Specificity (= Selectivity, True Negative Rate)
-
-\vspace*{0.75cm}
-
-- TN + FP = # of actual _______________
-- How well does the model classify/predict the negative value among the actual negative samples?
-- How well does the model eliminate negative samples accurately?
-- Example: Detecting spam emails
-    - What percentage of non-spam emails does the model detect among the actual non-spam emails?
-    
-:::: {.columns}
-
-::: {.column width="50%"}
-:::
-
-::: {.column width="50%"}
-  ![](confusion-matrix.png){width=2in fig-align="right"}
-:::
-
-::::
-
-## Confusion Matrix: Trade-off
-
-3.) Trade-off between sensitivity and specificity
-
-- How to make our model detect all the actual positives?
-
-\vspace*{1cm}
-
-4.) Best model = high sensitivity \& high specificity $\rightarrow$ F1-score
-
-\vspace*{1cm}
-
-:::: {.columns}
-
-::: {.column width="50%"}
-:::
-
-::: {.column width="50%"}
-  ![](confusion-matrix.png){width=2in fig-align="right"}
-:::
-
-::::
-
-## Is Logisitic Regression equivalent to Linear Regression with Log-Transformed Response?
+  
 
 ## 
 

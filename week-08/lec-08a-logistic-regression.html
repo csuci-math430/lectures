@@ -512,7 +512,7 @@ Professor Catalina Medina
 </section>
 <section id="logistic-response-function-rewritten" class="slide level2">
 <h2>Logistic Response Function Rewritten</h2>
-<p><span class="math display">\[\pi = \frac{1}{e^{-(\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1})} + 1}\]</span></p>
+<p><span class="math display">\[\pi_i = \frac{e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}{1 + e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}\]</span></p>
 <!-- \begin{equation} -->
 <!--   \begin{split} -->
 <!--     \pi &= \frac{e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}}{1 + e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}}\\ -->
@@ -564,7 +564,7 @@ Professor Catalina Medina
 </section>
 <section id="parameter-interpretation-solving-for-beta_1-1" class="slide level2">
 <h2>Parameter Interpretation: Solving for <span class="math inline">\(\beta_1\)</span></h2>
-<p><span class="math display">\[\log(\frac{E[Y|X]}{1 - E[Y|X]}) = \beta_0 + \beta_1 X\]</span></p>
+<p><span class="math display">\[\log(\frac{E[Y_i|X_i]}{1 - E[Y_i|X_i]}) = \beta_0 + \beta_1 X_i\]</span></p>
 <!-- \begin{equation*} -->
 <!--   \begin{split} -->
 <!--     &\color{blue}{\log(\frac{E[Y|X = x + 1]}{1 - E[Y|X = x + 1]})} - \color{purple}{\log(\frac{E[Y|X = x]}{1 - E[Y|X = x]})}\\ -->
@@ -585,50 +585,59 @@ Professor Catalina Medina
 <h2>Parameter Interpretation: Explaining <span class="math inline">\(\beta_1\)</span></h2>
 <p>Odds Ratio</p>
 <p><span class="math inline">\(e^{\beta_1} = \frac{\pi_a}{1-\pi_a} / \frac{\pi_b}{1-\pi_b}\)</span></p>
+<p>We typically interpret the odds ratio <span class="math inline">\(e^{\beta_1}\)</span> instead of log odds ratio <span class="math inline">\(\beta_1\)</span></p>
+<p><br></p>
 <p>If <span class="math inline">\(e^{\beta_1}\)</span> = 1</p>
+<p><br></p>
 <p>If <span class="math inline">\(e^{\beta_1}\)</span> &lt; 1</p>
+<p><br></p>
 <p>If <span class="math inline">\(e^{\beta_1}\)</span> &gt; 1</p>
 </section>
-<section id="parameter-estimation-maximum-likelihood-estimate" class="slide level2">
-<h2>Parameter Estimation: Maximum Likelihood Estimate</h2>
+<section id="parameter-estimation-mle" class="slide level2">
+<h2>Parameter Estimation: MLE</h2>
 <p>We want the Maximum Likelihood Estimate (MLE) for the <span class="math inline">\(\beta_j\)</span>’s… why?</p>
-<p>The MLE aims to find estimates <span class="math inline">\(\hat{\theta} = \{\hat{\beta}_0, \hat{\beta}_1, ..., \hat{\beta}_{p-1}\}\)</span> that maximize the likelihood function over the parameter space with a given data set.</p>
-<p>The likelihood function measures the goodness of fit of a statistical model to a sample of data for given values of the unknown parameters <span class="math inline">\(\theta\)</span>. <span class="math display">\[L(\theta | y) = f_{\theta}(y) = Pr(y | \theta)\]</span></p>
-<p>We want to find <span class="math inline">\(\hat{\theta}\)</span> to maximize <span class="math inline">\(L(\theta | y)\)</span></p>
-</section>
-<section id="parametr-estimation-mle-for-logistic-regression" class="slide level2">
-<h2>Parametr Estimation: MLE for Logistic Regression</h2>
-<p><span class="math display">\[Y_i | X = x_i \sim Bernoulli(\pi_i),\]</span> Where <span class="math display">\[\pi_i = \frac{e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}{1 + e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}.\]</span></p>
-<p>We want to maximize</p>
-<p><span class="math inline">\(L(\theta | y)\)</span></p>
-</section>
-<section id="parameter-estimation-mle-for-linear-regression" class="slide level2">
-<h2>Parameter Estimation: MLE for Linear Regression</h2>
-<p>Why didn’t we do this for linear regression? …</p>
-<p>We did! But Ordinary Least Square estimates for the <span class="math inline">\(\beta_j\)</span>’s in linear regression happen to be the MLE</p>
 <ul>
-<li>OLS is easier to solve than MLE for linear regression, so we choose to introduce it with OLS instead of solving for the <span class="math inline">\(\hat{\theta} = (\hat{\mu}_i, \hat{\sigma}^2)\)</span> that maximize <span class="math display">\[L(\theta | y_i) = \prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\{-\frac{(y_i - \mu_i)}{2\sigma^2}\},\]</span> with <span class="math inline">\(\mu_i = \beta_0 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}\)</span></li>
+<li><p>The MLE aims to find estimates <span class="math inline">\(\hat{\theta} = \{\hat{\beta}_0, \hat{\beta}_1, ..., \hat{\beta}_{p-1}\}\)</span> that maximize the likelihood function over the parameter space with a given data set.</p></li>
+<li><p>The likelihood function <span class="math inline">\(L(\theta | y)\)</span> measures the goodness of fit of a statistical model to a sample of data for given values of the unknown parameters <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p>The Maximum Likelihood Estimators have desirable asymptotic (large sample size) properties</p></li>
+</ul>
+</section>
+<section id="parameter-estimation-mle-for-logistic-regression" class="slide level2">
+<h2>Parameter Estimation: MLE for Logistic Regression</h2>
+<p>We want to find estimators <span class="math inline">\(\hat{\beta_0}, \hat{\beta_1}, ..., \hat{\beta_p}\)</span> that maximize <span class="math inline">\(L(\theta | y)\)</span></p>
+<ul>
+<li>For simple linear regression we can directly solve for the maximum likelihood estimators and they happen to be identical to the least square estimators</li>
+<li>For logistic regression we can’t directly calculate the estimators, we have to use optimization algorithms. Luckily those are implemented for us!</li>
 </ul>
 </section>
 <section id="inference-with-logistic-regression" class="slide level2">
 <h2>Inference With Logistic Regression</h2>
 <p>In linear regression we used a t-test to test for statistically significant features.</p>
-<p>Beware in logistic regression there are different tests that can be used</p>
-<p>Likelihood Ratio Test</p>
-<p>Wald Test</p>
+<p>Beware in logistic regression there are different tests that can be used (we will talk about these)</p>
+<ul>
+<li>Likelihood Ratio Test</li>
+<li>Wald Test</li>
+</ul>
 <p>Know which one your software is using!</p>
 </section>
 <section id="classification-prediction-with-logisitic-regression" class="slide level2">
 <h2>Classification / Prediction With Logisitic Regression</h2>
-<p>The cutoff should be a domain knowledge-based decision</p>
+<p>How do we convert the predicted probabilities to values of <span class="math inline">\(Y\)</span> (e.g., 0 vs 1 or TRUE vs FALSE)?</p>
+<div class="fragment">
+<p>The cutoff should be a domain knowledge-based decision. The natural cutoff with no context would be 0.5</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">ggplot</span>(bank_data, <span class="fu">aes</span>(<span class="at">y =</span> PersonalLoan, <span class="at">x =</span> Income)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">ggplot</span>(sim_crash_data, <span class="fu">aes</span>(<span class="at">y =</span> car_crash, <span class="at">x =</span> income)) <span class="sc">+</span></span>
 <span id="cb5-2"><a href=""></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href=""></a>    <span class="fu">geom_smooth</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">method =</span> glm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span></span>
-<span id="cb5-4"><a href=""></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> </span>
-<span id="cb5-5"><a href=""></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Personal Loan"</span>, <span class="at">x =</span> <span class="st">"Income (in $1000s)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href=""></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb5-4"><a href=""></a>      <span class="at">method =</span> glm, </span>
+<span id="cb5-5"><a href=""></a>      <span class="at">se =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb5-6"><a href=""></a>      <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb5-7"><a href=""></a>    ) <span class="sc">+</span></span>
+<span id="cb5-8"><a href=""></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> </span>
+<span id="cb5-9"><a href=""></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Probability of car crash"</span>, <span class="at">x =</span> <span class="st">"Income (in $1000s)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
+</div>
 </section>
 <section id="classification-prediction-with-logisitic-regression-output" class="slide level2 output-location-slide"><h2>Classification / Prediction With Logisitic Regression</h2><div class="cell output-location-slide" data-layout-align="center">
 <div class="cell-output-display">
@@ -640,78 +649,9 @@ Professor Catalina Medina
 </div>
 </div></section><section id="confusion-matrix" class="slide level2">
 <h2>Confusion Matrix</h2>
+<p>There are many considerations for how “well” our logistic model is predicting</p>
 
 <img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
-<section id="confusion-matrix-sensitivity" class="slide level2">
-<h2>Confusion Matrix: Sensitivity</h2>
-<p>1.) Sensitivity (= Recall, True Positive Rate)</p>
-<ul>
-<li>TP + FN = # of actual ____________</li>
-<li>How well does the model classify/predict the positive value among the actual positive samples?</li>
-<li>How well does the model detect positive samples accurately?</li>
-<li>Example: Detecting spam emails
-<ul>
-<li>What percentage of spam emails does the model detect among the actual spam emails?</li>
-</ul></li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-right" style="width:2in"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="confusion-matrix-specificity" class="slide level2">
-<h2>Confusion Matrix: Specificity</h2>
-<p>2.) Specificity (= Selectivity, True Negative Rate)</p>
-<ul>
-<li>TN + FP = # of actual _______________</li>
-<li>How well does the model classify/predict the negative value among the actual negative samples?</li>
-<li>How well does the model eliminate negative samples accurately?</li>
-<li>Example: Detecting spam emails
-<ul>
-<li>What percentage of non-spam emails does the model detect among the actual non-spam emails?</li>
-</ul></li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-right" style="width:2in"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="confusion-matrix-trade-off" class="slide level2">
-<h2>Confusion Matrix: Trade-off</h2>
-<p>3.) Trade-off between sensitivity and specificity</p>
-<ul>
-<li>How to make our model detect all the actual positives?</li>
-</ul>
-<p>4.) Best model = high sensitivity &amp; high specificity <span class="math inline">\(\rightarrow\)</span> F1-score</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-right">
-<figure>
-<p><img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-right" style="width:2in"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="is-logisitic-regression-equivalent-to-linear-regression-with-log-transformed-response" class="slide level2">
-<h2>Is Logisitic Regression equivalent to Linear Regression with Log-Transformed Response?</h2>
-</section>
 <section id="section-8" class="slide level2">
 <h2></h2>
 
