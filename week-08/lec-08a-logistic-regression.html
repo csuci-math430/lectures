@@ -403,38 +403,37 @@ Professor Catalina Medina
 </div>
 
 </section>
+<section id="examples-of-outcome-variables" class="slide level2">
+<h2>Examples of Outcome Variables</h2>
+<p>Specify variable type (think about the possible values)</p>
+<ul>
+<li><p>Temperature <!-- (Possible values $\mathbb{R}$) - Continuous --></p></li>
+<li><p>Presence of Alzheimer’s <!-- (Possible values: No,Yes) - Binary --></p></li>
+<li><p>Rent <!-- (Possible values $(0, \infty)$) --></p></li>
+<li><p>Computer operating system <!-- (Possible values: Windows, Linux, Mac) - Unordered categorical / Nomimal --></p></li>
+<li><p>Daily number of customers <!-- (Possible values:0, 1, 2) - Discrete/Count --></p></li>
+<li><p>Income class <!-- (Possible values: Lower, Middle, Upper class) - Ordered Categorical / Ordinal --></p></li>
+</ul>
+<div class="fragment">
+<p>Which could we model with <strong>linear regression</strong>?</p>
+</div>
+</section>
 <section id="section" class="slide level2">
 <h2></h2>
 <p>Identify the response variable type:</p>
-<ol type="1">
-<li>An online banking service must be able to determine whether or not a transaction being performed on the site is fraudulent, on the basis of the user’s IP address, past transaction history, and so forth.</li>
-</ol>
+<ul>
+<li>A car insurance company is trying to predict if an applicant will have a car crash in the next 5 years, based on their income.</li>
+</ul>
+<div class="fragment">
+<p>Can we model using linear regression anyways?</p>
+</div>
 </section>
 <section id="section-1" class="slide level2">
-<h2></h2>
-<p>Identify the response variable type:</p>
-<ol type="1">
-<li>A marine biologist is trying to model the number of offspring sea otters have in an inlet in Monteray Bay, based on size of the mother and stability of environment.</li>
-</ol>
-<div class="fragment">
-<ol start="2" type="1">
-<li>An car insurance company is trying to predict if an applicat will have a car crash in the next 5 years, based on their income.</li>
-</ol>
-</div>
-</section>
-<section id="section-2" class="slide level2">
-<h2></h2>
-<p>A <strong>binary</strong> variable is a categorical variable with only two levels</p>
-<div class="fragment">
-<p>Can we model using linear regression?</p>
-</div>
-</section>
-<section id="section-3" class="slide level2">
 <h2></h2>
 <p>Let’s simulated data…</p>
 
 <img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-3-1.png" style="width:50.0%" class="r-stretch"></section>
-<section id="section-4" class="slide level2">
+<section id="section-2" class="slide level2">
 <h2></h2>
 <p>What does it mean to fit a line to this data?</p>
 
@@ -442,20 +441,20 @@ Professor Catalina Medina
 <p>We don’t get an error, but …</p>
 </div>
 </section>
-<section id="section-5" class="slide level2">
+<section id="section-3" class="slide level2">
 <h2></h2>
-<p>Linear regression assumes <span class="math display">\[Y_i = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi} + \epsilon_i \text{ and } \epsilon_i\sim N(0, \sigma^2)\]</span></p>
+<p>Linear regression assumes <span class="math display">\[Y_i = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i} + \epsilon_i \text{ and } \epsilon_i\sim N(0, \sigma^2)\]</span></p>
 <p>so</p>
-<p><span class="math display">\[E[Y_i | X_{1i}, ..., X_{pi}] = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}\]</span></p>
+<p><span class="math display">\[E[Y_i | X_{1, i}, ..., X_{p, i}] = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}\]</span></p>
 <div class="fragment">
 <p>What is the expectation of a binary variable?</p>
 </div>
 </section>
-<section id="section-6" class="slide level2">
+<section id="section-4" class="slide level2">
 <h2></h2>
 
 <img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
-<section id="section-7" class="slide level2">
+<section id="section-5" class="slide level2">
 <h2></h2>
 <p>What is our expecation for people with an income of $45,000?</p>
 <div class="cell">
@@ -471,7 +470,7 @@ Professor Catalina Medina
 </div>
 
 <img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"></section>
-<section id="section-8" class="slide level2">
+<section id="section-6" class="slide level2">
 <h2></h2>
 <p>What is our expecation for people with an income of $90,000?</p>
 <div class="cell">
@@ -488,32 +487,162 @@ Professor Catalina Medina
 
 <img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="768"><p>Invalid probability!</p>
 </section>
-<section id="section-9" class="slide level2">
+<section id="section-7" class="slide level2">
 <h2></h2>
 <p>We can fit a linear model for a binary response, but:</p>
 <ul>
 <li>the line is really fitting the <span class="math inline">\(E[Y_i|X_i]\)</span>, the probability</li>
-<li>the range of <span class="math inline">\(E[Y_i|X_i] = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}\)</span> is <span class="math inline">\((-\infty, \infty)\)</span></li>
+<li>the range of <span class="math inline">\(E[Y_i|X_i] = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}\)</span> is <span class="math inline">\((-\infty, \infty)\)</span></li>
 <li>we may get invalid predictions</li>
 </ul>
 <div class="fragment">
 <p>We can use a logistic model instead!</p>
 </div>
 </section>
-<section id="section-10" class="slide level2">
-<h2></h2>
+<section id="logistic-function" class="slide level2">
+<h2>Logistic function</h2>
 <p>The logistic function ranges from 0 to 1</p>
-<p><span class="math inline">\(logistic(Z) = \frac{e^Z}{1 + e^Z}\)</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">data.frame</span>(<span class="at">Z =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="fl">0.01</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">logistic_Z =</span> <span class="fu">exp</span>(Z) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(Z))) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Z, <span class="at">y =</span> logistic_Z)) <span class="sc">+</span></span>
-<span id="cb5-4"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Z"</span>, <span class="at">y =</span> <span class="st">"Logistic(Z)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><span class="math display">\[\text{logistic}(Z) = \frac{e^Z}{1 + e^Z}\]</span></p>
 
-</div>
 <img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
-<section id="section-11" class="slide level2">
+<section id="logistic-regression-form-1" class="slide level2">
+<h2>Logistic regression: form 1</h2>
+<p>Let <span class="math inline">\(Y_i | X_{1, i}, ..., X_{p, i} \sim Bernoulli(\pi_i)\)</span>, which means <span class="math inline">\(E[Y_i | X_{1, i}, ..., X_{p, i}] = \pi_i\)</span></p>
+<p>The logistic regression model is <span class="math display">\[E[Y_i | X_{1, i}, ..., X_{p, i}] = \pi_i = \frac{e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}{1 + e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}\]</span></p>
+</section>
+<section id="logistic-response-function-rewritten" class="slide level2">
+<h2>Logistic Response Function Rewritten</h2>
+<p><span class="math display">\[\pi = \frac{1}{e^{-(\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1})} + 1}\]</span></p>
+<!-- \begin{equation} -->
+<!--   \begin{split} -->
+<!--     \pi &= \frac{e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}}{1 + e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}}\\ -->
+<!-- \pi + \pi e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}} &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}\\ -->
+<!-- \pi &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}} - \pi e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}\\ -->
+<!-- \pi &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}} (1 - \pi)\\ -->
+<!-- \frac{\pi}{1 - \pi} &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}\\ -->
+<!-- \log(\frac{\pi}{1 - \pi}) &= \beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1} -->
+<!--   \end{split} -->
+<!-- \end{equation} -->
+</section>
+<section id="logistic-regression-form-2" class="slide level2">
+<h2>Logistic regression: form 2</h2>
+<p>Through some algebra we can rewrite the model as <span class="math display">\[\log(\frac{\pi_i}{1 - \pi_i})  = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}\]</span></p>
+<div class="fragment">
+<ul>
+<li>Form 1 is useful for understanding why we use the logistic function</li>
+<li>Form 2 is useful for interpretation</li>
+</ul>
+</div>
+</section>
+<section id="logistic-regression-form-2-1" class="slide level2">
+<h2>Logistic regression: form 2</h2>
+<p><span class="math display">\[\log(\frac{\pi_i}{1 - \pi_i})  = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}\]</span></p>
+<ul>
+<li>Left side is called the <em>log odds</em> or <em>logit</em></li>
+</ul>
+</section>
+<section id="probability-and-odds" class="slide level2">
+<h2>Probability and Odds</h2>
+<p>What are odds? <!-- $$Odds = \frac{\text{Probability of success}}{\text{Probability of failure}} = \frac{P(Y = 1)}{P(Y = 0)} = \frac{P(Y=1)}{1 - P(Y=1)} $$ --></p>
+<p>Relationship between probability and odds <!-- $$\text{Probability} = \frac{\text{Odds}}{1 + \text{Odds}}$$ --></p>
+
+<img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
+<section id="parameter-interpretation-solving-for-beta_1" class="slide level2">
+<h2>Parameter Interpretation: Solving for <span class="math inline">\(\beta_1\)</span></h2>
+<p><span class="math display">\[\log(\frac{\pi}{1 - \pi}) = \beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}\]</span> Now we have a model that connects <span class="math inline">\(E[Y|X] = \pi\)</span> to our data, but how do we interpret the parameters, <span class="math inline">\(\beta_j\)</span>’s?</p>
+<p>Recall for linear regression: <span class="math inline">\(E[Y|X] = \beta_0 + \beta_1 X\)</span></p>
+<!-- \begin{equation*} -->
+<!--   \begin{split} -->
+<!--     &\color{blue}{E[Y|X=x+1]} - \color{purple}{E[Y|X=x]}\\ -->
+<!--     &=\color{blue}{\beta_0 + \beta_1(x + 1)} - (\color{purple}{\beta_0 + \beta_1x})\\ -->
+<!--     &=\color{blue}{\beta_0} + \color{blue}{\beta_1x} + \color{blue}{\beta_1} - \color{purple}{\beta_0} - \color{purple}{\beta_1x}\\ -->
+<!--     & = \beta_1 -->
+<!--   \end{split} -->
+<!-- \end{equation*} -->
+<!-- So -->
+<!-- $\beta_1$ = change in expected value of Y associated with a 1 unit change in X. -->
+</section>
+<section id="parameter-interpretation-solving-for-beta_1-1" class="slide level2">
+<h2>Parameter Interpretation: Solving for <span class="math inline">\(\beta_1\)</span></h2>
+<p><span class="math display">\[\log(\frac{E[Y|X]}{1 - E[Y|X]}) = \beta_0 + \beta_1 X\]</span></p>
+<!-- \begin{equation*} -->
+<!--   \begin{split} -->
+<!--     &\color{blue}{\log(\frac{E[Y|X = x + 1]}{1 - E[Y|X = x + 1]})} - \color{purple}{\log(\frac{E[Y|X = x]}{1 - E[Y|X = x]})}\\ -->
+<!--     &= \color{blue}{\beta_0 + \beta_1 (x + 1)} - (\color{purple}{\beta_0 + \beta_1 x)}\\ -->
+<!--     &= \color{blue}{\beta_0} + \color{blue}{\beta_1 x} + \color{blue}{\beta_1} - \color{purple}{\beta_0} - \color{purple}{\beta_1 x}\\ -->
+<!--     &= \beta_1 -->
+<!--   \end{split} -->
+<!-- \end{equation*} -->
+<!-- Let $\color{blue}{\pi_a = E[Y | X = x + 1]}$ and $\color{purple}{\pi_b = E[Y | X = x]}$, -->
+<!-- \begin{equation*} -->
+<!--   \begin{split} -->
+<!--     \color{blue}{\log(\frac{\pi_a}{1 - \pi_a})} - \color{purple}{\log(\frac{\pi_b}{1 - \pi_b})} &= \beta_1\\ -->
+<!--     \log(\color{blue}{\frac{\pi_a}{1 - \pi_a}} / \color{purple}{\frac{\pi_a}{1 - \pi_a}}) & = \beta_1 -->
+<!--   \end{split} -->
+<!-- \end{equation*} -->
+</section>
+<section id="parameter-interpretation-explaining-beta_1" class="slide level2">
+<h2>Parameter Interpretation: Explaining <span class="math inline">\(\beta_1\)</span></h2>
+<p>Odds Ratio</p>
+<p><span class="math inline">\(e^{\beta_1} = \frac{\pi_a}{1-\pi_a} / \frac{\pi_b}{1-\pi_b}\)</span></p>
+<p>If <span class="math inline">\(e^{\beta_1}\)</span> = 1</p>
+<p>If <span class="math inline">\(e^{\beta_1}\)</span> &lt; 1</p>
+<p>If <span class="math inline">\(e^{\beta_1}\)</span> &gt; 1</p>
+</section>
+<section id="parameter-estimation-maximum-likelihood-estimate" class="slide level2">
+<h2>Parameter Estimation: Maximum Likelihood Estimate</h2>
+<p>We want the Maximum Likelihood Estimate (MLE) for the <span class="math inline">\(\beta_j\)</span>’s… why?</p>
+<p>The MLE aims to find estimates <span class="math inline">\(\hat{\theta} = \{\hat{\beta}_0, \hat{\beta}_1, ..., \hat{\beta}_{p-1}\}\)</span> that maximize the likelihood function over the parameter space with a given data set.</p>
+<p>The likelihood function measures the goodness of fit of a statistical model to a sample of data for given values of the unknown parameters <span class="math inline">\(\theta\)</span>. <span class="math display">\[L(\theta | y) = f_{\theta}(y) = Pr(y | \theta)\]</span></p>
+<p>We want to find <span class="math inline">\(\hat{\theta}\)</span> to maximize <span class="math inline">\(L(\theta | y)\)</span></p>
+</section>
+<section id="parametr-estimation-mle-for-logistic-regression" class="slide level2">
+<h2>Parametr Estimation: MLE for Logistic Regression</h2>
+<p><span class="math display">\[Y_i | X = x_i \sim Bernoulli(\pi_i),\]</span> Where <span class="math display">\[\pi_i = \frac{e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}{1 + e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}.\]</span></p>
+<p>We want to maximize</p>
+<p><span class="math inline">\(L(\theta | y)\)</span></p>
+</section>
+<section id="parameter-estimation-mle-for-linear-regression" class="slide level2">
+<h2>Parameter Estimation: MLE for Linear Regression</h2>
+<p>Why didn’t we do this for linear regression? …</p>
+<p>We did! But Ordinary Least Square estimates for the <span class="math inline">\(\beta_j\)</span>’s in linear regression happen to be the MLE</p>
+<ul>
+<li>OLS is easier to solve than MLE for linear regression, so we choose to introduce it with OLS instead of solving for the <span class="math inline">\(\hat{\theta} = (\hat{\mu}_i, \hat{\sigma}^2)\)</span> that maximize <span class="math display">\[L(\theta | y_i) = \prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\{-\frac{(y_i - \mu_i)}{2\sigma^2}\},\]</span> with <span class="math inline">\(\mu_i = \beta_0 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}\)</span></li>
+</ul>
+</section>
+<section id="inference-with-logistic-regression" class="slide level2">
+<h2>Inference With Logistic Regression</h2>
+<p>In linear regression we used a t-test to test for statistically significant features.</p>
+<p>Beware in logistic regression there are different tests that can be used</p>
+<p>Likelihood Ratio Test</p>
+<p>Wald Test</p>
+<p>Know which one your software is using!</p>
+</section>
+<section id="classification-prediction-with-logisitic-regression" class="slide level2">
+<h2>Classification / Prediction With Logisitic Regression</h2>
+<p>The cutoff should be a domain knowledge-based decision</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">ggplot</span>(bank_data, <span class="fu">aes</span>(<span class="at">y =</span> PersonalLoan, <span class="at">x =</span> Income)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href=""></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href=""></a>    <span class="fu">geom_smooth</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">method =</span> glm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span></span>
+<span id="cb5-4"><a href=""></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> </span>
+<span id="cb5-5"><a href=""></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Personal Loan"</span>, <span class="at">x =</span> <span class="st">"Income (in $1000s)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section>
+<section id="classification-prediction-with-logisitic-regression-output" class="slide level2 output-location-slide"><h2>Classification / Prediction With Logisitic Regression</h2><div class="cell output-location-slide" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="lec-08a-logistic-regression_files/figure-revealjs/unnamed-chunk-12-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="confusion-matrix" class="slide level2">
+<h2>Confusion Matrix</h2>
+
+<img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="section-8" class="slide level2">
 <h2></h2>
 
 <img data-src="img/regression-types.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="quarto-auto-generated-content">

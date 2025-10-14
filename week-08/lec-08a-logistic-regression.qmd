@@ -15,33 +15,43 @@ format:
 
 library(tidyverse)
 library(janitor)
+
+bank_data_og <- read.csv("UniversalBank.csv") 
+
+bank_data <- bank_data_og |> 
+  select(-ID, -ZIPCode) |> 
+  mutate(Education = as.factor(Education))
 ```
 
-## 
+## Examples of Outcome Variables
 
-Identify the response variable type:
+Specify variable type (think about the possible values)
 
-1. An online banking service must be able to determine whether or not a transaction being performed on the site is fraudulent, on the basis of the user’s IP address, past transaction history, and so forth.
+- Temperature \newline <!-- (Possible values $\mathbb{R}$) - Continuous -->
+
+- Presence of Alzheimer's \newline <!-- (Possible values: No,Yes) - Binary -->
+
+- Rent \newline <!-- (Possible values $(0, \infty)$) -->
+
+- Computer operating system \newline <!-- (Possible values: Windows, Linux, Mac) - Unordered categorical / Nomimal --> 
+
+- Daily number of customers \newline <!-- (Possible values:0, 1, 2) - Discrete/Count -->
+
+- Income class \newline <!-- (Possible values: Lower, Middle, Upper class) - Ordered Categorical / Ordinal -->
 
 . . .
 
-## 
-
-Identify the response variable type:
-
-1. A marine biologist is trying to model the number of offspring sea otters have in an inlet in Monteray Bay, based on size of the mother and stability of environment.
-
-. . .
-
-2. An car insurance company is trying to predict if an applicat will have a car crash in the next 5 years, based on their income.
+Which could we model with **linear regression**?
 
 ##
 
-A **binary** variable is a categorical variable with only two levels
+Identify the response variable type:
+
+- A car insurance company is trying to predict if an applicant will have a car crash in the next 5 years, based on their income.
 
 . . .
 
-Can we model using linear regression?
+Can we model using linear regression anyways?
 
 ##
 
@@ -103,11 +113,11 @@ We don't get an error, but ...
 ## 
 
 Linear regression assumes 
-$$Y_i = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi} + \epsilon_i \text{ and } \epsilon_i\sim N(0, \sigma^2)$$
+$$Y_i = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i} + \epsilon_i \text{ and } \epsilon_i\sim N(0, \sigma^2)$$
 
 so 
 
-$$E[Y_i | X_{1i}, ..., X_{pi}] = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$$
+$$E[Y_i | X_{1, i}, ..., X_{p, i}] = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}$$
 
 . . .
 
@@ -202,20 +212,21 @@ Invalid probability!
 We can fit a linear model for a binary response, but:
 
 - the line is really fitting the $E[Y_i|X_i]$, the probability
-- the range of $E[Y_i|X_i] = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$ is $(-\infty, \infty)$
+- the range of $E[Y_i|X_i] = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}$ is $(-\infty, \infty)$
 - we may get invalid predictions
 
 . . .
 
 We can use a logistic model instead!
 
-##
+## Logistic function
 
 The logistic function ranges from 0 to 1
 
-$$logistic(Z) = \frac{e^Z}{1 + e^Z}$$
+$$\text{logistic}(Z) = \frac{e^Z}{1 + e^Z}$$
 
 ```{r}
+#| echo: false
 data.frame(Z = seq(-10, 10, by = 0.01)) |> 
   mutate(logistic_Z = exp(Z) / (1 + exp(Z))) |> 
   ggplot(aes(x = Z, y = logistic_Z)) +
@@ -224,7 +235,221 @@ data.frame(Z = seq(-10, 10, by = 0.01)) |>
 ```
 
 
+## Logistic regression: form 1
+
+Let $Y_i | X_{1, i}, ..., X_{p, i} \sim Bernoulli(\pi_i)$, which means $E[Y_i | X_{1, i}, ..., X_{p, i}] = \pi_i$
+
+The logistic regression model is
+$$E[Y_i | X_{1, i}, ..., X_{p, i}] = \pi_i = \frac{e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}{1 + e^{\beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}}}$$
+
+## Logistic Response Function Rewritten
+
+$$\pi = \frac{1}{e^{-(\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1})} + 1}$$
+
+<!-- \begin{equation} -->
+<!--   \begin{split} -->
+<!--     \pi &= \frac{e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}}{1 + e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}}\\ -->
+<!-- \pi + \pi e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}} &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}\\ -->
+<!-- \pi &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}} - \pi e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}\\ -->
+<!-- \pi &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}} (1 - \pi)\\ -->
+<!-- \frac{\pi}{1 - \pi} &= e^{\beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}}\\ -->
+<!-- \log(\frac{\pi}{1 - \pi}) &= \beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1} -->
+<!--   \end{split} -->
+<!-- \end{equation} -->
+
+
+## Logistic regression: form 2
+
+Through some algebra we can rewrite the model as
+$$\log(\frac{\pi_i}{1 - \pi_i})  = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}$$
+
+. . .
+
+- Form 1 is useful for understanding why we use the logistic function
+- Form 2 is useful for interpretation
+
+## Logistic regression: form 2
+
+$$\log(\frac{\pi_i}{1 - \pi_i})  = \beta_0 + \beta_1 X_{1, i} + ... + \beta_p X_{p, i}$$
+
+- Left side is called the *log odds* or *logit*
+
+
+
+## Probability and Odds
+
+What are odds?
+<!-- $$Odds = \frac{\text{Probability of success}}{\text{Probability of failure}} = \frac{P(Y = 1)}{P(Y = 0)} = \frac{P(Y=1)}{1 - P(Y=1)} $$ -->
+
+\vspace*{1.5cm}
+
+Relationship between probability and odds
+<!-- $$\text{Probability} = \frac{\text{Odds}}{1 + \text{Odds}}$$ -->
+
+\vspace*{1.5cm}
+
+
+```{r}
+#| fig-height: 3.75
+#| echo: false
+
+prob_seq <- seq(0, 1, by = 0.01)
+
+prob_odds_df <- data.frame(
+  "probability" = prob_seq,
+  "odds" = prob_seq / (1 - prob_seq),
+  "log_odds" = log(prob_seq / (1 - prob_seq))
+)
+
+gridExtra::grid.arrange(
+  ggplot(prob_odds_df, aes(x = probability, y = odds)) +
+    geom_point() +
+    labs(x = "Probability", y = "Odds") +
+    theme_bw(base_size = 20),
+  ggplot(prob_odds_df, aes(x = probability, y = log_odds)) +
+    geom_point() +
+    labs(x = "Probability", y = "Log Odds") +
+    theme_bw(base_size = 20),
+  nrow = 1
+)
+```
+
+## Parameter Interpretation: Solving for $\beta_1$
+
+$$\log(\frac{\pi}{1 - \pi}) = \beta_0 + \beta_1 X_1 + ... + \beta_{p-1} X_{p-1}$$
+Now we have a model that connects $E[Y|X] = \pi$ to our data, but how do we interpret the parameters, $\beta_j$'s?
+
+Recall for linear regression: $E[Y|X] = \beta_0 + \beta_1 X$
+
+<!-- \begin{equation*} -->
+<!--   \begin{split} -->
+<!--     &\color{blue}{E[Y|X=x+1]} - \color{purple}{E[Y|X=x]}\\ -->
+<!--     &=\color{blue}{\beta_0 + \beta_1(x + 1)} - (\color{purple}{\beta_0 + \beta_1x})\\ -->
+<!--     &=\color{blue}{\beta_0} + \color{blue}{\beta_1x} + \color{blue}{\beta_1} - \color{purple}{\beta_0} - \color{purple}{\beta_1x}\\ -->
+<!--     & = \beta_1 -->
+<!--   \end{split} -->
+<!-- \end{equation*} -->
+<!-- So -->
+<!-- $\beta_1$ = change in expected value of Y associated with a 1 unit change in X. -->
+
+## Parameter Interpretation: Solving for $\beta_1$
+
+$$\log(\frac{E[Y|X]}{1 - E[Y|X]}) = \beta_0 + \beta_1 X$$
+
+<!-- \begin{equation*} -->
+<!--   \begin{split} -->
+<!--     &\color{blue}{\log(\frac{E[Y|X = x + 1]}{1 - E[Y|X = x + 1]})} - \color{purple}{\log(\frac{E[Y|X = x]}{1 - E[Y|X = x]})}\\ -->
+<!--     &= \color{blue}{\beta_0 + \beta_1 (x + 1)} - (\color{purple}{\beta_0 + \beta_1 x)}\\ -->
+<!--     &= \color{blue}{\beta_0} + \color{blue}{\beta_1 x} + \color{blue}{\beta_1} - \color{purple}{\beta_0} - \color{purple}{\beta_1 x}\\ -->
+<!--     &= \beta_1 -->
+<!--   \end{split} -->
+<!-- \end{equation*} -->
+
+<!-- Let $\color{blue}{\pi_a = E[Y | X = x + 1]}$ and $\color{purple}{\pi_b = E[Y | X = x]}$, -->
+
+<!-- \begin{equation*} -->
+<!--   \begin{split} -->
+<!--     \color{blue}{\log(\frac{\pi_a}{1 - \pi_a})} - \color{purple}{\log(\frac{\pi_b}{1 - \pi_b})} &= \beta_1\\ -->
+<!--     \log(\color{blue}{\frac{\pi_a}{1 - \pi_a}} / \color{purple}{\frac{\pi_a}{1 - \pi_a}}) & = \beta_1 -->
+<!--   \end{split} -->
+<!-- \end{equation*} -->
+
+## Parameter Interpretation: Explaining $\beta_1$
+
+Odds Ratio
+
+$e^{\beta_1} = \frac{\pi_a}{1-\pi_a} / \frac{\pi_b}{1-\pi_b}$
+
+\vspace*{1.25cm}
+
+If $e^{\beta_1}$ = 1
+
+\vspace*{1cm}
+
+If $e^{\beta_1}$ < 1
+
+\vspace*{1cm}
+
+If $e^{\beta_1}$ > 1
+
+
+## Parameter Estimation: Maximum Likelihood Estimate
+
+We want the Maximum Likelihood Estimate (MLE) for the $\beta_j$'s... why?
+
+The MLE aims to find estimates $\hat{\theta} = \{\hat{\beta}_0, \hat{\beta}_1, ..., \hat{\beta}_{p-1}\}$ that maximize the likelihood function over the parameter space with a given data set.
+
+\vspace*{0.75cm}
+
+The likelihood function measures the goodness of fit of a statistical model to a sample of data for given values of the unknown parameters $\theta$.
+$$L(\theta | y) = f_{\theta}(y) = Pr(y | \theta)$$
+
+\vspace*{0.75cm}
+
+We want to find $\hat{\theta}$ to maximize $L(\theta | y)$
+
+## Parametr Estimation: MLE for Logistic Regression
+
+$$Y_i | X = x_i \sim Bernoulli(\pi_i),$$
+Where
+$$\pi_i = \frac{e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}{1 + e^{\beta_1 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}}}.$$
+
+We want to maximize
+
+$L(\theta | y)$
+
+
+## Parameter Estimation: MLE for Linear Regression
+
+Why didn't we do this for linear regression?
+...
+
+We did! But Ordinary Least Square estimates for the $\beta_j$'s in linear regression happen to be the MLE
+
+- OLS is easier to solve than MLE for linear regression, so we choose to introduce it with OLS instead of solving for the $\hat{\theta} = (\hat{\mu}_i, \hat{\sigma}^2)$ that maximize
+$$L(\theta | y_i) = \prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\{-\frac{(y_i - \mu_i)}{2\sigma^2}\},$$
+with $\mu_i = \beta_0 + \beta_1 x_{1i} + ... + \beta_{p-1} x_{(p-1)i}$
+
+## Inference With Logistic Regression
+
+In linear regression we used a t-test to test for statistically significant features.
+
+Beware in logistic regression there are different tests that can be used
+
+Likelihood Ratio Test
+
+\vspace*{1.5cm}
+
+Wald Test
+
+\vspace*{2cm}
+
+Know which one your software is using!
+
+
+## Classification / Prediction With Logisitic Regression
+
+The cutoff should be a domain knowledge-based decision
+
+```{r}
+#| fig-height: 4.25
+#| fig-width: 6
+#| fig-align: center
+#| output-location: slide
+
+ggplot(bank_data, aes(y = PersonalLoan, x = Income)) +
+    geom_point() +
+    geom_smooth(color = "blue", method = glm, se = FALSE, method.args = list(family = "binomial")) +
+    theme_bw(base_size = 10) + 
+    labs(y = "Personal Loan", x = "Income (in $1000s)")
+```
+
+## Confusion Matrix
+
+![](confusion-matrix.png){width=80% fig-align="center"}
+
 ## 
 
 ![](img/regression-types.jpg){fig-align="center"}
+
 
