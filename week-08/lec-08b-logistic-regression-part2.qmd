@@ -1,0 +1,159 @@
+---
+title: "Math 430: Lecture 8b"
+subtitle: "Logistic regression part 2d"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(janitor)
+```
+
+## Logisitic regression
+
+$$\log\left(\frac{E[Y_i | X_{1i}, ..., X_{pi}]}{1 - E[Y_i | X_{1i}, ..., X_{pi}]}\right) = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$$
+
+We often let $\pi_i = E[Y_i | X_{1i}, ..., X_{pi}]$ so our model is written
+
+$$\log\left(\frac{\pi_i}{1 - \pi_i}\right) = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$$
+
+# Inference
+
+In our class we will focus on two methods for hypothesis tests and confidence intervals
+
+- Wald
+- Likelihood ratio
+
+## Comparing inference methods
+
+::::{.columns}
+:::{.column width="50%"}
+**Wald** - For a single predictor
+
+- Pro: Easy to calculate
+- Pro: Only requires fitting one model
+- Con: Invalid for small sample size
+- Con: Confidence intervals may contain invalid values outside [0,1]
+
+:::
+
+:::{.column width="50%"}
+**Likelihood ratio** - Compares nested models
+  
+- Pro: Confidence intervals will only contain valid values
+- Pro: Not invalidated by small sample size
+- Con: Requires fitting two models
+- Con: Not as easy to fit, bounds require optimization algorithm 
+
+:::
+::::
+
+## Coronary heart disease (cdh) data
+
+A retrospective sample of males in a heart-disease high-risk region of the Western Cape, South Africa. 
+These data are taken from a larger dataset, described in  Rousseauw et al, 1983, South African Medical Journal.
+
+
+## 
+
+- `sbp`		systolic blood pressure
+- `tobacco`		cumulative tobacco (kg)
+- `ldl`		low density lipoprotein cholesterol
+- `adiposity` body fat
+- `famhist`		family history of heart disease
+- `typea`		type-A behavior
+- `obesity` 
+- `alcohol`		current alcohol consumption
+- `age`		age at onset
+
+##
+
+```{r}
+heart_data <- read_csv(
+  "https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data", 
+  show_col_types = FALSE
+)
+
+glimpse(heart_data)
+```
+
+## Fitting the model
+
+\begin{equation*}
+  \begin{split}
+    \log(\frac{\pi_i}{1 - \pi_i}) &= \beta_0 + \beta_1 X_{\text{Blood pressure}, i}\\
+    &+ \beta_2 X_{\text{Family history}, i} + \beta_1 X_{\text{Age}, i}
+  \end{split}
+\end{equation*}
+
+```{r}
+heart_model <- glm(
+  chd ~ sbp + famhist + age,
+  data = heart_data,
+  family = binomial # This tells it to do logisitic regression
+)
+```
+
+##
+
+```{r}
+summary(heart_model)
+```
+
+
+
+# Prediction
+
+## Confusion Matrix
+
+![](confusion-matrix.png){width=80% fig-align="center"}
+
+## Confusion Matrix
+
+\vspace*{0.5cm}
+
+![](confusion-matrix-with-measures.png){width=100% fig-align="center"}
+
+
+## Confusion Matrix: Sensitivity
+
+1.) Sensitivity (= Recall, True Positive Rate)
+
+\vspace*{0.75cm}
+
+- TP + FN = # of actual ____________
+- How well does the model classify/predict the positive value among the actual positive samples?
+- How well does the model detect positive samples accurately?
+- Example: Detecting spam emails
+    - What percentage of spam emails does the model detect among the actual spam emails?
+  
+    
+## Confusion Matrix: Specificity 
+
+2.) Specificity (= Selectivity, True Negative Rate)
+
+\vspace*{0.75cm}
+
+- TN + FP = # of actual _______________
+- How well does the model classify/predict the negative value among the actual negative samples?
+- How well does the model eliminate negative samples accurately?
+- Example: Detecting spam emails
+    - What percentage of non-spam emails does the model detect among the actual non-spam emails?
+    
+
+## Confusion Matrix: Trade-off
+
+3.) Trade-off between sensitivity and specificity
+
+- Best model = high sensitivity \& high specificity $\rightarrow$ F1-score
+
+\vspace*{1cm}
+
