@@ -1,0 +1,106 @@
+---
+title: "Math 430: Lecture 9a"
+subtitle: "Logistic regression for prediction"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(janitor)
+```
+
+# Prediction
+
+## Confusion Matrix
+
+![](confusion-matrix.png){width=80% fig-align="center"}
+
+## Confusion Matrix
+
+\vspace*{0.5cm}
+
+![](confusion-matrix-with-measures.png){width=100% fig-align="center"}
+
+
+## Confusion Matrix: Sensitivity
+
+1.) Sensitivity (= Recall, True Positive Rate)
+
+\vspace*{0.75cm}
+
+- TP + FN = # of actual ____________
+- How well does the model classify/predict the positive value among the actual positive samples?
+- How well does the model detect positive samples accurately?
+- Example: Detecting spam emails
+    - What percentage of spam emails does the model detect among the actual spam emails?
+  
+    
+## Confusion Matrix: Specificity 
+
+2.) Specificity (= Selectivity, True Negative Rate)
+
+\vspace*{0.75cm}
+
+- TN + FP = # of actual _______________
+- How well does the model classify/predict the negative value among the actual negative samples?
+- How well does the model eliminate negative samples accurately?
+- Example: Detecting spam emails
+    - What percentage of non-spam emails does the model detect among the actual non-spam emails?
+    
+
+## Confusion Matrix: Trade-off
+
+3.) Trade-off between sensitivity and specificity
+
+- Best model = high sensitivity \& high specificity $\rightarrow$ F1-score
+
+$$F1-score = \frac{2}{Precision^{-1} + Recall^{-1}} = \frac{2TP}{2TP + FP + FN}$$
+
+\vspace*{1cm}
+
+## Computing confusion matrix
+
+First compute the predictions for each observation.
+```{r}
+predicted_probabilities <- predict(
+  heart_full_model, 
+  newdata = heart_data, 
+  type = "response"
+)
+
+predicted_survival <- ifelse(predicted_probabilities > 0.5, yes = 1, no = 0) 
+```
+
+Next we compute the confusion matrix for our *in-sample predictions*, this is different from *out-of-sample predictions* where we would check our predictive performance on new data.
+
+## Computing confusion matrix
+
+```{r}
+library(caret)
+
+confusionMatrix(
+  as.factor(predicted_survival), 
+  as.factor(heart_data$chd)
+)
+```
+
+## Computing F-1 score
+
+```{r}
+confusion_matrix <- confusionMatrix(
+  as.factor(predicted_survival), 
+  as.factor(heart_data$chd)
+)
+
+confusion_matrix$byClass["F1"]
+```
+
+

@@ -422,9 +422,9 @@ Professor Catalina Medina
 <h2></h2>
 <p><span class="math inline">\(\beta_1\)</span> is the log odds ratio associated with a one unit increase in <span class="math inline">\(X_1\)</span></p>
 <ul>
-<li><span class="math inline">\(exp(\beta_1)\)</span> is the odds ratio associated with a one unit increase in <span class="math inline">\(X_1\)</span></li>
-<li><span class="math inline">\(exp(\beta_1)\)</span> is the multiplicative decrease / factor decrease in odds associated with a one unit increase in <span class="math inline">\(X_i\)</span></li>
-<li>For <span class="math inline">\(exp(\beta_1)&gt;1\)</span>, <span class="math inline">\(100 * (exp(\beta_1) - 1)\)</span>% is the increase in in odds associated with a one unit increase in <span class="math inline">\(X_1\)</span>. If <span class="math inline">\(exp(\beta_1)&gt;1\)</span>, it would be the <span class="math inline">\(100 * (1 - exp(\beta_1))\)</span>% decrease</li>
+<li><span class="math inline">\(e^{\beta_1}\)</span> is the odds ratio associated with a one unit increase in <span class="math inline">\(X_1\)</span></li>
+<li><span class="math inline">\(e^{\beta_1}\)</span> is the multiplicative change / factor change in odds associated with a one unit increase in <span class="math inline">\(X_i\)</span></li>
+<li>For <span class="math inline">\(e^{\beta_1} &gt; 1\)</span>, <span class="math inline">\(100 * (e^{\beta_1} - 1)\)</span>% is the increase in odds associated with a one unit increase in <span class="math inline">\(X_1\)</span>. For <span class="math inline">\(e^{\beta_1} &lt; 1\)</span>, we have <span class="math inline">\(100 * (1 - e^{\beta_1})\)</span>% decrease in odds associated with a one unit increase in <span class="math inline">\(X_1\)</span></li>
 </ul>
 <p>… with all other <span class="math inline">\(X_i\)</span>’s held constant.</p>
 </section></section>
@@ -441,7 +441,7 @@ Professor Catalina Medina
 <h2>Comparing inference methods</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Wald</strong> - For a single predictor</p>
+<p><strong>Wald</strong> - For a single predictor*</p>
 <ul>
 <li>Pro: Easy to calculate</li>
 <li>Pro: Only requires fitting one model</li>
@@ -470,7 +470,7 @@ Professor Catalina Medina
 <li>Pro: Confidence intervals will only contain valid values</li>
 <li>Pro: Not invalidated by small sample size</li>
 <li>Con: Requires fitting two models</li>
-<li>Con: Not as easy to fit, bounds require optimization algorithm</li>
+<li>Con: “Not as easy to fit”</li>
 </ul>
 </div>
 </div>
@@ -642,7 +642,7 @@ Model 2: chd ~ sbp + famhist + age
 <section id="testing-example-2" class="title-slide slide level1 center">
 <h1>Testing example 2</h1>
 <p>Let’s test if systolic blood pressure and family history should be in the model</p>
-<p><span class="math inline">\(H_0: \beta_1 = 0 &amp; \beta_2 = 0\)</span></p>
+<p><span class="math inline">\(H_0: \beta_1 = \beta_2 = 0\)</span></p>
 <p><span class="math inline">\(H_A:\)</span> At least one of <span class="math inline">\(\beta_1\)</span> or <span class="math inline">\(\beta_2\)</span> are zero</p>
 <p>We can do this with a Wald or Likelihood ratio test</p>
 </section>
@@ -663,6 +663,9 @@ Model 2: chd ~ sbp + famhist + age
 Chi-squared test:
 X2 = 75.0, df = 2, P(&gt; X2) = 0.0</code></pre>
 </div>
+</div>
+<div class="fragment">
+<p>So we can test subsets of predictors with a Wald test, but it is different…</p>
 </div>
 </section>
 <section id="likelihood-ratio-test" class="slide level2">
@@ -699,130 +702,19 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <ul>
 <li>We already listed the pros and cons, so with those considerations you have to make a choice.</li>
 <li>I think it is important that you specify what test you used when providing the p-value.</li>
+<li>If you have a small sample size DON’T use Wald</li>
 </ul>
 </div>
 </section></section>
-<section>
-<section id="prediction" class="title-slide slide level1 center">
-<h1>Prediction</h1>
-
-</section>
-<section id="confusion-matrix" class="slide level2">
-<h2>Confusion Matrix</h2>
-
-<img data-src="confusion-matrix.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
-<section id="confusion-matrix-1" class="slide level2">
-<h2>Confusion Matrix</h2>
-
-<img data-src="confusion-matrix-with-measures.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
-<section id="confusion-matrix-sensitivity" class="slide level2">
-<h2>Confusion Matrix: Sensitivity</h2>
-<p>1.) Sensitivity (= Recall, True Positive Rate)</p>
-<ul>
-<li>TP + FN = # of actual ____________</li>
-<li>How well does the model classify/predict the positive value among the actual positive samples?</li>
-<li>How well does the model detect positive samples accurately?</li>
-<li>Example: Detecting spam emails
-<ul>
-<li>What percentage of spam emails does the model detect among the actual spam emails?</li>
-</ul></li>
-</ul>
-</section>
-<section id="confusion-matrix-specificity" class="slide level2">
-<h2>Confusion Matrix: Specificity</h2>
-<p>2.) Specificity (= Selectivity, True Negative Rate)</p>
-<ul>
-<li>TN + FP = # of actual _______________</li>
-<li>How well does the model classify/predict the negative value among the actual negative samples?</li>
-<li>How well does the model eliminate negative samples accurately?</li>
-<li>Example: Detecting spam emails
-<ul>
-<li>What percentage of non-spam emails does the model detect among the actual non-spam emails?</li>
-</ul></li>
-</ul>
-</section>
-<section id="confusion-matrix-trade-off" class="slide level2">
-<h2>Confusion Matrix: Trade-off</h2>
-<p>3.) Trade-off between sensitivity and specificity</p>
-<ul>
-<li>Best model = high sensitivity &amp; high specificity <span class="math inline">\(\rightarrow\)</span> F1-score</li>
-</ul>
-<p><span class="math display">\[F1-score = \frac{2}{Precision^{-1} + Recall^{-1}} = \frac{2TP}{2TP + FP + FN}\]</span></p>
-</section>
-<section id="computing-confusion-matrix" class="slide level2">
-<h2>Computing confusion matrix</h2>
-<p>First compute the predictions for each observation.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>predicted_probabilities <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
-<span id="cb15-2"><a href=""></a>  heart_full_model, </span>
-<span id="cb15-3"><a href=""></a>  <span class="at">newdata =</span> heart_data, </span>
-<span id="cb15-4"><a href=""></a>  <span class="at">type =</span> <span class="st">"response"</span></span>
-<span id="cb15-5"><a href=""></a>)</span>
-<span id="cb15-6"><a href=""></a></span>
-<span id="cb15-7"><a href=""></a>predicted_survival <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(predicted_probabilities <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="at">yes =</span> <span class="dv">1</span>, <span class="at">no =</span> <span class="dv">0</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Next we compute the confusion matrix for our <em>in-sample predictions</em>, this is different from <em>out-of-sample predictions</em> where we would check our predictive performance on new data.</p>
-</section>
-<section id="computing-confusion-matrix-1" class="slide level2">
-<h2>Computing confusion matrix</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">library</span>(caret)</span>
-<span id="cb16-2"><a href=""></a></span>
-<span id="cb16-3"><a href=""></a><span class="fu">confusionMatrix</span>(</span>
-<span id="cb16-4"><a href=""></a>  <span class="fu">as.factor</span>(predicted_survival), </span>
-<span id="cb16-5"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd)</span>
-<span id="cb16-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Confusion Matrix and Statistics
-
-          Reference
-Prediction   0   1
-         0 258  85
-         1  44  75
-                                          
-               Accuracy : 0.7208          
-                 95% CI : (0.6775, 0.7612)
-    No Information Rate : 0.6537          
-    P-Value [Acc &gt; NIR] : 0.0012297       
-                                          
-                  Kappa : 0.3438          
-                                          
- Mcnemar's Test P-Value : 0.0004286       
-                                          
-            Sensitivity : 0.8543          
-            Specificity : 0.4688          
-         Pos Pred Value : 0.7522          
-         Neg Pred Value : 0.6303          
-             Prevalence : 0.6537          
-         Detection Rate : 0.5584          
-   Detection Prevalence : 0.7424          
-      Balanced Accuracy : 0.6615          
-                                          
-       'Positive' Class : 0               
-                                          </code></pre>
-</div>
-</div>
-</section>
-<section id="computing-f-1-score" class="slide level2">
-<h2>Computing F-1 score</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(</span>
-<span id="cb18-2"><a href=""></a>  <span class="fu">as.factor</span>(predicted_survival), </span>
-<span id="cb18-3"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd)</span>
-<span id="cb18-4"><a href=""></a>)</span>
-<span id="cb18-5"><a href=""></a></span>
-<span id="cb18-6"><a href=""></a>confusion_matrix<span class="sc">$</span>byClass[<span class="st">"F1"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> F1 
-0.8 </code></pre>
-</div>
-</div>
+<section id="section-7" class="title-slide slide level1 center">
+<h1></h1>
+<p><em>We didn’t have time to cover prediction in class so that was moved to Tuesday lecture 9a.</em></p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
