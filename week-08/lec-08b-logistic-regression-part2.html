@@ -410,6 +410,25 @@ Professor Catalina Medina
 <p><span class="math display">\[\log\left(\frac{\pi_i}{1 - \pi_i}\right) = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}\]</span></p>
 </section>
 <section>
+<section id="interpreting-coefficients" class="title-slide slide level1 center">
+<h1>Interpreting coefficients</h1>
+
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p><span class="math inline">\(\beta_0\)</span> is the log odds for when all <span class="math inline">\(X_i\)</span>’s are zero.</p>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<p><span class="math inline">\(\beta_1\)</span> is the log odds ratio associated with a one unit increase in <span class="math inline">\(X_1\)</span></p>
+<ul>
+<li><span class="math inline">\(exp(\beta_1)\)</span> is the odds ratio associated with a one unit increase in <span class="math inline">\(X_1\)</span></li>
+<li><span class="math inline">\(exp(\beta_1)\)</span> is the multiplicative decrease / factor decrease in odds associated with a one unit increase in <span class="math inline">\(X_i\)</span></li>
+<li>For <span class="math inline">\(exp(\beta_1)&gt;1\)</span>, <span class="math inline">\(100 * (exp(\beta_1) - 1)\)</span>% is the increase in in odds associated with a one unit increase in <span class="math inline">\(X_1\)</span>. If <span class="math inline">\(exp(\beta_1)&gt;1\)</span>, it would be the <span class="math inline">\(100 * (1 - exp(\beta_1))\)</span>% decrease</li>
+</ul>
+<p>… with all other <span class="math inline">\(X_i\)</span>’s held constant.</p>
+</section></section>
+<section>
 <section id="inference" class="title-slide slide level1 center">
 <h1>Inference</h1>
 <p>In our class we will focus on two methods for hypothesis tests and confidence intervals</p>
@@ -419,6 +438,22 @@ Professor Catalina Medina
 </ul>
 </section>
 <section id="comparing-inference-methods" class="slide level2">
+<h2>Comparing inference methods</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Wald</strong> - For a single predictor</p>
+<ul>
+<li>Pro: Easy to calculate</li>
+<li>Pro: Only requires fitting one model</li>
+<li>Con: Invalid for small sample size</li>
+<li>Con: Confidence intervals may contain invalid values outside [0,1]</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p>Likelihood ratio - similar to partial F / F-test for linear regression</p>
+</div>
+</div>
+</section>
+<section id="comparing-inference-methods-1" class="slide level2">
 <h2>Comparing inference methods</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -444,7 +479,7 @@ Professor Catalina Medina
 <h2>Coronary heart disease (cdh) data</h2>
 <p>A retrospective sample of males in a heart-disease high-risk region of the Western Cape, South Africa. These data are taken from a larger dataset, described in Rousseauw et al, 1983, South African Medical Journal.</p>
 </section>
-<section id="section" class="slide level2">
+<section id="section-2" class="slide level2">
 <h2></h2>
 <ul>
 <li><code>sbp</code> systolic blood pressure</li>
@@ -458,7 +493,7 @@ Professor Catalina Medina
 <li><code>age</code> age at onset</li>
 </ul>
 </section>
-<section id="section-1" class="slide level2">
+<section id="section-3" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>heart_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
@@ -500,7 +535,7 @@ $ chd       &lt;dbl&gt; 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1,
 <span id="cb3-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section-2" class="slide level2">
+<section id="section-4" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">summary</span>(heart_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -526,6 +561,145 @@ AIC: 513.24
 
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
+</div>
+</section></section>
+<section>
+<section id="testing-example-1" class="title-slide slide level1 center">
+<h1>Testing example 1</h1>
+<p>Let’s test if systolic blood pressure should be in the model</p>
+<p><span class="math inline">\(H_0: \beta_1 = 0\)</span></p>
+<p><span class="math inline">\(H_A: \beta_1 \neq 0\)</span></p>
+<p>We can do this with a Wald or Likelihood ratio test</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>heart_full_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb6-2"><a href=""></a>  chd <span class="sc">~</span> sbp <span class="sc">+</span> famhist <span class="sc">+</span> age,</span>
+<span id="cb6-3"><a href=""></a>  <span class="at">data =</span> heart_data,</span>
+<span id="cb6-4"><a href=""></a>  <span class="at">family =</span> binomial <span class="co"># This tells it to do logisitic regression</span></span>
+<span id="cb6-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="performing-wald-test" class="slide level2">
+<h2>Performing Wald Test</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">summary</span>(heart_full_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = chd ~ sbp + famhist + age, family = binomial, data = heart_data)
+
+Coefficients:
+                Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)    -4.500388   0.767490  -5.864 4.52e-09 ***
+sbp             0.006404   0.005389   1.188    0.235    
+famhistPresent  0.943106   0.216915   4.348 1.37e-05 ***
+age             0.056222   0.009239   6.086 1.16e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 596.11  on 461  degrees of freedom
+Residual deviance: 505.24  on 458  degrees of freedom
+AIC: 513.24
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p><em>The <code>summary()</code> function displays Wald Statistics.</em></p>
+</section>
+<section id="performing-likelihood-ratio-tests" class="slide level2">
+<h2>Performing Likelihood Ratio Tests</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>heart_reduced_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb9-2"><a href=""></a>  chd <span class="sc">~</span> famhist <span class="sc">+</span> age,</span>
+<span id="cb9-3"><a href=""></a>  <span class="at">data =</span> heart_data,</span>
+<span id="cb9-4"><a href=""></a>  <span class="at">family =</span> binomial <span class="co"># This tells it to do logisitic regression</span></span>
+<span id="cb9-5"><a href=""></a>)</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a><span class="fu">anova</span>(heart_reduced_model, heart_full_model, <span class="at">test =</span> <span class="st">"LRT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: chd ~ famhist + age
+Model 2: chd ~ sbp + famhist + age
+  Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
+1       459     506.66                     
+2       458     505.24  1    1.414   0.2344</code></pre>
+</div>
+</div>
+</section>
+<section id="section-5" class="slide level2">
+<h2></h2>
+<ul>
+<li>The p-value for Wald test: 0.235</li>
+<li>The p-value for the Likelihood Ratio Test: 0.2344</li>
+<li>The two p-values won’t necessarily equal the same. In practice you would choose one test to perform, you wouldn’t fit both.</li>
+</ul>
+<p>A probability of 0.02344 is not unlikely, so fail to reject <span class="math inline">\(H_0\)</span>.</p>
+<p>We found no evidence (Likelihood ratio test p-value = 0.2344) that the model with systolic blood pressure significantly improves the fit compared to the model with just family history and age.</p>
+</section></section>
+<section>
+<section id="testing-example-2" class="title-slide slide level1 center">
+<h1>Testing example 2</h1>
+<p>Let’s test if systolic blood pressure and family history should be in the model</p>
+<p><span class="math inline">\(H_0: \beta_1 = 0 &amp; \beta_2 = 0\)</span></p>
+<p><span class="math inline">\(H_A:\)</span> At least one of <span class="math inline">\(\beta_1\)</span> or <span class="math inline">\(\beta_2\)</span> are zero</p>
+<p>We can do this with a Wald or Likelihood ratio test</p>
+</section>
+<section id="wald-test" class="slide level2">
+<h2>Wald test</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(aod)</span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a><span class="fu">wald.test</span>(</span>
+<span id="cb11-4"><a href=""></a>  <span class="at">Sigma =</span> <span class="fu">vcov</span>(heart_full_model), </span>
+<span id="cb11-5"><a href=""></a>  <span class="at">b =</span> <span class="fu">coef</span>(heart_full_model), </span>
+<span id="cb11-6"><a href=""></a>  <span class="at">Terms =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb11-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Wald test:
+----------
+
+Chi-squared test:
+X2 = 75.0, df = 2, P(&gt; X2) = 0.0</code></pre>
+</div>
+</div>
+</section>
+<section id="likelihood-ratio-test" class="slide level2">
+<h2>Likelihood ratio test</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>heart_reduced_model2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb13-2"><a href=""></a>  chd <span class="sc">~</span> age,</span>
+<span id="cb13-3"><a href=""></a>  <span class="at">data =</span> heart_data,</span>
+<span id="cb13-4"><a href=""></a>  <span class="at">family =</span> binomial</span>
+<span id="cb13-5"><a href=""></a>)</span>
+<span id="cb13-6"><a href=""></a></span>
+<span id="cb13-7"><a href=""></a><span class="fu">anova</span>(heart_reduced_model2, heart_full_model, <span class="at">test =</span> <span class="st">"LRT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: chd ~ age
+Model 2: chd ~ sbp + famhist + age
+  Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
+1       460     525.56                          
+2       458     505.24  2   20.318 3.872e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="section-6" class="slide level2">
+<h2></h2>
+<p>Let’s use the likelihood ratio test.</p>
+<p>We found very strong evidence (likelihood ratio test p-value 3.9e-05) that including systolic blood pressure and family history improve the model fit, over a model with age only.</p>
+</section>
+<section id="which-to-use" class="slide level2">
+<h2>Which to use?</h2>
+<div class="fragment">
+<ul>
+<li>We already listed the pros and cons, so with those considerations you have to make a choice.</li>
+<li>I think it is important that you specify what test you used when providing the p-value.</li>
+</ul>
 </div>
 </section></section>
 <section>
@@ -573,6 +747,76 @@ Number of Fisher Scoring iterations: 4</code></pre>
 <ul>
 <li>Best model = high sensitivity &amp; high specificity <span class="math inline">\(\rightarrow\)</span> F1-score</li>
 </ul>
+<p><span class="math display">\[F1-score = \frac{2}{Precision^{-1} + Recall^{-1}} = \frac{2TP}{2TP + FP + FN}\]</span></p>
+</section>
+<section id="computing-confusion-matrix" class="slide level2">
+<h2>Computing confusion matrix</h2>
+<p>First compute the predictions for each observation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>predicted_probabilities <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb15-2"><a href=""></a>  heart_full_model, </span>
+<span id="cb15-3"><a href=""></a>  <span class="at">newdata =</span> heart_data, </span>
+<span id="cb15-4"><a href=""></a>  <span class="at">type =</span> <span class="st">"response"</span></span>
+<span id="cb15-5"><a href=""></a>)</span>
+<span id="cb15-6"><a href=""></a></span>
+<span id="cb15-7"><a href=""></a>predicted_survival <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(predicted_probabilities <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="at">yes =</span> <span class="dv">1</span>, <span class="at">no =</span> <span class="dv">0</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next we compute the confusion matrix for our <em>in-sample predictions</em>, this is different from <em>out-of-sample predictions</em> where we would check our predictive performance on new data.</p>
+</section>
+<section id="computing-confusion-matrix-1" class="slide level2">
+<h2>Computing confusion matrix</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">library</span>(caret)</span>
+<span id="cb16-2"><a href=""></a></span>
+<span id="cb16-3"><a href=""></a><span class="fu">confusionMatrix</span>(</span>
+<span id="cb16-4"><a href=""></a>  <span class="fu">as.factor</span>(predicted_survival), </span>
+<span id="cb16-5"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd)</span>
+<span id="cb16-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction   0   1
+         0 258  85
+         1  44  75
+                                          
+               Accuracy : 0.7208          
+                 95% CI : (0.6775, 0.7612)
+    No Information Rate : 0.6537          
+    P-Value [Acc &gt; NIR] : 0.0012297       
+                                          
+                  Kappa : 0.3438          
+                                          
+ Mcnemar's Test P-Value : 0.0004286       
+                                          
+            Sensitivity : 0.8543          
+            Specificity : 0.4688          
+         Pos Pred Value : 0.7522          
+         Neg Pred Value : 0.6303          
+             Prevalence : 0.6537          
+         Detection Rate : 0.5584          
+   Detection Prevalence : 0.7424          
+      Balanced Accuracy : 0.6615          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="computing-f-1-score" class="slide level2">
+<h2>Computing F-1 score</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(</span>
+<span id="cb18-2"><a href=""></a>  <span class="fu">as.factor</span>(predicted_survival), </span>
+<span id="cb18-3"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd)</span>
+<span id="cb18-4"><a href=""></a>)</span>
+<span id="cb18-5"><a href=""></a></span>
+<span id="cb18-6"><a href=""></a>confusion_matrix<span class="sc">$</span>byClass[<span class="st">"F1"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> F1 
+0.8 </code></pre>
+</div>
+</div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 

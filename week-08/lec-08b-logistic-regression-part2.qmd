@@ -25,12 +25,48 @@ We often let $\pi_i = E[Y_i | X_{1i}, ..., X_{pi}]$ so our model is written
 
 $$\log\left(\frac{\pi_i}{1 - \pi_i}\right) = \beta_0 + \beta_1 X_{1i} + ... + \beta_p X_{pi}$$
 
+# Interpreting coefficients
+
+##
+
+$\beta_0$ is the log odds for when all $X_i$'s are zero.
+
+## 
+
+$\beta_1$ is the log odds ratio associated with a one unit increase in $X_1$
+
+- $exp(\beta_1)$ is the odds ratio associated with a one unit increase in $X_1$
+- $exp(\beta_1)$ is the multiplicative decrease / factor decrease in odds associated with a one unit increase in $X_i$
+- For $exp(\beta_1)>1$, $100 * (exp(\beta_1) - 1)$% is the increase in in odds associated with a one unit increase in $X_1$. If $exp(\beta_1)>1$, it would be the $100 * (1 - exp(\beta_1))$% decrease
+
+... with all other $X_i$'s held constant.
+
 # Inference
 
 In our class we will focus on two methods for hypothesis tests and confidence intervals
 
 - Wald
 - Likelihood ratio
+
+## Comparing inference methods
+
+::::{.columns}
+:::{.column width="50%"}
+**Wald** - For a single predictor
+
+- Pro: Easy to calculate
+- Pro: Only requires fitting one model
+- Con: Invalid for small sample size
+- Con: Confidence intervals may contain invalid values outside [0,1]
+
+:::
+
+:::{.column width="50%"}
+Likelihood ratio - similar to partial F / F-test for linear regression
+
+:::
+::::
+
 
 ## Comparing inference methods
 
@@ -108,6 +144,103 @@ heart_model <- glm(
 summary(heart_model)
 ```
 
+# Testing example 1
+
+Let's test if systolic blood pressure should be in the model
+
+$H_0: \beta_1 = 0$
+
+$H_A: \beta_1 \neq 0$
+
+We can do this with a Wald or Likelihood ratio test
+
+```{r}
+heart_full_model <- glm(
+  chd ~ sbp + famhist + age,
+  data = heart_data,
+  family = binomial # This tells it to do logisitic regression
+)
+```
+
+
+## Performing Wald Test
+
+```{r}
+summary(heart_full_model)
+```
+
+*The `summary()` function displays Wald Statistics.*
+
+## Performing Likelihood Ratio Tests
+
+```{r}
+heart_reduced_model <- glm(
+  chd ~ famhist + age,
+  data = heart_data,
+  family = binomial # This tells it to do logisitic regression
+)
+
+anova(heart_reduced_model, heart_full_model, test = "LRT")
+```
+
+## 
+
+- The p-value for Wald test: 0.235
+- The p-value for the Likelihood Ratio Test: 0.2344
+- The two p-values won't necessarily equal the same. In practice you would choose one test to perform, you wouldn't fit both.
+
+A probability of 0.02344 is not unlikely, so fail to reject $H_0$.
+
+We found no evidence (Likelihood ratio test p-value = 0.2344) that the model with systolic blood pressure significantly improves the fit compared to the model with just family history and age.
+
+# Testing example 2
+
+Let's test if systolic blood pressure and family history should be in the model
+
+$H_0: \beta_1 = 0 & \beta_2 = 0$
+
+$H_A:$ At least one of $\beta_1$ or $\beta_2$ are zero
+
+We can do this with a Wald or Likelihood ratio test
+
+
+## Wald test
+
+```{r}
+library(aod)
+
+wald.test(
+  Sigma = vcov(heart_full_model), 
+  b = coef(heart_full_model), 
+  Terms = c(1, 2)
+)
+```
+
+
+## Likelihood ratio test
+```{r}
+heart_reduced_model2 <- glm(
+  chd ~ age,
+  data = heart_data,
+  family = binomial
+)
+
+anova(heart_reduced_model2, heart_full_model, test = "LRT")
+```
+
+##
+
+Let's use the likelihood ratio test.
+
+We found very strong evidence (likelihood ratio test p-value 3.9e-05) that including systolic blood pressure and family history improve the model fit, over a model with age only.
+
+
+## Which to use?
+
+. . .
+
+- We already listed the pros and cons, so with those considerations you have to make a choice.
+- I think it is important that you specify what test you used when providing the p-value.
 
 
 # Prediction
@@ -155,5 +288,45 @@ summary(heart_model)
 
 - Best model = high sensitivity \& high specificity $\rightarrow$ F1-score
 
+$$F1-score = \frac{2}{Precision^{-1} + Recall^{-1}} = \frac{2TP}{2TP + FP + FN}$$
+
 \vspace*{1cm}
+
+## Computing confusion matrix
+
+First compute the predictions for each observation.
+```{r}
+predicted_probabilities <- predict(
+  heart_full_model, 
+  newdata = heart_data, 
+  type = "response"
+)
+
+predicted_survival <- ifelse(predicted_probabilities > 0.5, yes = 1, no = 0) 
+```
+
+Next we compute the confusion matrix for our *in-sample predictions*, this is different from *out-of-sample predictions* where we would check our predictive performance on new data.
+
+## Computing confusion matrix
+
+```{r}
+library(caret)
+
+confusionMatrix(
+  as.factor(predicted_survival), 
+  as.factor(heart_data$chd)
+)
+```
+
+## Computing F-1 score
+
+```{r}
+confusion_matrix <- confusionMatrix(
+  as.factor(predicted_survival), 
+  as.factor(heart_data$chd)
+)
+
+confusion_matrix$byClass["F1"]
+```
+
 
