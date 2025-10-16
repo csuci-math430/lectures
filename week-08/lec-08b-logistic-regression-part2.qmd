@@ -246,6 +246,22 @@ We found very strong evidence (likelihood ratio test p-value 3.9e-05) that inclu
 - I think it is important that you specify what test you used when providing the p-value.
 - If you have a small sample size DON'T use Wald
 
+## Confidence intervals 
+
+Via Likelihood Ratio: We can used the `confint()` function like we did with linear regression
+
+```{r}
+confint(heart_full_model)
+```
+
+Via Wald: We can used the `confint.default()` function
+
+```{r}
+confint.default(heart_full_model)
+```
+
+
+
 # 
 
 *We didn't have time to cover prediction in class so that was moved to Tuesday lecture 9a.*

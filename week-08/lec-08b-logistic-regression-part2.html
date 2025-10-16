@@ -705,6 +705,31 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li>If you have a small sample size DON’T use Wald</li>
 </ul>
 </div>
+</section>
+<section id="confidence-intervals" class="slide level2">
+<h2>Confidence intervals</h2>
+<p>Via Likelihood Ratio: We can used the <code>confint()</code> function like we did with linear regression</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">confint</span>(heart_full_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      2.5 %      97.5 %
+(Intercept)    -6.038659314 -3.02234201
+sbp            -0.004159741  0.01703609
+famhistPresent  0.520038741  1.37140982
+age             0.038573599  0.07486714</code></pre>
+</div>
+</div>
+<p>Via Wald: We can used the <code>confint.default()</code> function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">confint.default</span>(heart_full_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      2.5 %      97.5 %
+(Intercept)    -6.004640777 -2.99613599
+sbp            -0.004158755  0.01696642
+famhistPresent  0.517961224  1.36825057
+age             0.038114783  0.07432913</code></pre>
+</div>
+</div>
 </section></section>
 <section id="section-7" class="title-slide slide level1 center">
 <h1></h1>
