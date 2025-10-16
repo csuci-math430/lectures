@@ -1,6 +1,6 @@
 ---
 title: "Math 430: Lecture 8b"
-subtitle: "Logistic regression part 2d"
+subtitle: "Logistic regression part 2"
 author: "Professor Catalina Medina"
 execute:
   echo: true
