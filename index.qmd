@@ -1,0 +1,77 @@
+---
+title: "Math 430 Fall 2025"
+format: 
+  html:
+    toc: true
+---
+
+## Announcement
+
+- We will have a midterm redo **October 28**. 
+- This is **optional**, you do not need to take it if you would like to keep your midterm grade.
+- You **can** use one-sided standard sized (11 x 8.5in) piece of paper with notes on the midterm redo.
+- You can make up to a 50% improvement on your midterm grade with the midterm redo.
+  - This means if you got a 50% on the midterm originally, and a 100% on the redo midterm, your new midterm grade would be 50 + 0.5 * (100 - 50) = 75%
+    
+```{r}
+original_midterm <- 50
+redo_midterm <- 100
+
+new_midterm_grade <- original_midterm + 0.5 * (redo_midterm - original_midterm)
+
+new_midterm_grade
+```
+
+  - This means if you got a 50% on the midterm originally, and a 75% on the redo midterm, your new midterm grade would be 50 + 0.5 * (75 - 50) = 62.5%
+    
+```{r}
+original_midterm <- 50
+redo_midterm <- 75
+
+new_midterm_grade <- original_midterm + 0.5 * (redo_midterm - original_midterm)
+
+new_midterm_grade
+```
+
+  - This means if you got a 50% on the midterm originally, and a 30% on the redo midterm, your new midterm grade would be 50 + 0.5 * (30 - 50) = 40%
+    
+```{r}
+original_midterm <- 50
+redo_midterm <- 30
+
+new_midterm_grade <- original_midterm + 0.5 * (redo_midterm - original_midterm)
+
+new_midterm_grade
+```
+    
+
+
+## HW 6
+
+- [HW 6](https://csuci-math430.github.io/lectures/week-08/hw-06.qmd)
+- [HW 6 data](https://csuci-math430.github.io/lectures/data/donner-party.csv)
+- You can email me to submit your homework if Canvas is still down tomorrow.
+
+## Syllabus
+
+- [Syllabus](https://docs.google.com/document/d/1mgDjIgYG-hoV6fMIc6Yw9dvmGBToZOA-V5c0U1OUJx8/edit?usp=sharing)
+
+## Lectures
+
+- [Lecture 1a](https://csuci-math430.github.io/lectures/week-01/lecture-01a-introduction-to-class.html)
+- [Lecture 1b](https://csuci-math430.github.io/lectures/week-01/lecture-01b-introduction-to-toolkit.html)
+- [Lecture 2a](https://csuci-math430.github.io/lectures/week-02/lecture-02a-foundations-for-statistical-inference.html)
+- [Lecture 2b](https://csuci-math430.github.io/lectures/week-02/lecture-02b-foundations-for-statistical-inference-part2.html)
+- [Lecture 3a](https://csuci-math430.github.io/lectures/week-03/lec-03a-summary-stats-and-data-viz.html)
+- Lecture 3b was practical 1
+- [Lecture 4a](https://csuci-math430.github.io/lectures/week-04/lec-04a-intro-to-simple-linear-regression.html)
+- [Lecture 4b](https://csuci-math430.github.io/lectures/week-04/lec-04b-simple-linear-regression-inference.html)
+- [Lecture 5a](https://csuci-math430.github.io/lectures/week-05/lec-05a-linear-regression-conditions.html)
+- [Lecture 5b](https://csuci-math430.github.io/lectures/week-05/lec-05b-model-evaluation.html)
+- [Lecture 6a](https://csuci-math430.github.io/lectures/week-06/lec-06a-multiple-linear-regression.html)
+- [Lecture 6b](https://csuci-math430.github.io/lectures/week-06/lec-06b-multiple-linear-regression-part2.html)
+- Week 7 was the midterm
+- [Lecture 8a](https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression.html) & [Annotated Lecture 8a](https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression-annotated.pdf)
+- [Lecture 8b](https://csuci-math430.github.io/lectures/week-08/lec-08b-logistic-regression-part2.html)
+
+

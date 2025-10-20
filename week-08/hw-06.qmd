@@ -1,0 +1,128 @@
+---
+title: "Math 430: Homework 6"
+subtitle: "Logistic regression"
+author: "Your name here"
+format: html
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+In this assignment you will be working with a dataset containing information on individuals from the Donner party. The Donner party was a group of pioneers traveling to California from Missouri on the Oregon trail by wagon train. They were trapped in the Sierra Nevada mountains by extremely heavy snowfall during the winter of 1846-1847 and eventually ran out of food supplies. Of the 90 members of the party, only 48 survived. We want to model chance of survival.
+
+Note that historically, and even sometimes today, sex and gender are recorded as binary variables and the names are used interchangeably. That does not make the data unusable, we often don't have perfect data, but we do have to think about what they meant to capture with the variable. 
+
+- If they expected there to be a relationship with the response variable due to how they experience the world socially, they may mean gender. 
+- If they expected there to be a relationship with the response variable due to biological factors, they may intended to measure meant sex.
+
+In this case since it was the 1800's I think they probably meant both and had no intention of the data being used for modeling. 
+
+I do think there could have been physical and societal affects from sex on survival chances, so we are going to use this variable, as well as age.
+
+## Question 1
+
+First we need to prepare the data.
+
+### Question 1a
+
+Import/read in our data. Download the `donner-party.csv` file from CI Learn and make sure it is saved in the same location as your `hw-05.qmd`. You can use `donner_data <- read_csv("donner-party.csv")` to read in your data, saving it into the object names `donner_data`.
+
+### Question 1b
+
+Don't forget you can use the `glimpse()` function to view the structure of your data (always a good idea).
+When you examine your data you may notice that the response variable `survived` is coded as a numeric variable.
+This is commonly done, but can make it difficult to appropriately plot.
+We can make a logical variable for plotting. You can use the following code in an R chunk: `donner_data <- mutate(donner_data, survived_logical = ifelse(survived == 1, yes = TRUE, no = FALSE))`.
+
+
+
+## Question 2
+
+Let's examine the relationship between our predictors and the response variable.
+
+### Question 2a
+
+What is the relationship between sex and survival? Effectively visualize the relationship and comment what you observe. 
+
+
+### Question 2b
+
+What is the relationship between age and survival? Effectively visualize the relationship and comment what you observe.
+
+
+## Question 3
+
+Let's fit our model!
+
+
+### Question 3a
+
+Fit a logistic regression model to predict survival based on sex and age. 
+
+
+### Question 3b
+
+Write out the fitted logistic regression model. 
+
+Note that Quarto documents support latex code. Latex code is not necessary, but if would like you can use the following for the first part of the model: $\log(\frac{\pi_i}{1 - \pi_i})$
+
+
+## Question 4: Inference
+
+### Question 4a
+
+Provide an interpretation of $\hat{\beta}_0$ in context. Does the intercept have meaning in this context?
+
+
+### Question 4b
+
+Provide an interpretation of  $\hat{\beta}_{Age}$, the coefficient on the age predictor, in context.
+
+### Question 4c
+
+Provide an interpretation of $e^{\hat{\beta}_{Age}}$ in context.
+
+
+### Question 4d
+
+Which would be an invalid interpretation of $\hat{\beta}_{Age}$ (or a transformation of $\hat{\beta}_{Age}$)? [Hint: only one is an incorrect interpretation.]
+
+a. For a one year increase in age we estimate an associated log odds ratio of survival of `r beta1_hat`, for people of the same sex.
+b. For a one year increase in age we estimate an associated decrease in odds ratio of survival of `r exp(beta1_hat)`, for people of the same sex.
+c. For a one year increase in age we estimate an associated decrease in odds of survival by a factor of `r exp(beta1_hat)`, for people of the same sex.
+d. For a one year increase in age we estimate an associated multiplicative decrease in odds ratio of survival of `r exp(beta1_hat)`, for people of the same sex.
+e. For a one year increase in age we estimate an associated decrease in odds of survival by `r (1 - exp(beta1_hat)) * 100`%, for people of the same sex.
+
+
+## Question 5: Predictions
+
+Note that the `predict()` function can return different types of prediction. If we set `type = "response"` we will get predicted probabilities, but if we use the default `type = link` we will get the predicted sum of $\beta_0 + \beta_1 X_{1i} + ... + \beta_p + X_{pi}$.
+
+### Question 5a
+
+What is the predicted probability of survival for a 60 year old man? 
+
+### Question 5b
+
+What is the predicted probability of survival for a 20 year old man? 
+
+### Question 5c
+
+Create a predicted probability plot showing the effect of age and sex on survival. Comment on what you observe. (Refer to lecture slides for how to do this using `geom_smooth()`.)
+
+
+### Question 5d
+
+How young or old must a female member of the Donner party be in order to have a predicted probability of survival greater than 0.75 based on your logistic regression model? Use algebra (not code) to answer.
+
+
+### Question 5e
+
+What is your in-sample prediction accuracy?
+
