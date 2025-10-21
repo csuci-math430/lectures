@@ -28,13 +28,13 @@ How do we decide if our logistic model is predicting well?
 
 ## Confusion Matrix
 
-![](confusion-matrix.png){width=80% fig-align="center"}
+![](img/confusion-matrix.png){width=80% fig-align="center"}
 
 ## Confusion Matrix
 
 \vspace*{0.5cm}
 
-![](confusion-matrix-with-measures.png){width=100% fig-align="center"}
+![](img/confusion-matrix-with-measures.png){width=100% fig-align="center"}
 
 
 ## Confusion Matrix: Sensitivity
