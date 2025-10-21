@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -63,10 +29,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 
 
 </head>
@@ -79,9 +45,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#announcement" id="toc-announcement" class="nav-link active" data-scroll-target="#announcement">Announcement</a></li>
-  <li><a href="#hw-6" id="toc-hw-6" class="nav-link" data-scroll-target="#hw-6">HW 6</a></li>
-  <li><a href="#syllabus" id="toc-syllabus" class="nav-link" data-scroll-target="#syllabus">Syllabus</a></li>
+  <li><a href="#syllabus" id="toc-syllabus" class="nav-link active" data-scroll-target="#syllabus">Syllabus</a></li>
   <li><a href="#lectures" id="toc-lectures" class="nav-link" data-scroll-target="#lectures">Lectures</a></li>
   </ul>
 </nav>
@@ -107,65 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="announcement" class="level2">
-<h2 class="anchored" data-anchor-id="announcement">Announcement</h2>
-<ul>
-<li>We will have a midterm redo <strong>October 28</strong>.</li>
-<li>This is <strong>optional</strong>, you do not need to take it if you would like to keep your midterm grade.</li>
-<li>You <strong>can</strong> use one-sided standard sized (11 x 8.5in) piece of paper with notes on the midterm redo.</li>
-<li>You can make up to a 50% improvement on your midterm grade with the midterm redo.
-<ul>
-<li>This means if you got a 50% on the midterm originally, and a 100% on the redo midterm, your new midterm grade would be 50 + 0.5 * (100 - 50) = 75%</li>
-</ul></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>original_midterm <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>redo_midterm <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>new_midterm_grade <span class="ot">&lt;-</span> original_midterm <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (redo_midterm <span class="sc">-</span> original_midterm)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>new_midterm_grade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 75</code></pre>
-</div>
-</div>
-<ul>
-<li>This means if you got a 50% on the midterm originally, and a 75% on the redo midterm, your new midterm grade would be 50 + 0.5 * (75 - 50) = 62.5%</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>original_midterm <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>redo_midterm <span class="ot">&lt;-</span> <span class="dv">75</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>new_midterm_grade <span class="ot">&lt;-</span> original_midterm <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (redo_midterm <span class="sc">-</span> original_midterm)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>new_midterm_grade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 62.5</code></pre>
-</div>
-</div>
-<ul>
-<li>This means if you got a 50% on the midterm originally, and a 30% on the redo midterm, your new midterm grade would be 50 + 0.5 * (30 - 50) = 40%</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>original_midterm <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>redo_midterm <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>new_midterm_grade <span class="ot">&lt;-</span> original_midterm <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (redo_midterm <span class="sc">-</span> original_midterm)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>new_midterm_grade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 40</code></pre>
-</div>
-</div>
-</section>
-<section id="hw-6" class="level2">
-<h2 class="anchored" data-anchor-id="hw-6">HW 6</h2>
-<ul>
-<li><a href="https://csuci-math430.github.io/lectures/week-08/hw-06.qmd">HW 6</a></li>
-<li><a href="https://csuci-math430.github.io/lectures/data/donner-party.csv">HW 6 data</a></li>
-<li>You can email me to submit your homework if Canvas is still down tomorrow.</li>
-</ul>
-</section>
+<p>Below are some quick links to class material. All of this material is also available under modules.</p>
 <section id="syllabus" class="level2">
 <h2 class="anchored" data-anchor-id="syllabus">Syllabus</h2>
 <ul>
@@ -190,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Week 7 was the midterm</li>
 <li><a href="https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression.html">Lecture 8a</a> &amp; <a href="https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression-annotated.pdf">Annotated Lecture 8a</a></li>
 <li><a href="https://csuci-math430.github.io/lectures/week-08/lec-08b-logistic-regression-part2.html">Lecture 8b</a></li>
+<li><a href="https://csuci-math430.github.io/lectures/week-09/lec-09a-logistic-regression-for-prediction.html">Lecture 9a</a></li>
 </ul>
 </section>
 

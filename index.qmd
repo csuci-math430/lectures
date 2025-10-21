@@ -3,54 +3,10 @@ title: "Math 430 Fall 2025"
 format: 
   html:
     toc: true
+    theme: solar
 ---
 
-## Announcement
-
-- We will have a midterm redo **October 28**. 
-- This is **optional**, you do not need to take it if you would like to keep your midterm grade.
-- You **can** use one-sided standard sized (11 x 8.5in) piece of paper with notes on the midterm redo.
-- You can make up to a 50% improvement on your midterm grade with the midterm redo.
-  - This means if you got a 50% on the midterm originally, and a 100% on the redo midterm, your new midterm grade would be 50 + 0.5 * (100 - 50) = 75%
-    
-```{r}
-original_midterm <- 50
-redo_midterm <- 100
-
-new_midterm_grade <- original_midterm + 0.5 * (redo_midterm - original_midterm)
-
-new_midterm_grade
-```
-
-  - This means if you got a 50% on the midterm originally, and a 75% on the redo midterm, your new midterm grade would be 50 + 0.5 * (75 - 50) = 62.5%
-    
-```{r}
-original_midterm <- 50
-redo_midterm <- 75
-
-new_midterm_grade <- original_midterm + 0.5 * (redo_midterm - original_midterm)
-
-new_midterm_grade
-```
-
-  - This means if you got a 50% on the midterm originally, and a 30% on the redo midterm, your new midterm grade would be 50 + 0.5 * (30 - 50) = 40%
-    
-```{r}
-original_midterm <- 50
-redo_midterm <- 30
-
-new_midterm_grade <- original_midterm + 0.5 * (redo_midterm - original_midterm)
-
-new_midterm_grade
-```
-    
-
-
-## HW 6
-
-- [HW 6](https://csuci-math430.github.io/lectures/week-08/hw-06.qmd)
-- [HW 6 data](https://csuci-math430.github.io/lectures/data/donner-party.csv)
-- You can email me to submit your homework if Canvas is still down tomorrow.
+Below are some quick links to class material. All of this material is also available under modules.
 
 ## Syllabus
 
@@ -73,5 +29,5 @@ new_midterm_grade
 - Week 7 was the midterm
 - [Lecture 8a](https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression.html) & [Annotated Lecture 8a](https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression-annotated.pdf)
 - [Lecture 8b](https://csuci-math430.github.io/lectures/week-08/lec-08b-logistic-regression-part2.html)
-
+- [Lecture 9a](https://csuci-math430.github.io/lectures/week-09/lec-09a-logistic-regression-for-prediction.html)
 
