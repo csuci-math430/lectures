@@ -485,7 +485,7 @@ Professor Catalina Medina
 <span id="cb2-4"><a href=""></a>  <span class="at">type =</span> <span class="st">"response"</span></span>
 <span id="cb2-5"><a href=""></a>)</span>
 <span id="cb2-6"><a href=""></a></span>
-<span id="cb2-7"><a href=""></a>predicted_survival <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(predicted_probabilities <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="at">yes =</span> <span class="dv">1</span>, <span class="at">no =</span> <span class="dv">0</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-7"><a href=""></a>predicted_chd <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(predicted_probabilities <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="at">yes =</span> <span class="dv">1</span>, <span class="at">no =</span> <span class="dv">0</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next we compute the confusion matrix for our <em>in-sample predictions</em>, this is different from <em>out-of-sample predictions</em> where we would check our predictive performance on new data.</p>
 </section>
@@ -495,8 +495,8 @@ Professor Catalina Medina
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(caret)</span>
 <span id="cb3-2"><a href=""></a></span>
 <span id="cb3-3"><a href=""></a><span class="fu">confusionMatrix</span>(</span>
-<span id="cb3-4"><a href=""></a>  <span class="fu">as.factor</span>(predicted_survival), </span>
-<span id="cb3-5"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd)</span>
+<span id="cb3-4"><a href=""></a>  <span class="fu">as.factor</span>(predicted_chd), <span class="co"># Predicted response</span></span>
+<span id="cb3-5"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd) <span class="co"># Actual response (from our data)</span></span>
 <span id="cb3-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
@@ -533,7 +533,7 @@ Prediction   0   1
 <h2>Computing F-1 score</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(</span>
-<span id="cb5-2"><a href=""></a>  <span class="fu">as.factor</span>(predicted_survival), </span>
+<span id="cb5-2"><a href=""></a>  <span class="fu">as.factor</span>(predicted_chd), </span>
 <span id="cb5-3"><a href=""></a>  <span class="fu">as.factor</span>(heart_data<span class="sc">$</span>chd)</span>
 <span id="cb5-4"><a href=""></a>)</span>
 <span id="cb5-5"><a href=""></a></span>

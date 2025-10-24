@@ -105,7 +105,7 @@ predicted_probabilities <- predict(
   type = "response"
 )
 
-predicted_survival <- ifelse(predicted_probabilities > 0.5, yes = 1, no = 0) 
+predicted_chd <- ifelse(predicted_probabilities > 0.5, yes = 1, no = 0) 
 ```
 
 Next we compute the confusion matrix for our *in-sample predictions*, this is different from *out-of-sample predictions* where we would check our predictive performance on new data.
@@ -116,8 +116,8 @@ Next we compute the confusion matrix for our *in-sample predictions*, this is di
 library(caret)
 
 confusionMatrix(
-  as.factor(predicted_survival), 
-  as.factor(heart_data$chd)
+  as.factor(predicted_chd), # Predicted response
+  as.factor(heart_data$chd) # Actual response (from our data)
 )
 ```
 
@@ -125,7 +125,7 @@ confusionMatrix(
 
 ```{r}
 confusion_matrix <- confusionMatrix(
-  as.factor(predicted_survival), 
+  as.factor(predicted_chd), 
   as.factor(heart_data$chd)
 )
 
