@@ -4,6 +4,7 @@ format:
   html:
     toc: true
     theme: solar
+    link-external-newwindow: true
 ---
 
 Below are some quick links to class material. All of this material is also available under modules.
@@ -30,4 +31,7 @@ Below are some quick links to class material. All of this material is also avail
 - [Lecture 8a](https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression.html) & [Annotated Lecture 8a](https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression-annotated.pdf)
 - [Lecture 8b](https://csuci-math430.github.io/lectures/week-08/lec-08b-logistic-regression-part2.html)
 - [Lecture 9a](https://csuci-math430.github.io/lectures/week-09/lec-09a-logistic-regression-for-prediction.html)
+- [Lecture 9b](https://csuci-math430.github.io/lectures/week-09/lec-09b-poisson-regression.html)
+- Lecture 10a was the midterm redo
+- Lecture 10b was the practical 2
 

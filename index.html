@@ -97,6 +97,9 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression.html">Lecture 8a</a> &amp; <a href="https://csuci-math430.github.io/lectures/week-08/lec-08a-logistic-regression-annotated.pdf">Annotated Lecture 8a</a></li>
 <li><a href="https://csuci-math430.github.io/lectures/week-08/lec-08b-logistic-regression-part2.html">Lecture 8b</a></li>
 <li><a href="https://csuci-math430.github.io/lectures/week-09/lec-09a-logistic-regression-for-prediction.html">Lecture 9a</a></li>
+<li><a href="https://csuci-math430.github.io/lectures/week-09/lec-09b-poisson-regression.html">Lecture 9b</a></li>
+<li>Lecture 10a was the midterm redo</li>
+<li>Lecture 10b was the practical 2</li>
 </ul>
 </section>
 
@@ -197,6 +200,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
