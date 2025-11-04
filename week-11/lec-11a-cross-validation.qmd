@@ -1,0 +1,191 @@
+---
+title: "Math 430: Lecture 10a"
+subtitle: "Overfitting and Cross Validation"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(janitor)
+
+theme_set(theme_bw(base_size = 24))
+
+penguins_cleaned <- penguins |> 
+  drop_na()
+```
+
+## Overfitting
+
+- We are fitting the model to sample data.
+
+- Our goal is to understand the population data.
+
+- If we make our model too perfect for our sample data, the model may not perform as well with other sample data from the population.
+
+- In this case we would be overfitting the data.
+
+- We can use **model validation** techniques.
+
+## Data
+
+We will be using the penguins_cleaned data to try to build a predictive model for penguin bill depth.
+
+```{r}
+ggplot(penguins_cleaned, aes(x = flipper_len, y = bill_dep, color = species)) +
+  geom_point() +
+  labs(x = "Flipper length (mm)", y = "Bill length (mm)", color = "Species")
+```
+
+# Method 1: Validation
+
+To avoid overfitting we can split our data **validation**
+
+1. Split sample of $n$ observations into two parts
+2. Fit model with **training data** containing $m$ observations
+3. Predict $Y$ for observations in **test data** containing $n - m$ observations, with model fit on training data
+4. Evaluate prediction error on test data
+
+## Splitting the data (Train vs. Test)
+
+```{r message=FALSE}
+set.seed(8236)
+library(rsample)
+
+penguins_cleaned_split <- initial_split(penguins_cleaned, prop = 0.75) ## 75% to 25% split
+```
+
+. . .
+
+```{r}
+dim(penguins_cleaned)
+```
+
+. . .
+
+```{r}
+penguins_cleaned_train_data <- training(penguins_cleaned_split)
+dim(penguins_cleaned_train_data)
+```
+
+. . .
+
+```{r}
+penguins_cleaned_test_data <- testing(penguins_cleaned_split)
+dim(penguins_cleaned_test_data)
+```
+
+##
+
+Fit the model with the training data
+```{r}
+model_1_train <- lm(
+  bill_dep ~ flipper_len + species + body_mass,  
+  data = penguins_cleaned_train_data
+)
+```
+
+Predict bill length for penguins_cleaned in testing data
+```{r}
+model_1_test_preditions <- predict(model_1_train, newdata = penguins_cleaned_test_data)
+```
+
+##
+
+In sample (train) RMSE
+```{r}
+modelr::rmse(
+  model_1_train, 
+  data = penguins_cleaned_train_data
+)
+```
+
+Our of sample (test) RMSE
+```{r}
+predicted_y <- model_1_test_preditions
+actual_y <- penguins_cleaned_test_data$bill_dep
+
+sqrt(mean((predicted_y - actual_y)^2, na.rm = TRUE))
+```
+
+Does it make sense that our in-sample RMSE > out-of-sample RMSE?
+
+## Method 1: Validation - Summary
+
+The validation approach 
+
+Advantage:
+
+- allows us to assess out-of-sample prediction error
+
+Disadvantage:
+
+- validation estimate of test error rate can be highly variable
+- can result in worse model fit due to decreased sample size => overestimate test error rate
+
+
+# Method 2: Leave-one-out Cross-Validation (LOOCV)
+
+1. Split sample of $n$ observations into two parts
+2. Fit model with **training data** containing $n-1$ observations
+3. Predict $Y$ for observations in **test data** containing $1$ observation, with model fit on training data
+3. Repeat steps 1-4 to get $CV_{(n)} = \frac{1}{n} \sum_{i = 1}^{n} (y_i - \hat{y}_i)^2$
+
+##
+
+Advantages:
+
+- Training model on more data => less bias
+- Consistent results since there is no randomness in data split
+
+Disadvantages:
+
+- Can be computation or time intensive with large data set
+
+# Method 3: k-Fold Cross-Validation
+
+1. Split sample of $n$ observations into $k$ groups of approximately equal size
+2. First fold is test set and model is trained/fit on remaining $k-1$ sets
+3. Predict $Y$ for observations in test data 
+4. Evaluate prediction error on test data
+5. Repeat $k$ times and calculate $CV_{(k)} = \frac{1}{k}\sum_{i=1}^{k} (y_i - \hat{y_i})^2$
+
+##
+
+Advantages:
+
+- $k$-fold is less computationally intensive, relative to LOOCV, since the model only needs to be fit $k$ times, typically $k=5$ or $k=10$.
+- Less variability than basic validation approach
+- Often gives more accurate estimates of test error rate than LOOCV
+
+##
+
+```{r}
+library(caret)
+train_control <- trainControl(method = "cv", number = 10)
+
+# Train a model (e.g., a linear model) using cross-validation
+model <- train(
+  bill_dep ~ flipper_len + species + body_mass,  
+  data = penguins_cleaned_train_data, 
+  method = "lm", 
+  trControl = train_control
+)
+
+# View the results of the cross-validation
+print(model)
+```
+
+
+## For classification
+
+These methods can also be used for classification, but $(y_i - \hat{y}_i)^2$ would be replaces with $I(y_i \neq \hat{y}_i)$
+
+ 
