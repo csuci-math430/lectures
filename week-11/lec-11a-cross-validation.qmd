@@ -1,5 +1,5 @@
 ---
-title: "Math 430: Lecture 10a"
+title: "Math 430: Lecture 11a"
 subtitle: "Overfitting and Cross Validation"
 author: "Professor Catalina Medina"
 execute:
