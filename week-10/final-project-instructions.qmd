@@ -1,0 +1,61 @@
+---
+title: "Math 430: Final Project"
+subtitle: "Proposal Instructions"
+format: pdf
+---
+
+\vspace*{-2cm}
+
+The project will consist of hands-on data collection, analysis, and a presentation. 
+You will apply the methods learned in this course to answer a question(s) that interests you. 
+Example research questions:
+
+- *Is there a relationship between academic performance and a whether or not a student works while in enrolled as CSUCI?* (survey people)
+- *Does the amount of caffeine consumed significantly influence hours of sleep among math majors as CSUCI?* (survey people)
+- *Do rental prices significantly increase with proximity to public transportation stops in Camarillo?* (collect data from websites like Zillow and Google Maps)
+
+The project will have multiple components, and will be worth 30% of your total grade:
+
+- Each team will submit a **proposal plan** for their final project. (10 of the total 30 percent)
+- Each team will perform a **data collection** and analyze the data for their final project. (5 of the total 30 percent)
+- Each team will write a **report on the project**, including: introduction to the problem/motivation & the research question; methods; results; discussion (10 of the total 30 percent)
+- Each team will **present their final project** during our designated final exam time. (5 of the total 30 percent)
+
+For the final project you will be working in teams. 
+A team project does not necessarily mean everyone doing separate parts of the project then gluing it together. 
+I expect each and every one of you to understand every single piece of code written, every decision made, anything written. 
+
+I expect all teammates to share work and collaborate efficiently. 
+Everyone should get an opportunity to learn and grow through these projects. 
+If there is a big discrepancy in the amount of team members' amount of work, I hold the right to assign a different grade for the team member at any stage of the project.
+
+If you run into any conflicts that you cannot resolve among yourselves, please e-mail me to let me know what is going on. 
+Also, let me know how you tried to resolve the conflict.
+For instance, if a teammate has been unresponsive, let me know how and when you tried reaching the teammate.
+
+
+## Proposal plan
+
+- Research question: Your research question should mainly be focused on inference of the relationship between two variables.
+
+  - Identify a research question.
+  - Identify the motivation behind your research question (.e.g, why it is of interest, who it could benefit, ...).
+  - Identify the target population you seek to learn about.
+  - Identify if you are doing an observational or experimental study, explain why.
+  - Identify the response variable and its type.
+  - Identify the explanatory variable and its type. If you are doing an experimental study, identify the treatment of interest group, control group, and any blinds.
+  - Identify potential confounding variables and their types, or explain why confounding does not need to be controlled for in your study.
+  - Identify two ethical considerations for your study, and how you plan to address them.
+  - Identify a plot you can use to visualize the relationship between your response and explanatory variable.
+  - Propose a model to investigate the research question, controlling for confounding in needed.
+  - Identify how your model would be used to address the research question. If doing a hypothesis test state your hypotheses, if computing a confidence interval, state for which parameter/coefficient.
+  - State the modeling conditions for your proposed model, and how you will check each.
+  
+- Data collection: Your sample should be a simple random sample and can either be retrospective or cross-sectional, but not longitudinal.
+
+  - Identify what tools you will use to collect your data. If you will use a survey, specify what questions you will ask. If you are collecting data from a website, like Zillow, provide links and explain how you will get your data.
+  - Identify how you will record your data, meaning what will each column of your data be.
+  - Identify what minimum sample size you are seeking.
+  - Identify where you will store your data.
+  - Identify what date(s) you will collect your sample on and which of you will be collecting the sample.
+
