@@ -6,7 +6,7 @@ format: pdf
 
 \vspace*{-2cm}
 
-The project will consist of hands-on data collection, analysis, and a presentation. 
+The project will consist of hands-on data collection, analysis, write up, and a presentation. 
 You will apply the methods learned in this course to answer a question(s) that interests you. 
 Example research questions:
 
@@ -51,7 +51,7 @@ For instance, if a teammate has been unresponsive, let me know how and when you 
   - Identify how your model would be used to address the research question. If doing a hypothesis test state your hypotheses, if computing a confidence interval, state for which parameter/coefficient.
   - State the modeling conditions for your proposed model, and how you will check each.
   
-- Data collection: Your sample should be a simple random sample and can either be retrospective or cross-sectional, but not longitudinal.
+- Data collection: Your sample should be a simple random sample and can either be retrospective or cross-sectional, but not longitudinal. This should be a primary data collection, meaning you should be the ones gathering original, firsthand information directly from the source for a specific research purpose. Common methods include surveys, interviews, observations, experiments. Keep in mind that your resources are limited, so choose a target population that you reasonably believe you can sample well from.
 
   - Identify what tools you will use to collect your data. If you will use a survey, specify what questions you will ask. If you are collecting data from a website, like Zillow, provide links and explain how you will get your data.
   - Identify how you will record your data, meaning what will each column of your data be.
