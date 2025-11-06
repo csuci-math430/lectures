@@ -1,0 +1,199 @@
+---
+title: "Math 430: Lecture 11b"
+subtitle: "Regression Model Alterations"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+library(janitor)
+library(viridis)
+
+theme_set(theme_bw(base_size = 24))
+```
+
+# Interactions
+
+## Lego data
+
+Lego sets can vary drastically in price.
+
+We want to investigate the relationship between price and some characteristics of the set.
+
+![](img/lego-prices.png)
+
+## Lego data
+
+```{r}
+legos <- read_csv("https://csuci-math430.github.io/lectures/data/lego-prices.csv")
+
+glimpse(legos)
+```
+
+## Week 11 lab tasks 1 & 2
+
+```{r}
+#| echo: false
+
+# Use legos_q1 data to answer investigate the question
+legos_q1 <- legos |> 
+  filter(Theme %in% c("City", "Friends"))
+
+legos_q3 <- legos |> 
+  filter(Theme %in% c("City", "Friends", "DUPLO"))
+```
+
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+
+ggplot(legos_q1, aes(x = Pieces, y = Amazon_Price)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+
+ggplot(
+  legos_q1, 
+  aes(x = Pieces, y = Amazon_Price, color = Theme)
+) +
+  geom_point() +
+  moderndive::geom_parallel_slopes(se = FALSE)
+```
+
+
+:::
+::::
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+
+ggplot(
+  legos_q3, 
+  aes(x = Pieces, y = Amazon_Price, color = Size)
+) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+::::
+
+## 
+
+**1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
+
+. . .
+
+*This is asking:* For Friend and City themed LEGOs, is Amazon price $Y$ related to number of pieces $X$.
+
+$$\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i$$
+
+##
+
+```{r}
+model_1 <- lm(Amazon_Price ~ Pieces, data = legos_q1)
+summary(model_1)
+```
+
+##
+
+**1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
+
+```{r}
+ggplot(legos_q1, aes(x = Pieces, y = Amazon_Price)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
+## 
+
+**1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
+
+Yes, we found evidence (p-value < $2 \times 10^{-16}$) of a linear relationship between price and number of pieces for Friends and City LEOG sets.
+
+- For a 1 piece increase we expect an increase in price of $`r round(model_1$coefficients["Pieces"], digits = 2)`.
+
+##
+
+**2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?**
+
+. . .
+
+*This is asking:* Does the line for price $Y$ and pieces $X$ have a different y-intercept for City versus Friends LEOG sets.
+
+\begin{equation*}
+  \begin{split}
+    \hat{Amazon Price}_i &= \hat{\beta}_0 + \hat{\beta}_1 Pieces_i \\
+    &+ \hat{\beta}_2 I(Theme_i = Friends)
+  \end{split}
+\end{equation*}
+
+. . .
+
+Friends: $\hat{Amazon Price}_i = (\hat{\beta}_0 + \hat{\beta}_2) + \hat{\beta}_1 Pieces_i$
+
+City: $\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i$
+
+##
+
+**2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?**
+
+```{r}
+ggplot(
+  legos_q1, 
+  aes(x = Pieces, y = Amazon_Price, color = Theme)
+) +
+  geom_point() +
+  moderndive::geom_parallel_slopes(se = FALSE)
+```
+
+##
+
+```{r}
+model_2 <- lm(Amazon_Price ~ Pieces + Theme, data = legos_q1)
+
+summary(model_2)
+```
+
+##
+
+**2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?**
+
+Yes, we found evidence (p-value = 0.0374) of a difference in LEGO set prices for Friends and City themes sets.
+
+. . .
+
+- We estimate the expected price of Friends themed LEGO sets to be $`r round(abs(model_2$coefficients["ThemeFriends"]), digits = 2)` less than that of City themed sets, for sets with the same number of pieces.
+
+
+##
+
+
