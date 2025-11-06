@@ -1,0 +1,28 @@
+---
+title: "Math 430: Week 11 Lab"
+format: 
+  html:
+    message: false
+    warning: false
+---
+
+## Task 1
+
+For each of the three plots on the lecture slide, write out an approximate fitted regression model.
+
+## Task 2
+
+For each of the plots on the lecture slide, identify which question below the plot would help answer.
+
+1. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?
+
+
+2. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?
+
+
+3. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?
+
+
+
+
+
