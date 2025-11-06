@@ -203,7 +203,7 @@ If we want to allow the relationship between $Y$ and an $X_j$ to differ by anoth
 
 For example:
 
-$$Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i}$$
+$$Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i} + \epsilon_i$$
 
 We specify this with a \* in the `lm()` function
 
@@ -219,7 +219,7 @@ We specify this with a \* in the `lm()` function
   \begin{split}
     &\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i \\
     &+ \hat{\beta}_2 I(Size_i = Small)\\
-    &+ \hat{\beta}_3 Pieces_i * I(Size_i = Small)
+    &+ \hat{\beta}_3 Pieces_i \times I(Size_i = Small)
   \end{split}
 \end{equation*}
 
@@ -265,3 +265,138 @@ Yes, we found evidence (p-value = $2.5 \times 10^{-9}$) that the relationship be
 
 - A 1 piece increase is associate with an expected increase in price of $`r round(model_3$coefficients["Pieces"] + model_3$coefficients["Pieces:SizeSmall"], digits = 2)`, for small brick sets.
 - A 1 piece increase is associate with an expected increase in price of $`r round(model_3$coefficients["Pieces"], digits = 2)`, for large brick sets.
+
+# Robust standard errors
+
+Remedy to nonconstant variance of residuals:
+
+Increased standard errors to account for possibly underestimating variance of estimators
+
+```{r}
+library(estimatr)
+model_3_robust <- lm_robust(Amazon_Price ~ Pieces * Size, data = legos_q3, se_type = "HC1")
+summary(model_3_robust)
+```
+
+# Recall linear model conditions
+
+$$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)$$
+
+In order of importance:
+
+1. Linearity: Linear relationship between $X$ and $Y$ ($E[\epsilon_i] = 0)$.
+2. Independence: Independence of $\epsilon_i$.
+3. Homoskedasticity: Constant variance of $\epsilon_i$.
+4. Normality: Normally distributed $\epsilon_i$.
+
+## Considerations
+
+If your **goal is inference** (hypothesis tests or confidence intervals:
+
+- Your model should be prespecified, you should not adjust your model to achieve "significance"
+  - This results in inflated type I error (rejecting $H_0$ when $H_0$ is true)
+- You should check that your model meets conditions, before ever interpreting output
+- Using robust sandwich estimators
+- Be wary of transformations of $X$ and especially $Y$, because they hinder interpretation
+
+## 
+
+If your **goal is prediction**:
+
+- Your model does not need to be prespecified
+- You should check that your model meets conditions, before ever interpreting output
+  - Unmet conditions can result in poor out-of-sample predictive performance
+- Be wary of overfitting to your sample
+  - Use validation techniques, such as k-fold cross validation to assess out of sample predictive error
+  
+  
+## Example:
+
+We will proceed assuming our modeling goal is prediction, so we are not as worried about increased type I error
+
+## Linearity condition
+
+Diagnosing:
+
+- Plot of residuals $e_i$'s vs. fitted/predicted values $\hat{y}_i$ should be randomly distributed around 0
+
+Implications: 
+
+- poor fit
+- biased inference
+
+Remedy:
+
+- consider alternative relationships (e.g. transformations of $X$, interactions)
+- consider unmodeled variables
+
+
+## Checking linearity condition
+
+```{r}
+library(broom)
+
+model_3a <- lm(Amazon_Price ~ Pieces * Size, data = legos_q3)
+
+augment(model_3a) |> 
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point()
+```
+
+. . .
+
+*The residuals do appear to be mostly randomly distributed around 0*
+
+## Constant residual variance condition
+
+Diagnosing:
+
+- Plot of residuals $e_i$'s vs. fitted/predicted values $\hat{y}_i$ should show consistent spread of residuals
+
+Implications:
+
+- Estimators $\hat{\beta}_0$ and $\hat{\beta}_1$ are still unbiased
+- The standard errors are incorrect
+
+Remedies:
+
+- Consider transformations of $Y$
+- Consider robust standard error estimates
+- Consider Weighted least squares (*no covered*)
+
+## Checking constant residual variance condition
+
+```{r}
+augment(model_3a) |> 
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point()
+```
+
+. . .
+
+*Definite fanning behavior, consider transformation of $y$*
+
+## Transformations of $Y$
+
+Pro:
+
+- Transforming $Y$ with a function like $log(Y)$ or $\sqrt{Y}$ can remedy fanning behavior
+
+Con:
+
+- Can he harder to interpret output
+- Should not compare rmse of models with different transformations of $Y$
+
+
+## 
+
+Consider `log()` transformation
+
+```{r}
+model_3b <- lm(log(Amazon_Price) ~ Pieces * Size, data = legos_q3)
+
+augment(model_3b) |> 
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point()
+```
+

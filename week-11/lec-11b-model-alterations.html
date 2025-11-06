@@ -610,7 +610,7 @@ F-statistic: 213.3 on 2 and 173 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Interactions</h2>
 <p>If we want to allow the relationship between <span class="math inline">\(Y\)</span> and an <span class="math inline">\(X_j\)</span> to differ by another variable, we can add an <strong>interaction</strong>.</p>
 <p>For example:</p>
-<p><span class="math display">\[Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i}\]</span></p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i} + \epsilon_i\]</span></p>
 <p>We specify this with a * in the <code>lm()</code> function</p>
 </section>
 <section id="section-8" class="slide level2">
@@ -622,7 +622,7 @@ F-statistic: 213.3 on 2 and 173 DF,  p-value: &lt; 2.2e-16</code></pre>
   \begin{split}
     &amp;\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i \\
     &amp;+ \hat{\beta}_2 I(Size_i = Small)\\
-    &amp;+ \hat{\beta}_3 Pieces_i * I(Size_i = Small)
+    &amp;+ \hat{\beta}_3 Pieces_i \times I(Size_i = Small)
   \end{split}
 \end{equation*}\]</span></p>
 </div>
@@ -675,7 +675,167 @@ F-statistic: 127.8 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>A 1 piece increase is associate with an expected increase in price of $0.14, for small brick sets.</li>
 <li>A 1 piece increase is associate with an expected increase in price of $0.96, for large brick sets.</li>
 </ul>
-<div class="quarto-auto-generated-content">
+</section></section>
+<section id="robust-standard-errors" class="title-slide slide level1 center">
+<h1>Robust standard errors</h1>
+<p>Remedy to nonconstant variance of residuals:</p>
+<p>Increased standard errors to account for possibly underestimating variance of estimators</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(estimatr)</span>
+<span id="cb11-2"><a href=""></a>model_3_robust <span class="ot">&lt;-</span> <span class="fu">lm_robust</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3, <span class="at">se_type =</span> <span class="st">"HC1"</span>)</span>
+<span id="cb11-3"><a href=""></a><span class="fu">summary</span>(model_3_robust)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm_robust(formula = Amazon_Price ~ Pieces * Size, data = legos_q3, 
+    se_type = "HC1")
+
+Standard error type:  HC1 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|) CI Lower CI Upper  DF
+(Intercept)        1.8391     8.2838   0.222 0.824515 -14.4888  18.1670 215
+Pieces             0.9602     0.3280   2.928 0.003782   0.3137   1.6066 215
+SizeSmall          3.0691     8.6692   0.354 0.723665 -14.0184  20.1567 215
+Pieces:SizeSmall  -0.8205     0.3282  -2.500 0.013167  -1.4674  -0.1736 215
+
+Multiple R-squared:  0.6407 ,   Adjusted R-squared:  0.6357 
+F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+
+<section>
+<section id="recall-linear-model-conditions" class="title-slide slide level1 center">
+<h1>Recall linear model conditions</h1>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)\]</span></p>
+<p>In order of importance:</p>
+<ol type="1">
+<li>Linearity: Linear relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> (<span class="math inline">\(E[\epsilon_i] = 0)\)</span>.</li>
+<li>Independence: Independence of <span class="math inline">\(\epsilon_i\)</span>.</li>
+<li>Homoskedasticity: Constant variance of <span class="math inline">\(\epsilon_i\)</span>.</li>
+<li>Normality: Normally distributed <span class="math inline">\(\epsilon_i\)</span>.</li>
+</ol>
+</section>
+<section id="considerations" class="slide level2">
+<h2>Considerations</h2>
+<p>If your <strong>goal is inference</strong> (hypothesis tests or confidence intervals:</p>
+<ul>
+<li>Your model should be prespecified, you should not adjust your model to achieve “significance”
+<ul>
+<li>This results in inflated type I error (rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is true)</li>
+</ul></li>
+<li>You should check that your model meets conditions, before ever interpreting output</li>
+<li>Using robust sandwich estimators</li>
+<li>Be wary of transformations of <span class="math inline">\(X\)</span> and especially <span class="math inline">\(Y\)</span>, because they hinder interpretation</li>
+</ul>
+</section>
+<section id="section-12" class="slide level2">
+<h2></h2>
+<p>If your <strong>goal is prediction</strong>:</p>
+<ul>
+<li>Your model does not need to be prespecified</li>
+<li>You should check that your model meets conditions, before ever interpreting output
+<ul>
+<li>Unmet conditions can result in poor out-of-sample predictive performance</li>
+</ul></li>
+<li>Be wary of overfitting to your sample
+<ul>
+<li>Use validation techniques, such as k-fold cross validation to assess out of sample predictive error</li>
+</ul></li>
+</ul>
+</section>
+<section id="example" class="slide level2">
+<h2>Example:</h2>
+<p>We will proceed assuming our modeling goal is prediction, so we are not as worried about increased type I error</p>
+</section>
+<section id="linearity-condition" class="slide level2">
+<h2>Linearity condition</h2>
+<p>Diagnosing:</p>
+<ul>
+<li>Plot of residuals <span class="math inline">\(e_i\)</span>’s vs.&nbsp;fitted/predicted values <span class="math inline">\(\hat{y}_i\)</span> should be randomly distributed around 0</li>
+</ul>
+<p>Implications:</p>
+<ul>
+<li>poor fit</li>
+<li>biased inference</li>
+</ul>
+<p>Remedy:</p>
+<ul>
+<li>consider alternative relationships (e.g.&nbsp;transformations of <span class="math inline">\(X\)</span>, interactions)</li>
+<li>consider unmodeled variables</li>
+</ul>
+</section>
+<section id="checking-linearity-condition" class="slide level2">
+<h2>Checking linearity condition</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">library</span>(broom)</span>
+<span id="cb13-2"><a href=""></a></span>
+<span id="cb13-3"><a href=""></a>model_3a <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
+<span id="cb13-4"><a href=""></a></span>
+<span id="cb13-5"><a href=""></a><span class="fu">augment</span>(model_3a) <span class="sc">|&gt;</span> </span>
+<span id="cb13-6"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb13-7"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><div class="fragment">
+<p><em>The residuals do appear to be mostly randomly distributed around 0</em></p>
+</div>
+</section>
+<section id="constant-residual-variance-condition" class="slide level2">
+<h2>Constant residual variance condition</h2>
+<p>Diagnosing:</p>
+<ul>
+<li>Plot of residuals <span class="math inline">\(e_i\)</span>’s vs.&nbsp;fitted/predicted values <span class="math inline">\(\hat{y}_i\)</span> should show consistent spread of residuals</li>
+</ul>
+<p>Implications:</p>
+<ul>
+<li>Estimators <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are still unbiased</li>
+<li>The standard errors are incorrect</li>
+</ul>
+<p>Remedies:</p>
+<ul>
+<li>Consider transformations of <span class="math inline">\(Y\)</span></li>
+<li>Consider robust standard error estimates</li>
+<li>Consider Weighted least squares (<em>no covered</em>)</li>
+</ul>
+</section>
+<section id="checking-constant-residual-variance-condition" class="slide level2">
+<h2>Checking constant residual variance condition</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">augment</span>(model_3a) <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"><div class="fragment">
+<p><em>Definite fanning behavior, consider transformation of <span class="math inline">\(y\)</span></em></p>
+</div>
+</section>
+<section id="transformations-of-y" class="slide level2">
+<h2>Transformations of <span class="math inline">\(Y\)</span></h2>
+<p>Pro:</p>
+<ul>
+<li>Transforming <span class="math inline">\(Y\)</span> with a function like <span class="math inline">\(log(Y)\)</span> or <span class="math inline">\(\sqrt{Y}\)</span> can remedy fanning behavior</li>
+</ul>
+<p>Con:</p>
+<ul>
+<li>Can he harder to interpret output</li>
+<li>Should not compare rmse of models with different transformations of <span class="math inline">\(Y\)</span></li>
+</ul>
+</section>
+<section id="section-13" class="slide level2">
+<h2></h2>
+<p>Consider <code>log()</code> transformation</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>model_3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(Amazon_Price) <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
+<span id="cb15-2"><a href=""></a></span>
+<span id="cb15-3"><a href=""></a><span class="fu">augment</span>(model_3b) <span class="sc">|&gt;</span> </span>
+<span id="cb15-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb15-5"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
