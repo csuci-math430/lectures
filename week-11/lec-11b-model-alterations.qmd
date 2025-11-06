@@ -105,6 +105,16 @@ ggplot(
 :::
 ::::
 
+## Interactions
+
+If we want to allow the relationship between $Y$ and an $X_j$ to differ by another variable, we can add an **interaction**.
+
+For example:
+
+$$Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i} + \epsilon_i$$
+
+We specify this with a \* in the `lm()` function
+
 ## 
 
 **1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
@@ -139,7 +149,7 @@ summary(model_1)
 
 **1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
 
-Yes, we found evidence (p-value < $2 \times 10^{-16}$) of a linear relationship between price and number of pieces for Friends and City LEOG sets.
+Yes, we found evidence (p-value < $2 \times 10^{-16}$) of a linear relationship between price and number of pieces for Friends and City LEGO sets.
 
 - For a 1 piece increase we expect an increase in price of $`r round(model_1$coefficients["Pieces"], digits = 2)`.
 
@@ -149,7 +159,7 @@ Yes, we found evidence (p-value < $2 \times 10^{-16}$) of a linear relationship 
 
 . . .
 
-*This is asking:* Does the line for price $Y$ and pieces $X$ have a different y-intercept for City versus Friends LEOG sets.
+*This is asking:* Does the line for price $Y$ and pieces $X$ have a different y-intercept for City versus Friends LEGO sets.
 
 \begin{equation*}
   \begin{split}
@@ -169,10 +179,7 @@ City: $\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i$
 **2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?**
 
 ```{r}
-ggplot(
-  legos_q1, 
-  aes(x = Pieces, y = Amazon_Price, color = Theme)
-) +
+ggplot(legos_q1, aes(x = Pieces, y = Amazon_Price, color = Theme)) +
   geom_point() +
   moderndive::geom_parallel_slopes(se = FALSE)
 ```
@@ -196,16 +203,6 @@ Yes, we found evidence (p-value = 0.0374) of a difference in LEGO set prices for
 . . .
 
 - We estimate the expected price of Friends themed LEGO sets to be $`r round(abs(model_2$coefficients["ThemeFriends"]), digits = 2)` less than that of City themed sets, for sets with the same number of pieces.
-
-## Interactions
-
-If we want to allow the relationship between $Y$ and an $X_j$ to differ by another variable, we can add an **interaction**.
-
-For example:
-
-$$Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i} + \epsilon_i$$
-
-We specify this with a \* in the `lm()` function
 
 ##
 
@@ -236,12 +233,7 @@ Large: $\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i$
 
 
 ```{r}
-#| echo: false
-
-ggplot(
-  legos_q3, 
-  aes(x = Pieces, y = Amazon_Price, color = Size)
-) +
+ggplot(legos_q3, aes(x = Pieces, y = Amazon_Price, color = Size)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 ```
@@ -270,7 +262,9 @@ Yes, we found evidence (p-value = $2.5 \times 10^{-9}$) that the relationship be
 
 Remedy to nonconstant variance of residuals:
 
-Increased standard errors to account for possibly underestimating variance of estimators
+Increase standard errors to account for possibly underestimating variance of estimators
+
+## Robust standard errors
 
 ```{r}
 library(estimatr)
@@ -278,7 +272,7 @@ model_3_robust <- lm_robust(Amazon_Price ~ Pieces * Size, data = legos_q3, se_ty
 summary(model_3_robust)
 ```
 
-# Recall linear model conditions
+# Linear model conditions
 
 $$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)$$
 
@@ -291,12 +285,17 @@ In order of importance:
 
 ## Considerations
 
-If your **goal is inference** (hypothesis tests or confidence intervals:
+How we handle unmet model conditions differs by what our goal is: inference (hypothesis tests or confidence intervals)  vs prediction
 
-- Your model should be prespecified, you should not adjust your model to achieve "significance"
+## 
+
+If your **goal is inference**:
+
+- Your model should be prespecified
+  - Don't adjust your model to achieve "significance"
   - This results in inflated type I error (rejecting $H_0$ when $H_0$ is true)
-- You should check that your model meets conditions, before ever interpreting output
-- Using robust sandwich estimators
+- Check that your model meets conditions, before ever interpreting output
+- Consider using robust sandwich estimators
 - Be wary of transformations of $X$ and especially $Y$, because they hinder interpretation
 
 ## 
@@ -318,7 +317,10 @@ We will proceed assuming our modeling goal is prediction, so we are not as worri
 
 Diagnosing:
 
-- Plot of residuals $e_i$'s vs. fitted/predicted values $\hat{y}_i$ should be randomly distributed around 0
+- Plot of residuals $e_i$'s vs. fitted/predicted values $\hat{y}_i$ 
+  - should be randomly distributed around 0
+
+## Linearity condition
 
 Implications: 
 
@@ -353,16 +355,18 @@ Diagnosing:
 
 - Plot of residuals $e_i$'s vs. fitted/predicted values $\hat{y}_i$ should show consistent spread of residuals
 
+## Constant residual variance condition
+
 Implications:
 
-- Estimators $\hat{\beta}_0$ and $\hat{\beta}_1$ are still unbiased
-- The standard errors are incorrect
+- unbiased estimates $\hat{\beta}_j$'s
+- standard errors are incorrect
 
 Remedies:
 
 - Consider transformations of $Y$
 - Consider robust standard error estimates
-- Consider Weighted least squares (*no covered*)
+- Consider Weighted least squares (*not covered*)
 
 ## Checking constant residual variance condition
 
@@ -400,3 +404,4 @@ augment(model_3b) |>
   geom_point()
 ```
 
+*No longer have fanning, but there seems to be a pattern*

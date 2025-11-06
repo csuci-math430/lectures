@@ -482,6 +482,13 @@ $ Size          &lt;chr&gt; "Small", "Small", "Small", "Small", "Small", "Small"
 </div>
 </div>
 </section>
+<section id="interactions-1" class="slide level2">
+<h2>Interactions</h2>
+<p>If we want to allow the relationship between <span class="math inline">\(Y\)</span> and an <span class="math inline">\(X_j\)</span> to differ by another variable, we can add an <strong>interaction</strong>.</p>
+<p>For example:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i} + \epsilon_i\]</span></p>
+<p>We specify this with a * in the <code>lm()</code> function</p>
+</section>
 <section id="section" class="slide level2">
 <h2></h2>
 <p><strong>1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?</strong></p>
@@ -531,7 +538,7 @@ F-statistic: 414.1 on 1 and 174 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="section-3" class="slide level2">
 <h2></h2>
 <p><strong>1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?</strong></p>
-<p>Yes, we found evidence (p-value &lt; <span class="math inline">\(2 \times 10^{-16}\)</span>) of a linear relationship between price and number of pieces for Friends and City LEOG sets.</p>
+<p>Yes, we found evidence (p-value &lt; <span class="math inline">\(2 \times 10^{-16}\)</span>) of a linear relationship between price and number of pieces for Friends and City LEGO sets.</p>
 <ul>
 <li>For a 1 piece increase we expect an increase in price of $0.14.</li>
 </ul>
@@ -540,7 +547,7 @@ F-statistic: 414.1 on 1 and 174 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2></h2>
 <p><strong>2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?</strong></p>
 <div class="fragment">
-<p><em>This is asking:</em> Does the line for price <span class="math inline">\(Y\)</span> and pieces <span class="math inline">\(X\)</span> have a different y-intercept for City versus Friends LEOG sets.</p>
+<p><em>This is asking:</em> Does the line for price <span class="math inline">\(Y\)</span> and pieces <span class="math inline">\(X\)</span> have a different y-intercept for City versus Friends LEGO sets.</p>
 <p><span class="math display">\[\begin{equation*}
   \begin{split}
     \hat{Amazon Price}_i &amp;= \hat{\beta}_0 + \hat{\beta}_1 Pieces_i \\
@@ -557,12 +564,9 @@ F-statistic: 414.1 on 1 and 174 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2></h2>
 <p><strong>2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb6-2"><a href=""></a>  legos_q1, </span>
-<span id="cb6-3"><a href=""></a>  <span class="fu">aes</span>(<span class="at">x =</span> Pieces, <span class="at">y =</span> Amazon_Price, <span class="at">color =</span> Theme)</span>
-<span id="cb6-4"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb6-5"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb6-6"><a href=""></a>  moderndive<span class="sc">::</span><span class="fu">geom_parallel_slopes</span>(<span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">ggplot</span>(legos_q1, <span class="fu">aes</span>(<span class="at">x =</span> Pieces, <span class="at">y =</span> Amazon_Price, <span class="at">color =</span> Theme)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-3"><a href=""></a>  moderndive<span class="sc">::</span><span class="fu">geom_parallel_slopes</span>(<span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
@@ -606,13 +610,6 @@ F-statistic: 213.3 on 2 and 173 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul>
 </div>
 </section>
-<section id="interactions-1" class="slide level2">
-<h2>Interactions</h2>
-<p>If we want to allow the relationship between <span class="math inline">\(Y\)</span> and an <span class="math inline">\(X_j\)</span> to differ by another variable, we can add an <strong>interaction</strong>.</p>
-<p>For example:</p>
-<p><span class="math display">\[Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i} + \epsilon_i\]</span></p>
-<p>We specify this with a * in the <code>lm()</code> function</p>
-</section>
 <section id="section-8" class="slide level2">
 <h2></h2>
 <p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
@@ -634,15 +631,20 @@ F-statistic: 213.3 on 2 and 173 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="section-9" class="slide level2">
 <h2></h2>
 <p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">ggplot</span>(legos_q3, <span class="fu">aes</span>(<span class="at">x =</span> Pieces, <span class="at">y =</span> Amazon_Price, <span class="at">color =</span> Size)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
+</div>
 <img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
 <section id="section-10" class="slide level2">
 <h2></h2>
 <p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>model_3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
-<span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a><span class="fu">summary</span>(model_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>model_3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
+<span id="cb10-2"><a href=""></a></span>
+<span id="cb10-3"><a href=""></a><span class="fu">summary</span>(model_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -676,14 +678,18 @@ F-statistic: 127.8 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>A 1 piece increase is associate with an expected increase in price of $0.96, for large brick sets.</li>
 </ul>
 </section></section>
+<section>
 <section id="robust-standard-errors" class="title-slide slide level1 center">
 <h1>Robust standard errors</h1>
 <p>Remedy to nonconstant variance of residuals:</p>
-<p>Increased standard errors to account for possibly underestimating variance of estimators</p>
+<p>Increase standard errors to account for possibly underestimating variance of estimators</p>
+</section>
+<section id="robust-standard-errors-1" class="slide level2">
+<h2>Robust standard errors</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(estimatr)</span>
-<span id="cb11-2"><a href=""></a>model_3_robust <span class="ot">&lt;-</span> <span class="fu">lm_robust</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3, <span class="at">se_type =</span> <span class="st">"HC1"</span>)</span>
-<span id="cb11-3"><a href=""></a><span class="fu">summary</span>(model_3_robust)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">library</span>(estimatr)</span>
+<span id="cb12-2"><a href=""></a>model_3_robust <span class="ot">&lt;-</span> <span class="fu">lm_robust</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3, <span class="at">se_type =</span> <span class="st">"HC1"</span>)</span>
+<span id="cb12-3"><a href=""></a><span class="fu">summary</span>(model_3_robust)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -703,11 +709,10 @@ Multiple R-squared:  0.6407 ,   Adjusted R-squared:  0.6357
 F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-</section>
-
+</section></section>
 <section>
-<section id="recall-linear-model-conditions" class="title-slide slide level1 center">
-<h1>Recall linear model conditions</h1>
+<section id="linear-model-conditions" class="title-slide slide level1 center">
+<h1>Linear model conditions</h1>
 <p><span class="math display">\[Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \epsilon_i \overset{iid}{\sim} N(0, \sigma^2)\]</span></p>
 <p>In order of importance:</p>
 <ol type="1">
@@ -719,18 +724,23 @@ F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="considerations" class="slide level2">
 <h2>Considerations</h2>
-<p>If your <strong>goal is inference</strong> (hypothesis tests or confidence intervals:</p>
+<p>How we handle unmet model conditions differs by what our goal is: inference (hypothesis tests or confidence intervals) vs prediction</p>
+</section>
+<section id="section-12" class="slide level2">
+<h2></h2>
+<p>If your <strong>goal is inference</strong>:</p>
 <ul>
-<li>Your model should be prespecified, you should not adjust your model to achieve “significance”
+<li>Your model should be prespecified
 <ul>
+<li>Don’t adjust your model to achieve “significance”</li>
 <li>This results in inflated type I error (rejecting <span class="math inline">\(H_0\)</span> when <span class="math inline">\(H_0\)</span> is true)</li>
 </ul></li>
-<li>You should check that your model meets conditions, before ever interpreting output</li>
-<li>Using robust sandwich estimators</li>
+<li>Check that your model meets conditions, before ever interpreting output</li>
+<li>Consider using robust sandwich estimators</li>
 <li>Be wary of transformations of <span class="math inline">\(X\)</span> and especially <span class="math inline">\(Y\)</span>, because they hinder interpretation</li>
 </ul>
 </section>
-<section id="section-12" class="slide level2">
+<section id="section-13" class="slide level2">
 <h2></h2>
 <p>If your <strong>goal is prediction</strong>:</p>
 <ul>
@@ -753,8 +763,14 @@ F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Linearity condition</h2>
 <p>Diagnosing:</p>
 <ul>
-<li>Plot of residuals <span class="math inline">\(e_i\)</span>’s vs.&nbsp;fitted/predicted values <span class="math inline">\(\hat{y}_i\)</span> should be randomly distributed around 0</li>
+<li>Plot of residuals <span class="math inline">\(e_i\)</span>’s vs.&nbsp;fitted/predicted values <span class="math inline">\(\hat{y}_i\)</span>
+<ul>
+<li>should be randomly distributed around 0</li>
+</ul></li>
 </ul>
+</section>
+<section id="linearity-condition-1" class="slide level2">
+<h2>Linearity condition</h2>
 <p>Implications:</p>
 <ul>
 <li>poor fit</li>
@@ -769,13 +785,13 @@ F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="checking-linearity-condition" class="slide level2">
 <h2>Checking linearity condition</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">library</span>(broom)</span>
-<span id="cb13-2"><a href=""></a></span>
-<span id="cb13-3"><a href=""></a>model_3a <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
-<span id="cb13-4"><a href=""></a></span>
-<span id="cb13-5"><a href=""></a><span class="fu">augment</span>(model_3a) <span class="sc">|&gt;</span> </span>
-<span id="cb13-6"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb13-7"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">library</span>(broom)</span>
+<span id="cb14-2"><a href=""></a></span>
+<span id="cb14-3"><a href=""></a>model_3a <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
+<span id="cb14-4"><a href=""></a></span>
+<span id="cb14-5"><a href=""></a><span class="fu">augment</span>(model_3a) <span class="sc">|&gt;</span> </span>
+<span id="cb14-6"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb14-7"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><div class="fragment">
@@ -788,24 +804,27 @@ F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 <ul>
 <li>Plot of residuals <span class="math inline">\(e_i\)</span>’s vs.&nbsp;fitted/predicted values <span class="math inline">\(\hat{y}_i\)</span> should show consistent spread of residuals</li>
 </ul>
+</section>
+<section id="constant-residual-variance-condition-1" class="slide level2">
+<h2>Constant residual variance condition</h2>
 <p>Implications:</p>
 <ul>
-<li>Estimators <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> are still unbiased</li>
-<li>The standard errors are incorrect</li>
+<li>unbiased estimates <span class="math inline">\(\hat{\beta}_j\)</span>’s</li>
+<li>standard errors are incorrect</li>
 </ul>
 <p>Remedies:</p>
 <ul>
 <li>Consider transformations of <span class="math inline">\(Y\)</span></li>
 <li>Consider robust standard error estimates</li>
-<li>Consider Weighted least squares (<em>no covered</em>)</li>
+<li>Consider Weighted least squares (<em>not covered</em>)</li>
 </ul>
 </section>
 <section id="checking-constant-residual-variance-condition" class="slide level2">
 <h2>Checking constant residual variance condition</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">augment</span>(model_3a) <span class="sc">|&gt;</span> </span>
-<span id="cb14-2"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb14-3"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">augment</span>(model_3a) <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb15-3"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"><div class="fragment">
@@ -824,18 +843,19 @@ F-statistic: 46.15 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>Should not compare rmse of models with different transformations of <span class="math inline">\(Y\)</span></li>
 </ul>
 </section>
-<section id="section-13" class="slide level2">
+<section id="section-14" class="slide level2">
 <h2></h2>
 <p>Consider <code>log()</code> transformation</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>model_3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(Amazon_Price) <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
-<span id="cb15-2"><a href=""></a></span>
-<span id="cb15-3"><a href=""></a><span class="fu">augment</span>(model_3b) <span class="sc">|&gt;</span> </span>
-<span id="cb15-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
-<span id="cb15-5"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>model_3b <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(Amazon_Price) <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
+<span id="cb16-2"><a href=""></a></span>
+<span id="cb16-3"><a href=""></a><span class="fu">augment</span>(model_3b) <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb16-5"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><div class="quarto-auto-generated-content">
+<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><p><em>No longer have fanning, but there seems to be a pattern</em></p>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
