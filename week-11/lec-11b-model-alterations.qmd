@@ -117,13 +117,6 @@ $$\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i$$
 
 ##
 
-```{r}
-model_1 <- lm(Amazon_Price ~ Pieces, data = legos_q1)
-summary(model_1)
-```
-
-##
-
 **1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
 
 ```{r}
@@ -132,6 +125,15 @@ ggplot(legos_q1, aes(x = Pieces, y = Amazon_Price)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
+##
+
+**1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?**
+
+
+```{r}
+model_1 <- lm(Amazon_Price ~ Pieces, data = legos_q1)
+summary(model_1)
+```
 
 ## 
 
@@ -177,6 +179,8 @@ ggplot(
 
 ##
 
+**2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?**
+
 ```{r}
 model_2 <- lm(Amazon_Price ~ Pieces + Theme, data = legos_q1)
 
@@ -193,7 +197,71 @@ Yes, we found evidence (p-value = 0.0374) of a difference in LEGO set prices for
 
 - We estimate the expected price of Friends themed LEGO sets to be $`r round(abs(model_2$coefficients["ThemeFriends"]), digits = 2)` less than that of City themed sets, for sets with the same number of pieces.
 
+## Interactions
+
+If we want to allow the relationship between $Y$ and an $X_j$ to differ by another variable, we can add an **interaction**.
+
+For example:
+
+$$Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i}$$
+
+We specify this with a \* in the `lm()` function
 
 ##
 
+**3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?**
 
+*This is asking:* Is $\beta_1$ different for small versus large bricks?
+
+. . .
+
+\begin{equation*}
+  \begin{split}
+    &\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i \\
+    &+ \hat{\beta}_2 I(Size_i = Small)\\
+    &+ \hat{\beta}_3 Pieces_i * I(Size_i = Small)
+  \end{split}
+\end{equation*}
+
+. . .
+
+Small: $\hat{Amazon Price}_i = (\hat{\beta}_0 + \hat{\beta}_2) + (\hat{\beta}_1 + \hat{\beta_3}) Pieces_i$
+
+Large: $\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i$
+
+
+##
+
+**3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?**
+
+
+```{r}
+#| echo: false
+
+ggplot(
+  legos_q3, 
+  aes(x = Pieces, y = Amazon_Price, color = Size)
+) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+##
+
+**3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?**
+
+
+```{r}
+model_3 <- lm(Amazon_Price ~ Pieces * Size, data = legos_q3)
+
+summary(model_3)
+```
+
+##
+
+**3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?**
+
+Yes, we found evidence (p-value = $2.5 \times 10^{-9}$) that the relationship between Amazon Price and Pieces differs for small vs large bricks.
+
+- A 1 piece increase is associate with an expected increase in price of $`r round(model_3$coefficients["Pieces"] + model_3$coefficients["Pieces:SizeSmall"], digits = 2)`, for small brick sets.
+- A 1 piece increase is associate with an expected increase in price of $`r round(model_3$coefficients["Pieces"], digits = 2)`, for large brick sets.

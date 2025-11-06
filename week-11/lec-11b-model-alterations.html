@@ -492,9 +492,20 @@ $ Size          &lt;chr&gt; "Small", "Small", "Small", "Small", "Small", "Small"
 </section>
 <section id="section-1" class="slide level2">
 <h2></h2>
+<p><strong>1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>model_1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces, <span class="at">data =</span> legos_q1)</span>
-<span id="cb3-2"><a href=""></a><span class="fu">summary</span>(model_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">ggplot</span>(legos_q1, <span class="fu">aes</span>(<span class="at">x =</span> Pieces, <span class="at">y =</span> Amazon_Price)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+<p><strong>1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>model_1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces, <span class="at">data =</span> legos_q1)</span>
+<span id="cb4-2"><a href=""></a><span class="fu">summary</span>(model_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -517,16 +528,6 @@ F-statistic: 414.1 on 1 and 174 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="section-2" class="slide level2">
-<h2></h2>
-<p><strong>1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">ggplot</span>(legos_q1, <span class="fu">aes</span>(<span class="at">x =</span> Pieces, <span class="at">y =</span> Amazon_Price)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="section-3" class="slide level2">
 <h2></h2>
 <p><strong>1. Is there a relationship between the Amazon price and the number of pieces per set for the LEGO Friends and LEGO City sets in our sample?</strong></p>
@@ -567,6 +568,7 @@ F-statistic: 414.1 on 1 and 174 DF,  p-value: &lt; 2.2e-16</code></pre>
 <img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
 <section id="section-6" class="slide level2">
 <h2></h2>
+<p><strong>2. Is there a difference in LEGO Friends sets and LEGO City sets regarding the Amazon price and the number of pieces in our sample?</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>model_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">+</span> Theme, <span class="at">data =</span> legos_q1)</span>
 <span id="cb7-2"><a href=""></a></span>
@@ -604,8 +606,75 @@ F-statistic: 213.3 on 2 and 173 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ul>
 </div>
 </section>
+<section id="interactions-1" class="slide level2">
+<h2>Interactions</h2>
+<p>If we want to allow the relationship between <span class="math inline">\(Y\)</span> and an <span class="math inline">\(X_j\)</span> to differ by another variable, we can add an <strong>interaction</strong>.</p>
+<p>For example:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i} \times X_{2i}\]</span></p>
+<p>We specify this with a * in the <code>lm()</code> function</p>
+</section>
 <section id="section-8" class="slide level2">
 <h2></h2>
+<p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
+<p><em>This is asking:</em> Is <span class="math inline">\(\beta_1\)</span> different for small versus large bricks?</p>
+<div class="fragment">
+<p><span class="math display">\[\begin{equation*}
+  \begin{split}
+    &amp;\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i \\
+    &amp;+ \hat{\beta}_2 I(Size_i = Small)\\
+    &amp;+ \hat{\beta}_3 Pieces_i * I(Size_i = Small)
+  \end{split}
+\end{equation*}\]</span></p>
+</div>
+<div class="fragment">
+<p>Small: <span class="math inline">\(\hat{Amazon Price}_i = (\hat{\beta}_0 + \hat{\beta}_2) + (\hat{\beta}_1 + \hat{\beta_3}) Pieces_i\)</span></p>
+<p>Large: <span class="math inline">\(\hat{Amazon Price}_i = \hat{\beta}_0 + \hat{\beta}_1 Pieces_i\)</span></p>
+</div>
+</section>
+<section id="section-9" class="slide level2">
+<h2></h2>
+<p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
+
+<img data-src="lec-11b-model-alterations_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
+<section id="section-10" class="slide level2">
+<h2></h2>
+<p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>model_3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Amazon_Price <span class="sc">~</span> Pieces <span class="sc">*</span> Size, <span class="at">data =</span> legos_q3)</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a><span class="fu">summary</span>(model_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Amazon_Price ~ Pieces * Size, data = legos_q3)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-65.714 -11.106  -2.902   6.776 198.290 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        1.8391     6.7674   0.272    0.786    
+Pieces             0.9602     0.1316   7.296 5.64e-12 ***
+SizeSmall          3.0691     7.4606   0.411    0.681    
+Pieces:SizeSmall  -0.8205     0.1318  -6.224 2.50e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 27.89 on 215 degrees of freedom
+Multiple R-squared:  0.6407,    Adjusted R-squared:  0.6357 
+F-statistic: 127.8 on 3 and 215 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="section-11" class="slide level2">
+<h2></h2>
+<p><strong>3. Does the relationship between the Amazon price and the number of pieces differ between small and large bricks in our sample?</strong></p>
+<p>Yes, we found evidence (p-value = <span class="math inline">\(2.5 \times 10^{-9}\)</span>) that the relationship between Amazon Price and Pieces differs for small vs large bricks.</p>
+<ul>
+<li>A 1 piece increase is associate with an expected increase in price of $0.14, for small brick sets.</li>
+<li>A 1 piece increase is associate with an expected increase in price of $0.96, for large brick sets.</li>
+</ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
