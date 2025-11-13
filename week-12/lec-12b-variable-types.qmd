@@ -1,6 +1,6 @@
 ---
 title: "Math 430: Lecture 12b"
-subtitle: "Regression Variable types"
+subtitle: "Regression Variable Types"
 author: "Professor Catalina Medina"
 execute:
   echo: true
@@ -90,4 +90,10 @@ Example: Sleep quality affects academic achievement through the mediator of aler
 ![](img/precision.drawio.png)
 
 - Consider adding them to increase precision (reduce variable) of our estimates, if they are highly related to response variable
+
+## Practice
+
+Reconsider your practical 2
+
+
 
