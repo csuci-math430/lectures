@@ -1,0 +1,93 @@
+---
+title: "Math 430: Lecture 12b"
+subtitle: "Regression Variable types"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+## Variable types
+
+We have learned about several different types of variables
+
+There are some we haven't named and some we haven't discussed
+
+## Variables of primary interest
+
+![](img/explanatory-response.drawio.png)
+
+In experimental design our outcome of interest is our *response variable*, and our primary variable we think explains this variable is the *explanatory variable*.
+
+Example: Sleep quality ($X_{1i}$) affects academic achievement ($Y_{i}$)
+
+
+
+## Variables of primary interest: what to do
+
+![](img/explanatory-response.drawio.png)
+
+- Choose a model appropriate for your what type of variable your response variable is
+- Incorporate the explanatory variable as an $X_i$
+
+## Confounding variables
+
+![](img/confounding.drawio.png)
+
+- Are related to both the explanatory and response variable
+
+Example: Stressful home environment can affect sleep quality and academic achievement
+
+## Confounding variables: what to do
+
+![](img/confounding.drawio.png)
+
+- are controlled for in experiments where there is random assignment of the explanatory variable / treatment
+- need to be accounted for in observational studies (as an $X_i$)
+
+## Moderating variables
+
+![](img/moderator.drawio.png)
+
+- Explain the strength or direction of the relationship between the explanatory and response variable
+
+Example: The relationship between sleep quality and academic achievement probably differs for children versus adults.
+
+
+## Moderating variables: what to do
+
+![](img/moderator.drawio.png)
+
+- Account for with an interaction between the moderating and explanatory variable
+
+## Mediating variables
+
+![](img/mediator.drawio.png)
+
+- explain the process or mechanism of the relationship between the explanatory and response variables
+
+Example: Sleep quality affects academic achievement through the mediator of alertness ($X_{2i}$)
+
+
+## Mediating variables: what to do
+
+![](img/mediator.drawio.png)
+
+- Should not be controlled for (added to model) because we would lose the relationship between $X$ and $Y$
+
+## Precision variables
+
+![](img/precision.drawio.png)
+
+- Variables only related to response variable and not explanatory
+
+
+## Precision variables: what to do
+
+![](img/precision.drawio.png)
+
+- Consider adding them to increase precision (reduce variable) of our estimates, if they are highly related to response variable
+
