@@ -96,4 +96,46 @@ Example: Sleep quality affects academic achievement through the mediator of aler
 Reconsider your practical 2
 
 
+# Types of Errors for Statistical Inference
+
+We say we want to prespecify our model when doing statistical inference, but why??
+
+Example of statistical inference: Hypothesis test for $H_0: \beta_1 = 0$ versus $H_A: \beta_1 \neq 0$ in simple linear regression
+
+## Type I Error (aka false postive)
+
+A **Type I Error** is when we reject $H_0$ (small enough p-value), when $H_0$ is actually true.
+
+- In context of hypothesis test for $\beta_1$, this means we conclude we found evidence of a relationship between $Y$ and $X$, when in reality there is no relationship.
+
+## Rate / Probability of Type I Error
+
+When deciding if our p-value is low enough to reject $H_0$ we use a prespecified cutoff, this cutoff is called the **significance level**
+
+- The most common significance level used in practice is 0.05
+- The significance level = probability of a type I error
+- Significance level = 1 - confidence level, meaning a hypothesis test for $\beta_1$ with a significance level of $\alpha$ is equivalent to checking if zero is contained in the (1-$\alpha$)% confidence interval for $\beta_1$
+
+## Type II Error (aka false negative)
+
+A **Type II Error** is when we fail to reject $H_0$ (not a small p-value), when $H_0$ is actually false.
+
+- In context of hypothesis test for $\beta_1$, this means we conclude we failed to find evidence of a relationship between $Y$ and $X$, when in reality there is a relationship.
+- 1 - Probability of a Type II error = **power**
+
+## Error Trade-off
+
+Researchers must balance risk of Type I and Type II error
+
+For example: 
+
+- Consider an example where $H_0: \beta_1 = 0$ is false, i.e. $X$ and $Y$ are linearly related
+- If I say I want a very low type I error probability, I can use a significance level of 0.01 instead of 0.05
+- If my p-value is 0.03, I would conclude not to reject the $H_0$
+- This means I fail to find evidence of a relationship between $X$ and $Y$ when there is one (type II error)
+
+## Combating errors
+
+Larger sample sizes can help us detect differences (reject $H_0$), when there are differences
+
 
