@@ -1,0 +1,146 @@
+---
+title: "Math 430: Lecture 13a"
+subtitle: "Subset selection"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+options(scipen = 0)
+library(tidyverse)
+library(openintro)
+library(broom)
+library(modelr)
+theme_set(theme_bw(base_size = 22))
+```
+
+##
+
+When doing prediction with regression we 
+
+- want to include available data as predictors/feature, when it will help improve our prediction.
+- are not concerned about multiple testing, because we aren't doing inference.
+- don't want to check every possible combination manually.
+
+## Subset selection
+
+- Best subset selection
+- Stepwise forwards  selection
+- Stepwise backwards selection
+
+. . .
+
+*For all of these, reserving some data for testing is a good idea.*
+
+## Best subset selection idea
+
+Fit a model for each possible combination and compare models using appropriate metric (e.g., RMSE, $C_p$, adjusted $R^2$)
+
+## Best subset selection steps
+
+1. Fit *null model*, model with no predictors.
+2. For each $k = 1, 2, ..., p$:
+  a. Fit all ${p}\choose{k}$ models with $k$ predictors
+  b. Pick the best for that $k$, using RSS / deviance
+3. Select *best* model among the $p+1$ options using out-of-sample prediction error RMSE / Accuracy or $C_p$.
+
+## Best subset selection considerations
+
+- Must fit many models, $2^p$, can be computationally expensive for large $p$ or $n$
+- Can overfit to training data if not splitting data
+
+## Forward stepwise selection idea
+
+Begins with a model with no predictors, then adds predictors one at a time, keeping the one that gives the greatest additional improvement each round. Stops when no variable improves model
+
+## Forward stepwise selection steps
+
+1. Fit *null model*, model with no predictors.
+2. For each $k = 0, 1, ..., p-1$:
+  a. Add one additional $p-k$ predictor to current "best" model
+  b. Choose best among these models using RSS / deviance, proceeding with that model as baseline for next round of $k$.
+3. Select *best* model among the $p+1$ options using out-of-sample prediction error RMSE / Accuracy or $C_p$.
+
+## Forward stepwise selection considerations
+
+- Fits total of $1 + \sum_{k=0}^{p-1} (p - k) = 1 + p(p+1)/2$ models => computational advantage over best subset selection
+- Not gauranteed to yield the best model containing a subset of $p$ predictors
+- Works even when $p>n$
+
+## Backwards stepwise selection steps
+
+Opposite of forwards selection, begins with full model using all available predictors, then iteratively removes one each step.
+
+##
+
+1. Fit full model, model with all predictors.
+2. For each $k = p, p-1, ..., 1$:
+  a. Consider all $k$ models that contain all but one of the predictors in the current baseline model, for a total of $k-1$ predictors
+  b. Choose best among these models using RSS / deviance, proceeding with that model as baseline for next round of $k$.
+3. Select *best* model among the $p+1$ options using out-of-sample prediction error RMSE / Accuracy or $C_p$.
+
+##
+
+- Also fits $1 + p(p+1)/2$ models, like forwards selection
+- Also not guaranteed to yield the best model containing a subset of $p$ predictors
+- Does not work when $p > n$
+
+## Overall
+
+- Best subset, forward stepwise, and backwards stepwise give fairly similar but not identical models typically
+- Step 3 should be rigorously assessed using validation approaches, but some metrics can be used in cases of low sample size
+
+## $C_p$
+
+For linear regression
+
+$$C_p = \frac{1}{n} (RSS + 2d \hat{\sigma}^2),$$
+
+where $\hat{\sigma}^2$ is an estimate of the variance of the error $\epsilon$, typically estimated using full model.
+
+Adds penalty for number of predictors
+
+Is large or small $C_p$ good?
+
+##
+
+```{r}
+data("swiss")
+
+glimpse(swiss)
+```
+
+## Doing best subset
+
+```{r}
+library(leaps)
+
+models <- regsubsets(Fertility ~ ., data = swiss, method = "exhaustive")
+summary(models)
+```
+
+## Doing forwards stepwise
+
+```{r}
+library(leaps)
+
+models <- regsubsets(Fertility ~ ., data = swiss, method = "forward")
+summary(models)
+```
+
+## Doing backwards stepwise
+
+```{r}
+library(leaps)
+
+models <- regsubsets(Fertility ~ ., data = swiss, method = "backward")
+summary(models)
+```
+
+
