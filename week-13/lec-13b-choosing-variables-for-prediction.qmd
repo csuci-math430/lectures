@@ -1,0 +1,232 @@
+---
+title: "Math 430: Lecture 13b"
+subtitle: "Selecting variables for prediction modeling"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+options(scipen = 0)
+library(tidyverse)
+library(openintro)
+library(broom)
+library(modelr)
+theme_set(theme_bw(base_size = 22))
+```
+
+## What variables to include...
+
+We don't want to include extra variables as features in our predictive regression models if they do not improve the predictive performance. 
+
+- This is where **subset selection** comes in, to help us choose our features ($X$'s).
+
+. . .
+
+On the other hand, we may have very large number of predictors $p$ available, relative to the sample size $n$. 
+
+- In very high dimensional data situations, **dimension reduction** can help by tranforming and combining features
+
+## Subset selection
+
+- Best subset selection
+- Stepwise forwards  selection
+- Stepwise backwards selection
+
+##
+
+```{r}
+data("swiss")
+
+glimpse(swiss)
+```
+
+## Standardizing our variables
+
+When we are doing subset selection we should standardize our variables (subtract mean & divide by standard deviation) to avoid comparing variables of different magnitudes.
+
+The `scale()` function standardizes columns, and we can tell it to only attempt for numeric columns:
+```{r}
+swiss_prepped <- swiss %>%
+  mutate(across(where(is.numeric), scale))
+```
+
+
+## Best subset selection idea
+
+Fit a model for each possible combination and compare models using appropriate metric
+
+- Need to use a metric appropriate for comparing models of varying parameters (i.e. NOT $R^2$)
+
+## Best subset selection steps
+
+1. Fit *null model*, model with no predictors.
+2. For each $k = 1, 2, ..., p$:
+  a. Fit all ${p}\choose{k}$ models with $k$ predictors
+  b. Pick the best for that $k$
+3. Select *best* model among the $p+1$ options using out-of-sample prediction error RMSE / Accuracy or $C_p$.
+
+
+## Best subset selection considerations
+
+Pros:
+
+- Finds optimal combination of predictors
+
+Cons:
+
+- Must fit many models, $2^p$, can be computationally expensive for large $p$ or $n$
+
+## Forward stepwise selection idea
+
+Begins with a model with no predictors, then adds predictors one at a time, keeping the one that gives the greatest additional improvement each round. Stops when no variable improves model
+
+## Forward stepwise selection steps
+
+1. Fit *null model*, model with no predictors.
+2. For each $k = 0, 1, ..., p-1$:
+  a. Add one additional $p-k$ predictor to current "best" model
+  b. Choose best among these models
+3. Select *best* model among the $p+1$ options using out-of-sample prediction error RMSE / Accuracy or $C_p$.
+
+## Forward stepwise selection considerations
+
+Pros:
+
+- Fits total of $1 + \sum_{k=0}^{p-1} (p - k) = 1 + p(p+1)/2$ models => computational advantage over best subset selection
+- Works even when $p>n$
+
+Cons:
+
+- Not guaranteed to yield the best model containing a subset of $p$ predictors
+  - May get stuck at local optima
+
+
+## Backwards stepwise selection idea
+
+Opposite of forwards selection, begins with full model using all available predictors, then iteratively removes one each step.
+
+## Backwards stepwise selection steps
+
+1. Fit full model, model with all predictors.
+2. For each $k = p, p-1, ..., 1$:
+  a. Consider all $k$ models that contain all but one of the predictors in the current baseline model, for a total of $k-1$ predictors
+  b. Choose best among these.
+3. Select *best* model among the $p+1$ options using out-of-sample prediction error RMSE / Accuracy (or $C_p$...).
+
+
+## Backwards stepwise selection considerations
+
+Pros:
+
+- Also fits total of $1 + p(p+1)/2$ models => computational advantage over best subset selection
+
+Cons:
+
+- Not guaranteed to yield the best model containing a subset of $p$ predictors
+  - May be better than forwards for exploring
+- Doesn't work when $p>n$
+
+## Overall
+
+- Best subset, forward stepwise, and backwards stepwise give fairly similar but not identical models typically
+- Sequential stepwise selection is a combination of forward and backward, where a variable can be removed or added at each stage
+- Step 3 should be rigorously assessed using validation approaches, but some metrics can be used in cases of low sample size
+
+## $C_p$
+
+What if we don't want to split our data to do validation? $C_p$ provides an sense of test-MSE for linear regression
+
+$$C_p = \frac{1}{n} (RSS + 2d \hat{\sigma}^2),$$
+
+where $\hat{\sigma}^2$ is an estimate of the variance of the error $\epsilon$, typically estimated using full model. 
+
+There are other similar metrics like AIC, BIC, etc.
+
+**With today's computational power and support we should prefer validation methods!**
+
+## Doing best subset selection with $C_p$
+
+Note `method` can be set to "forwards", "backwards", or "sequential"
+
+```{r}
+library(leaps) # for regsubsets() function
+
+model_best <- regsubsets(
+  Fertility ~ ., # Period means to use all of the variables
+  data = swiss_prepped, 
+  method = "exhaustive" # For best subset selction
+)
+
+summary(model_best)
+```
+
+## Extracting evaluation metrics
+
+```{r}
+model_best_summary <- summary(model_best)
+model_best_summary$cp
+```
+
+Using $C_p$ instead of k-fold cross validation we see it selects for the fourth model.
+
+## Doing backwards/forwards selection with k-fold cross validation
+
+The caret package offer help with 
+
+- forwards feature selection via k-fold cross validation (Selection by Filter) with `sbf()`
+- backwards feature selection via k-fold cross validation (Recursive feature elemination) with `rfe()`
+
+```{r}
+library(caret)
+```
+
+## Backwards
+
+```{r}
+rfe_control <- rfeControl(
+  functions = lmFuncs, # lmFuncs, glmFuncs, etc., depending on your model
+  method = "cv",       # k-fold cross validation
+  number = 10         # Number of folds
+)
+
+rfe_result <- rfe(
+  Fertility ~ ., 
+  data = swiss_prepped,
+  metric = "RMSE",
+  rfeControl = rfe_control
+)
+
+predictors(rfe_result)
+```
+
+## Forwards
+
+```{r}
+sbf_control <- sbfControl(
+  functions = lmSBF,
+  method = "cv",       # k-fold cross validation
+  number = 10         # Number of folds
+)
+
+sbf_result <- sbf(
+  Fertility ~ ., 
+  data = swiss_prepped,
+  metric = "RMSE",
+  sbfControl = sbf_control
+)
+
+predictors(sbf_result)
+```
+
+## Takeaways
+
+- Difference between subset selection and dimensionality reduction
+- Forward/backward stepwise selection is typically more practical than best subset selection (just choose one)
+- We should use k-fold cross validation for subset selection
+

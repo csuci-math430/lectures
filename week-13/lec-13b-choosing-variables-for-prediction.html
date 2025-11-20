@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="lec-13a-subset-selection_files/libs/clipboard/clipboard.min.js"></script>
-<script src="lec-13a-subset-selection_files/libs/quarto-html/tabby.min.js"></script>
-<script src="lec-13a-subset-selection_files/libs/quarto-html/popper.min.js"></script>
-<script src="lec-13a-subset-selection_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="lec-13a-subset-selection_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="lec-13a-subset-selection_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="lec-13a-subset-selection_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="lec-13a-subset-selection_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="lec-13b-choosing-variables-for-prediction_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/popper.min.js"></script>
+<script src="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="lec-13b-choosing-variables-for-prediction_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.555">
 
   <meta name="author" content="Professor Catalina Medina">
-  <title>Math 430: Lecture 13a</title>
+  <title>Math 430: Lecture 13b</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="lec-13a-subset-selection_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="lec-13a-subset-selection_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -95,11 +95,11 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lec-13a-subset-selection_files/libs/revealjs/dist/theme/quarto.css">
-  <link href="lec-13a-subset-selection_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="lec-13a-subset-selection_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="lec-13a-subset-selection_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="lec-13a-subset-selection_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -391,8 +391,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Math 430: Lecture 13a</h1>
-  <p class="subtitle">Subset selection</p>
+  <h1 class="title">Math 430: Lecture 13b</h1>
+  <p class="subtitle">Selecting variables for prediction modeling</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -403,119 +403,60 @@ Professor Catalina Medina
 </div>
 
 </section>
-<section>
-<section id="variable-selection-for-inference" class="title-slide slide level1 center">
-<h1>Variable selection for inference</h1>
-<p><em>In class we took a while reviewing lecture 12b.</em></p>
-<p><em>We reviewed variable types and including interactions.</em></p>
-</section>
-<section id="reviewing-interactions" class="slide level2">
-<h2>Reviewing interactions</h2>
-<p>Regardless of study type (observational/experiment), if we miss a mediating variable we may think the relationship is completely different from the truth.</p>
-</section>
-<section id="without-species-included" class="slide level2">
-<h2>Without species included</h2>
-<p>There appears to be a negative relationship between flipper length and bill depth…</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> flipper_len, <span class="at">y =</span> bill_dep)) <span class="sc">+</span></span>
-<span id="cb1-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb1-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="lec-13a-subset-selection_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
-<section id="with-species-included" class="slide level2">
-<h2>With species included</h2>
-<p>In reality there is a positive relationship between flipper length and bill depth that differs by species.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> flipper_len, <span class="at">y =</span> bill_dep, <span class="at">color =</span> species)) <span class="sc">+</span></span>
-<span id="cb2-2"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb2-3"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="lec-13a-subset-selection_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
-<section id="section" class="slide level2">
-<h2></h2>
-<p>We can account for varying y-intercepts by adding species to our model, we can account for varying slopes by including interactions between species and flipper length. <span class="math display">\[\begin{equation*}
-  \begin{split}
-    &amp;Bill Depth_i = \beta_0\\
-    &amp;+ \beta_1 Flipper Length\\
-    &amp;+ \beta_2 I(species_i = Chinstrap)\\
-    &amp;+ \beta_3 I(species_i = Gentoo)\\
-    &amp;+ \beta_4 I(species_i = Chinstrap) \times Flipper Length\\
-    &amp;+ \beta_5 I(species_i = Gentoo) \times Flipper Length + \epsilon_i
-  \end{split}
-\end{equation*}\]</span></p>
-</section>
-<section id="section-1" class="slide level2">
-<h2></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(bill_dep <span class="sc">~</span> flipper_len <span class="sc">*</span> species, <span class="at">data =</span> penguins)</span>
-<span id="cb3-2"><a href=""></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = bill_dep ~ flipper_len * species, data = penguins)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.73455 -0.66057 -0.02039  0.65146  2.92206 
-
-Coefficients:
-                              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                    7.47494    2.30556   3.242  0.00131 ** 
-flipper_len                    0.05723    0.01213   4.718 3.50e-06 ***
-speciesChinstrap              -7.14033    3.99381  -1.788  0.07470 .  
-speciesGentoo                -15.71179    3.74181  -4.199 3.44e-05 ***
-flipper_len:speciesChinstrap   0.03513    0.02059   1.706  0.08900 .  
-flipper_len:speciesGentoo      0.04968    0.01820   2.730  0.00667 ** 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.9715 on 336 degrees of freedom
-  (2 observations deleted due to missingness)
-Multiple R-squared:  0.7615,    Adjusted R-squared:  0.758 
-F-statistic: 214.6 on 5 and 336 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-</section>
-<section id="fitted-model" class="slide level2">
-<h2>Fitted model</h2>
-<p><span class="math display">\[\begin{equation*}
-  \begin{split}
-    &amp;\widehat{Bill Depth}_i = 7.47 \\
-    &amp;+ 0.06 Flipper Length\\
-    &amp;+ -7.14 I(species_i = Chinstrap)\\
-    &amp;+ -15.71 I(species_i = Gentoo)\\
-    &amp;+ 0.04 I(species_i = Chinstrap) \times Flipper Length\\
-    &amp;+ 0.05 I(species_i = Gentoo) \times Flipper Length
-  \end{split}
-\end{equation*}\]</span></p>
-<p>We fit a single model to leverage the larger sample size, instead of fitting an individual model per species.</p>
-</section></section>
-<section>
-<section id="subset-selection" class="title-slide slide level1 center">
-<h1>Subset selection</h1>
-<p>When doing prediction with regression we</p>
+<section id="what-variables-to-include" class="slide level2">
+<h2>What variables to include…</h2>
+<p>We don’t want to include extra variables as features in our predictive regression models if they do not improve the predictive performance.</p>
 <ul>
-<li>want to include available data as predictors/feature, when it will help improve our prediction.</li>
-<li>are not concerned about multiple testing, because we aren’t doing inference.</li>
-<li>don’t want to check every possible combination manually.</li>
+<li>This is where <strong>subset selection</strong> comes in, to help us choose our features (<span class="math inline">\(X\)</span>’s).</li>
 </ul>
+<div class="fragment">
+<p>On the other hand, we may have very large number of predictors <span class="math inline">\(p\)</span> available, relative to the sample size <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li>In very high dimensional data situations, <strong>dimension reduction</strong> can help by tranforming and combining features</li>
+</ul>
+</div>
 </section>
-<section id="subset-selection-1" class="slide level2">
+<section id="subset-selection" class="slide level2">
 <h2>Subset selection</h2>
 <ul>
 <li>Best subset selection</li>
 <li>Stepwise forwards selection</li>
 <li>Stepwise backwards selection</li>
 </ul>
-<div class="fragment">
-<p><em>For all of these, reserving some data for testing is a good idea.</em></p>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">data</span>(<span class="st">"swiss"</span>)</span>
+<span id="cb1-2"><a href=""></a></span>
+<span id="cb1-3"><a href=""></a><span class="fu">glimpse</span>(swiss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 47
+Columns: 6
+$ Fertility        &lt;dbl&gt; 80.2, 83.1, 92.5, 85.8, 76.9, 76.1, 83.8, 92.4, 82.4,…
+$ Agriculture      &lt;dbl&gt; 17.0, 45.1, 39.7, 36.5, 43.5, 35.3, 70.2, 67.8, 53.3,…
+$ Examination      &lt;int&gt; 15, 6, 5, 12, 17, 9, 16, 14, 12, 16, 14, 21, 14, 19, …
+$ Education        &lt;int&gt; 12, 9, 5, 7, 15, 7, 7, 8, 7, 13, 6, 12, 7, 12, 5, 2, …
+$ Catholic         &lt;dbl&gt; 9.96, 84.84, 93.40, 33.77, 5.16, 90.57, 92.85, 97.16,…
+$ Infant.Mortality &lt;dbl&gt; 22.2, 22.2, 20.2, 20.3, 20.6, 26.6, 23.6, 24.9, 21.0,…</code></pre>
+</div>
+</div>
+</section>
+<section id="standardizing-our-variables" class="slide level2">
+<h2>Standardizing our variables</h2>
+<p>When we are doing subset selection we should standardize our variables (subtract mean &amp; divide by standard deviation) to avoid comparing variables of different magnitudes.</p>
+<p>The <code>scale()</code> function standardizes columns, and we can tell it to only attempt for numeric columns:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>swiss_prepped <span class="ot">&lt;-</span> swiss <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), scale))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="best-subset-selection-idea" class="slide level2">
 <h2>Best subset selection idea</h2>
-<p>Fit a model for each possible combination and compare models using appropriate metric (e.g., RMSE, <span class="math inline">\(C_p\)</span>, adjusted <span class="math inline">\(R^2\)</span>)</p>
+<p>Fit a model for each possible combination and compare models using appropriate metric</p>
+<ul>
+<li>Need to use a metric appropriate for comparing models of varying parameters (i.e.&nbsp;NOT <span class="math inline">\(R^2\)</span>)</li>
+</ul>
 </section>
 <section id="best-subset-selection-steps" class="slide level2">
 <h2>Best subset selection steps</h2>
@@ -525,7 +466,7 @@ F-statistic: 214.6 on 5 and 336 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ol>
 <ol type="a">
 <li>Fit all <span class="math inline">\({p}\choose{k}\)</span> models with <span class="math inline">\(k\)</span> predictors</li>
-<li>Pick the best for that <span class="math inline">\(k\)</span>, using RSS / deviance</li>
+<li>Pick the best for that <span class="math inline">\(k\)</span></li>
 </ol>
 <ol start="3" type="1">
 <li>Select <em>best</em> model among the <span class="math inline">\(p+1\)</span> options using out-of-sample prediction error RMSE / Accuracy or <span class="math inline">\(C_p\)</span>.</li>
@@ -533,33 +474,229 @@ F-statistic: 214.6 on 5 and 336 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="best-subset-selection-considerations" class="slide level2">
 <h2>Best subset selection considerations</h2>
+<p>Pros:</p>
+<ul>
+<li>Finds optimal combination of predictors</li>
+</ul>
+<p>Cons:</p>
 <ul>
 <li>Must fit many models, <span class="math inline">\(2^p\)</span>, can be computationally expensive for large <span class="math inline">\(p\)</span> or <span class="math inline">\(n\)</span></li>
-<li>Can overfit to training data if not splitting data</li>
+</ul>
+</section>
+<section id="forward-stepwise-selection-idea" class="slide level2">
+<h2>Forward stepwise selection idea</h2>
+<p>Begins with a model with no predictors, then adds predictors one at a time, keeping the one that gives the greatest additional improvement each round. Stops when no variable improves model</p>
+</section>
+<section id="forward-stepwise-selection-steps" class="slide level2">
+<h2>Forward stepwise selection steps</h2>
+<ol type="1">
+<li>Fit <em>null model</em>, model with no predictors.</li>
+<li>For each <span class="math inline">\(k = 0, 1, ..., p-1\)</span>:</li>
+</ol>
+<ol type="a">
+<li>Add one additional <span class="math inline">\(p-k\)</span> predictor to current “best” model</li>
+<li>Choose best among these models</li>
+</ol>
+<ol start="3" type="1">
+<li>Select <em>best</em> model among the <span class="math inline">\(p+1\)</span> options using out-of-sample prediction error RMSE / Accuracy or <span class="math inline">\(C_p\)</span>.</li>
+</ol>
+</section>
+<section id="forward-stepwise-selection-considerations" class="slide level2">
+<h2>Forward stepwise selection considerations</h2>
+<p>Pros:</p>
+<ul>
+<li>Fits total of <span class="math inline">\(1 + \sum_{k=0}^{p-1} (p - k) = 1 + p(p+1)/2\)</span> models =&gt; computational advantage over best subset selection</li>
+<li>Works even when <span class="math inline">\(p&gt;n\)</span></li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>Not guaranteed to yield the best model containing a subset of <span class="math inline">\(p\)</span> predictors
+<ul>
+<li>May get stuck at local optima</li>
+</ul></li>
+</ul>
+</section>
+<section id="backwards-stepwise-selection-idea" class="slide level2">
+<h2>Backwards stepwise selection idea</h2>
+<p>Opposite of forwards selection, begins with full model using all available predictors, then iteratively removes one each step.</p>
+</section>
+<section id="backwards-stepwise-selection-steps" class="slide level2">
+<h2>Backwards stepwise selection steps</h2>
+<ol type="1">
+<li>Fit full model, model with all predictors.</li>
+<li>For each <span class="math inline">\(k = p, p-1, ..., 1\)</span>:</li>
+</ol>
+<ol type="a">
+<li>Consider all <span class="math inline">\(k\)</span> models that contain all but one of the predictors in the current baseline model, for a total of <span class="math inline">\(k-1\)</span> predictors</li>
+<li>Choose best among these.</li>
+</ol>
+<ol start="3" type="1">
+<li>Select <em>best</em> model among the <span class="math inline">\(p+1\)</span> options using out-of-sample prediction error RMSE / Accuracy (or <span class="math inline">\(C_p\)</span>…).</li>
+</ol>
+</section>
+<section id="backwards-stepwise-selection-considerations" class="slide level2">
+<h2>Backwards stepwise selection considerations</h2>
+<p>Pros:</p>
+<ul>
+<li>Also fits total of <span class="math inline">\(1 + p(p+1)/2\)</span> models =&gt; computational advantage over best subset selection</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>Not guaranteed to yield the best model containing a subset of <span class="math inline">\(p\)</span> predictors
+<ul>
+<li>May be better than forwards for exploring</li>
+</ul></li>
+<li>Doesn’t work when <span class="math inline">\(p&gt;n\)</span></li>
+</ul>
+</section>
+<section id="overall" class="slide level2">
+<h2>Overall</h2>
+<ul>
+<li>Best subset, forward stepwise, and backwards stepwise give fairly similar but not identical models typically</li>
+<li>Sequential stepwise selection is a combination of forward and backward, where a variable can be removed or added at each stage</li>
+<li>Step 3 should be rigorously assessed using validation approaches, but some metrics can be used in cases of low sample size</li>
+</ul>
+</section>
+<section id="c_p" class="slide level2">
+<h2><span class="math inline">\(C_p\)</span></h2>
+<p>What if we don’t want to split our data to do validation? <span class="math inline">\(C_p\)</span> provides an sense of test-MSE for linear regression</p>
+<p><span class="math display">\[C_p = \frac{1}{n} (RSS + 2d \hat{\sigma}^2),\]</span></p>
+<p>where <span class="math inline">\(\hat{\sigma}^2\)</span> is an estimate of the variance of the error <span class="math inline">\(\epsilon\)</span>, typically estimated using full model.</p>
+<p>There are other similar metrics like AIC, BIC, etc.</p>
+<p><strong>With today’s computational power and support we should prefer validation methods!</strong></p>
+</section>
+<section id="doing-best-subset-selection-with-c_p" class="slide level2">
+<h2>Doing best subset selection with <span class="math inline">\(C_p\)</span></h2>
+<p>Note <code>method</code> can be set to “forwards”, “backwards”, or “sequential”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(leaps) <span class="co"># for regsubsets() function</span></span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a>model_best <span class="ot">&lt;-</span> <span class="fu">regsubsets</span>(</span>
+<span id="cb4-4"><a href=""></a>  Fertility <span class="sc">~</span> ., <span class="co"># Period means to use all of the variables</span></span>
+<span id="cb4-5"><a href=""></a>  <span class="at">data =</span> swiss_prepped, </span>
+<span id="cb4-6"><a href=""></a>  <span class="at">method =</span> <span class="st">"exhaustive"</span> <span class="co"># For best subset selction</span></span>
+<span id="cb4-7"><a href=""></a>)</span>
+<span id="cb4-8"><a href=""></a></span>
+<span id="cb4-9"><a href=""></a><span class="fu">summary</span>(model_best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Subset selection object
+Call: regsubsets.formula(Fertility ~ ., data = swiss_prepped, method = "exhaustive")
+5 Variables  (and intercept)
+                 Forced in Forced out
+Agriculture          FALSE      FALSE
+Examination          FALSE      FALSE
+Education            FALSE      FALSE
+Catholic             FALSE      FALSE
+Infant.Mortality     FALSE      FALSE
+1 subsets of each size up to 5
+Selection Algorithm: exhaustive
+         Agriculture Examination Education Catholic Infant.Mortality
+1  ( 1 ) " "         " "         "*"       " "      " "             
+2  ( 1 ) " "         " "         "*"       "*"      " "             
+3  ( 1 ) " "         " "         "*"       "*"      "*"             
+4  ( 1 ) "*"         " "         "*"       "*"      "*"             
+5  ( 1 ) "*"         "*"         "*"       "*"      "*"             </code></pre>
+</div>
+</div>
+</section>
+<section id="extracting-evaluation-metrics" class="slide level2">
+<h2>Extracting evaluation metrics</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>model_best_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(model_best)</span>
+<span id="cb6-2"><a href=""></a>model_best_summary<span class="sc">$</span>cp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 35.204895 18.486158  8.178162  5.032800  6.000000</code></pre>
+</div>
+</div>
+<p>Using <span class="math inline">\(C_p\)</span> instead of k-fold cross validation we see it selects for the fourth model.</p>
+</section>
+<section id="doing-backwardsforwards-selection-with-k-fold-cross-validation" class="slide level2">
+<h2>Doing backwards/forwards selection with k-fold cross validation</h2>
+<p>The caret package offer help with</p>
+<ul>
+<li>forwards feature selection via k-fold cross validation (Selection by Filter) with <code>sbf()</code></li>
+<li>backwards feature selection via k-fold cross validation (Recursive feature elemination) with <code>rfe()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="backwards" class="slide level2">
+<h2>Backwards</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>rfe_control <span class="ot">&lt;-</span> <span class="fu">rfeControl</span>(</span>
+<span id="cb9-2"><a href=""></a>  <span class="at">functions =</span> lmFuncs, <span class="co"># lmFuncs, glmFuncs, etc., depending on your model</span></span>
+<span id="cb9-3"><a href=""></a>  <span class="at">method =</span> <span class="st">"cv"</span>,       <span class="co"># k-fold cross validation</span></span>
+<span id="cb9-4"><a href=""></a>  <span class="at">number =</span> <span class="dv">10</span>         <span class="co"># Number of folds</span></span>
+<span id="cb9-5"><a href=""></a>)</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a>rfe_result <span class="ot">&lt;-</span> <span class="fu">rfe</span>(</span>
+<span id="cb9-8"><a href=""></a>  Fertility <span class="sc">~</span> ., </span>
+<span id="cb9-9"><a href=""></a>  <span class="at">data =</span> swiss_prepped,</span>
+<span id="cb9-10"><a href=""></a>  <span class="at">metric =</span> <span class="st">"RMSE"</span>,</span>
+<span id="cb9-11"><a href=""></a>  <span class="at">rfeControl =</span> rfe_control</span>
+<span id="cb9-12"><a href=""></a>)</span>
+<span id="cb9-13"><a href=""></a></span>
+<span id="cb9-14"><a href=""></a><span class="fu">predictors</span>(rfe_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Education"        "Catholic"         "Agriculture"      "Infant.Mortality"
+[5] "Examination"     </code></pre>
+</div>
+</div>
+</section>
+<section id="forwards" class="slide level2">
+<h2>Forwards</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>sbf_control <span class="ot">&lt;-</span> <span class="fu">sbfControl</span>(</span>
+<span id="cb11-2"><a href=""></a>  <span class="at">functions =</span> lmSBF,</span>
+<span id="cb11-3"><a href=""></a>  <span class="at">method =</span> <span class="st">"cv"</span>,       <span class="co"># k-fold cross validation</span></span>
+<span id="cb11-4"><a href=""></a>  <span class="at">number =</span> <span class="dv">10</span>         <span class="co"># Number of folds</span></span>
+<span id="cb11-5"><a href=""></a>)</span>
+<span id="cb11-6"><a href=""></a></span>
+<span id="cb11-7"><a href=""></a>sbf_result <span class="ot">&lt;-</span> <span class="fu">sbf</span>(</span>
+<span id="cb11-8"><a href=""></a>  Fertility <span class="sc">~</span> ., </span>
+<span id="cb11-9"><a href=""></a>  <span class="at">data =</span> swiss_prepped,</span>
+<span id="cb11-10"><a href=""></a>  <span class="at">metric =</span> <span class="st">"RMSE"</span>,</span>
+<span id="cb11-11"><a href=""></a>  <span class="at">sbfControl =</span> sbf_control</span>
+<span id="cb11-12"><a href=""></a>)</span>
+<span id="cb11-13"><a href=""></a></span>
+<span id="cb11-14"><a href=""></a><span class="fu">predictors</span>(sbf_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Agriculture"      "Examination"      "Education"        "Catholic"        
+[5] "Infant.Mortality"</code></pre>
+</div>
+</div>
+</section>
+<section id="takeaways" class="slide level2">
+<h2>Takeaways</h2>
+<ul>
+<li>Difference between subset selection and dimensionality reduction</li>
+<li>Forward/backward stepwise selection is typically more practical than best subset selection (just choose one)</li>
+<li>We should use k-fold cross validation for subset selection</li>
 </ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="lec-13a-subset-selection_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lec-13b-choosing-variables-for-prediction_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
