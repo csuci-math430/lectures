@@ -52,8 +52,12 @@ When we are doing subset selection we should standardize our variables (subtract
 
 The `scale()` function standardizes columns, and we can tell it to only attempt for numeric columns:
 ```{r}
-swiss_prepped <- swiss %>%
-  mutate(across(where(is.numeric), scale))
+swiss_prepped <- swiss |> 
+  mutate(across(
+    c(where(is.numeric), -Fertility), # Don't standardize Y
+    scale
+  ))
+
 ```
 
 
@@ -203,6 +207,8 @@ rfe_result <- rfe(
 )
 
 predictors(rfe_result)
+
+rfe_result$results
 ```
 
 ## Forwards
@@ -222,6 +228,8 @@ sbf_result <- sbf(
 )
 
 predictors(sbf_result)
+
+sbf_result$results
 ```
 
 ## Takeaways
