@@ -1,0 +1,37 @@
+---
+title: "Title"
+author: "Names Here"
+date: "`r format(Sys.time(),'%m-%d-%Y')`"
+format: 
+  html:
+    embed-resources: true
+knitr:
+  opts_chunk:
+    echo: true
+    message: false
+    warning: false
+    error: true
+    R.options:
+      digits: 3
+      max.print: 20
+---
+
+```{r}
+# It's a good idea to load all packages in one chunk
+library(tidyverse)
+```
+
+```{r}
+ggplot(penguins, aes(x = flipper_len, y = bill_dep, color = species)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Flipper length (mm)",
+    y = "Bill depth (mm)",
+    color = "Species"
+  )
+
+# This will save the plot so you can add it to your paper or presentation
+ggsave("penguins-regression-plot.png", width = 4, height = 4, units = "in")
+```
+
