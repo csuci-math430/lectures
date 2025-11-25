@@ -1,0 +1,87 @@
+---
+title: "Math 430: Lecture 14a"
+subtitle: "Communicating scientific results"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+options(scipen = 0)
+library(tidyverse)
+library(openintro)
+library(broom)
+library(modelr)
+theme_set(theme_bw(base_size = 22))
+```
+
+
+## Final project components
+
+As stated in the syllabus, the final project has 4 parts for each team:
+
+- Proposal
+- Data collection and analysis
+- Written report 
+- Oral presentation
+
+## Final project components
+
+As stated in the syllabus, the final project has 4 parts for each team:
+
+- Proposal (already approved)
+- **Data collection and analysis**
+- **Written report**
+- **Oral presentation**
+
+## Data collection and analysis
+
+- All data cleaning and analysis should be performed in a single Quarto document. This rendered document showing code must be included as an appendix to your paper.
+- It will be submitted and graded along with submission of final report
+
+*Please complete your data collection and analysis early, so we can work through any problems you encounter with enough time!*
+
+## Written report
+
+- **Abstract** - Less than 200 word summary of project
+- **Introduction** - Present the research question and motivate why we care (typically done in reverse order).
+- **Methods** - Subsection for study setup, including data collection, and subsection on model including model equation.
+- **Results** - Summary statistics. Findings of your hypothesis test and or confidence interval? Be careful with interpretation.
+- **Discussion** - Summary of results, limitations of your study, and possible future directions.
+
+## Group exercise
+
+*Split into groups of two and dis*
+
+## Example
+
+This paper provides an example of a digestible scientific article:
+
+[Alicia et al. 2018. "Effect of brief exercise on urges to smoke in men and women smokers"](https://doi.org/10.1016/j.addbeh.2017.09.009)
+
+## Report details
+
+One report per team.
+
+I don't care what software you use to write your report, but I would like you to submit a pdf.
+
+Length requirements:
+
+- No page minimum, but all sections/points need to be addressed.
+- Maximum of 10 pages double spaced with size 12 font (or Quarto default font).
+
+Due the night before final presentation. Every late day results in 25% reduction in grade.
+
+## Oral presentation
+
+Your presentations should be between 5-7 minutes in length.
+
+You will present in teams during our final exam time.
+
+You should prepare some slides to help you summarize your study for the class.
+
