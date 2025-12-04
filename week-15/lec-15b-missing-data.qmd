@@ -1,0 +1,178 @@
+---
+title: "Math 430: Lecture 15b"
+subtitle: "Handling Missing Data"
+author: "Professor Catalina Medina"
+execute:
+  echo: true
+format: 
+  revealjs:
+    theme: [sky, ../slide-style.scss]
+    slide-number: true
+---
+
+```{r}
+#| echo: false
+options(scipen = 0)
+library(tidyverse)
+library(openintro)
+library(broom)
+library(modelr)
+theme_set(theme_bw(base_size = 22))
+```
+
+## Missing data
+
+In R, missing data are indicated by `NA`'s. 
+
+When plotting or fitting models, any row with missing data will not be used, reducing the sample size $n$. 
+
+- This is called **complete-case analysis / listwise deletion**
+
+## Concerns for dropping data
+
+When doing prediction
+
+- Without complete-case analysis: If we compare models with different predictors, we may be comparing different sample size $n$ as well
+- With complete-case analysis: We are losing some information that may have improved our prediction
+
+. . .
+
+When doing inference (prespecified single model)
+
+- We want as large a sample size as possible to be able to detect differences/associations (lower standard errors)
+
+# Missing-data mechansims
+
+*What if the reason some observations are missing is related to the phenomena we are trying to model?*
+
+## Missing Completely at Random (MCAR) 
+
+MCAR is when the probability of missingness is the same for all units of observation (e.g., people in a clinical trial have the same probability of having missingness for any variable measured)
+
+- complete-case analysis does not bias results in this case
+
+
+## Missing at random (MAR)
+
+MAR is when the missingness is not completely at random, but instead due to the variables we observed.
+
+- complete-case analysis can still be done here, as long as the model contains all variables that explain the missing data
+
+## Missing not at random (MNAR)
+
+MNAR is when the missingness is not MCAR or MAR
+
+- Today there are even finer-grained distinctions of different reasons for MNAR
+- Ex: A familiar example from medical studies is that if a particular treatment causes
+discomfort, a patient is more likely to drop out of the study
+- Not accounting for the  missingness, like doing complete-case analysis will *result in biased inference!*
+
+## 
+
+We will not focus on MNAR in this discussion, instead let's discuss how we can still use all the data we have for MCAR and some MAR scenarios
+
+. . .
+
+- If we could predict the missing values, then proceed with our modeling
+- => We would have a larger $n$ than complete-case analysis,
+- => have smaller standard errors,
+- => and more statistical power to detect differences/associations
+
+# Imputation
+
+**Imputation** is the process of using available information to create substitute values for missing values in our data, so we can use that data for analysis
+
+- There are many imputation methods
+
+## Mean imputation
+
+- Idea: Replace missing values for a variable with the average observed value for that variable
+
+- Ex: If some people did not report their age in a survey, we can replace `NA`'s with the average of the observed ages
+
+- Pros: Dimple
+
+- Cons: Can distort relationships and variances. Only works for numeric variables
+
+## Example
+
+We are very familiar with the penguins data
+```{r}
+glimpse(penguins)
+```
+
+. . .
+
+```{r}
+# n for complete-case analysis
+penguins |> 
+  drop_na() |> 
+  nrow()
+```
+
+##
+
+\begin{equation*}
+  \begin{split}
+    Bill Depth_i &= \beta_0 + \beta_1 Flipper Length_i\\
+    &+ \beta_2 I(Species_i = Chinstrap)\\
+    &+ \beta_3 I(Species_i = Gentoo) + \epsilon_i
+  \end{split}
+\end{equation*}
+
+```{r}
+sapply(penguins, function(x) sum(is.na(x)))
+```
+
+## Without imputation
+
+```{r}
+penguin_model1 <- lm(
+  bill_dep ~ flipper_len + species, 
+  data = penguins
+)
+summary(penguin_model1)
+```
+
+## Mean imputation of `bill_dep` and `flipper_len`
+
+```{r}
+penguins_model_data <- penguins |> 
+  mutate(new_flipper_len = ifelse(
+    is.na(flipper_len), 
+    yes = mean(flipper_len, na.rm = TRUE),
+    no = flipper_len
+  )) |> 
+  mutate(new_bill_dep = ifelse(
+    is.na(bill_dep), 
+    yes = mean(bill_dep, na.rm = TRUE),
+    no = bill_dep
+  ))
+```
+
+## Fitting model to imputated data
+
+```{r}
+penguin_model2 <- lm(
+  new_bill_dep ~ new_flipper_len + species, 
+  data = penguins_model_data
+)
+summary(penguin_model2)
+```
+
+##
+
+```{r}
+new_penguins <- penguins %>%
+  mutate(across(
+    where(is.numeric), 
+    ~ ifelse(
+      is.na(.), 
+      mean(., na.rm = TRUE), 
+      .
+    )
+  ))
+
+glimpse(new_penguins)
+```
+
